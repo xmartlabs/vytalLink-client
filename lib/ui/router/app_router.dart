@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_template/core/repository/session_repository.dart';
-import 'package:flutter_template/ui/router/app_router_guards.dart';
+import 'package:flutter_template/ui/home/home_screen.dart';
 import 'package:flutter_template/ui/section/section_router.dart';
 import 'package:flutter_template/ui/signin/signin_screen.dart';
 import 'package:flutter_template/ui/welcome/welcome_screen.dart';
@@ -25,15 +25,15 @@ class AppRouter extends _$AppRouter {
           AutoRoute(
             page: UnauthenticatedSectionRoute.page,
             path: '/',
-            guards: [UnauthenticatedGuard(sessionRepository)],
+            // guards: [UnauthenticatedGuard(sessionRepository)],
             children: [
               RedirectRoute(path: '', redirectTo: initialRoute ?? 'login'),
-              AutoRoute(path: 'login', page: SignInRoute.page),
+              AutoRoute(path: 'login', page: HomeRoute.page),
             ],
           ),
           AutoRoute(
             page: AuthenticatedSectionRoute.page,
-            guards: [AuthenticatedGuard(sessionRepository)],
+            // guards: [AuthenticatedGuard(sessionRepository)],
             path: '/',
             children: [
               RedirectRoute(path: '', redirectTo: initialRoute ?? 'welcome'),
