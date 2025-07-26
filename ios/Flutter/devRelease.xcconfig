@@ -1,0 +1,5 @@
+#include "Generated.xcconfig"
+
+ASSET_PREFIX=dev
+BUNDLE_NAME=Template Dev
+BUNDLE_DISPLAY_NAME=Template Dev

@@ -1,0 +1,5 @@
+#include "Generated.xcconfig"
+
+ASSET_PREFIX=prod
+BUNDLE_NAME=Template
+BUNDLE_DISPLAY_NAME=Template
