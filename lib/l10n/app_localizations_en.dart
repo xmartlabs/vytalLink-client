@@ -46,4 +46,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get xmartlabs_projects => 'Xmartlabs\' projects';
+
+  @override
+  String get home_title => 'MCP Server Control';
+
+  @override
+  String home_server_ip_label(String ipAddress) {
+    return 'Server IP: $ipAddress';
+  }
+
+  @override
+  String home_endpoint_label(String endpoint) {
+    return 'Endpoint: $endpoint';
+  }
+
+  @override
+  String get home_button_start_server => 'Start MCP Server';
+
+  @override
+  String get home_button_stop_server => 'Stop MCP Server';
+
+  @override
+  String get home_button_starting => 'Starting...';
+
+  @override
+  String get home_button_stopping => 'Stopping...';
+
+  @override
+  String get home_status_offline => 'MCP Server Offline';
+
+  @override
+  String get home_status_starting => 'Starting Server...';
+
+  @override
+  String get home_status_running => 'MCP Server Running';
+
+  @override
+  String get home_status_stopping => 'Stopping Server...';
+
+  @override
+  String get home_description_offline =>
+      'Ready to start the MCP server on this device';
+
+  @override
+  String get home_description_starting =>
+      'Initializing MCP server and binding to port...';
+
+  @override
+  String get home_description_running =>
+      'Server is active and ready to accept connections';
+
+  @override
+  String get home_description_stopping =>
+      'Shutting down server and closing connections...';
 }

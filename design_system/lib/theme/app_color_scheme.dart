@@ -58,21 +58,7 @@ class AppColorScheme extends ColorScheme {
   static AppColorScheme getDefaultColorScheme() => AppColorScheme(
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
-          seedColor: const MaterialColor(
-            0xffee1a64,
-            <int, Color>{
-              100: Color(0xfffff2f6),
-              200: Color(0xfffcc7da),
-              300: Color(0xfffa9ebe),
-              400: Color(0xfff5558d),
-              500: Color(0xffee1a64),
-              600: Color(0xffe80051),
-              700: Color(0xffdf004e),
-              800: Color(0xffd2004a),
-              900: Color(0xffc30044),
-              1000: Color(0xffb3003e),
-            },
-          ),
+          seedColor: const Color.fromRGBO(238, 26, 100, 1),
           primaryContainer: const Color(0xffee1a64),
           onSecondary: Colors.black,
           error: const MaterialColor(

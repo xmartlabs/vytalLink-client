@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HomeState {
   McpServerStatus get status => throw _privateConstructorUsedError;
+  String get ipAddress => throw _privateConstructorUsedError;
+  String get endpoint => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -28,7 +30,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({McpServerStatus status});
+  $Res call({McpServerStatus status, String ipAddress, String endpoint});
 }
 
 /// @nodoc
@@ -45,12 +47,22 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @override
   $Res call({
     Object? status = null,
+    Object? ipAddress = null,
+    Object? endpoint = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as McpServerStatus,
+      ipAddress: null == ipAddress
+          ? _value.ipAddress
+          : ipAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      endpoint: null == endpoint
+          ? _value.endpoint
+          : endpoint // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -63,7 +75,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({McpServerStatus status});
+  $Res call({McpServerStatus status, String ipAddress, String endpoint});
 }
 
 /// @nodoc
@@ -78,12 +90,22 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
+    Object? ipAddress = null,
+    Object? endpoint = null,
   }) {
     return _then(_$HomeStateImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as McpServerStatus,
+      ipAddress: null == ipAddress
+          ? _value.ipAddress
+          : ipAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      endpoint: null == endpoint
+          ? _value.endpoint
+          : endpoint // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -91,15 +113,24 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateImpl implements _HomeState {
-  const _$HomeStateImpl({this.status = McpServerStatus.idle});
+  const _$HomeStateImpl(
+      {this.status = McpServerStatus.idle,
+      this.ipAddress = "",
+      this.endpoint = ""});
 
   @override
   @JsonKey()
   final McpServerStatus status;
+  @override
+  @JsonKey()
+  final String ipAddress;
+  @override
+  @JsonKey()
+  final String endpoint;
 
   @override
   String toString() {
-    return 'HomeState(status: $status)';
+    return 'HomeState(status: $status, ipAddress: $ipAddress, endpoint: $endpoint)';
   }
 
   @override
@@ -107,11 +138,15 @@ class _$HomeStateImpl implements _HomeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.ipAddress, ipAddress) ||
+                other.ipAddress == ipAddress) &&
+            (identical(other.endpoint, endpoint) ||
+                other.endpoint == endpoint));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status);
+  int get hashCode => Object.hash(runtimeType, status, ipAddress, endpoint);
 
   @JsonKey(ignore: true)
   @override
@@ -121,10 +156,17 @@ class _$HomeStateImpl implements _HomeState {
 }
 
 abstract class _HomeState implements HomeState {
-  const factory _HomeState({final McpServerStatus status}) = _$HomeStateImpl;
+  const factory _HomeState(
+      {final McpServerStatus status,
+      final String ipAddress,
+      final String endpoint}) = _$HomeStateImpl;
 
   @override
   McpServerStatus get status;
+  @override
+  String get ipAddress;
+  @override
+  String get endpoint;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>
