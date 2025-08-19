@@ -15,11 +15,6 @@
   "error_no_internet_connection_error_title": "Error",
   "error_unknown_error_description": "Something went wrong!",
   "error_unknown_error_title": "Ops!",
-  "log_out": "Log out",
-  "mail": "Mail",
-  "password": "Password",
-  "sign_in": "Sign In",
-  "xmartlabs_projects": "Xmartlabs' projects",
   "home_title": "MCP Server Control",
   "home_server_ip_label": "Server IP: {ipAddress}",
   "@home_server_ip_label": {

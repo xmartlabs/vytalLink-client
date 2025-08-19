@@ -33,21 +33,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error_unknown_error_title => 'Ops!';
 
   @override
-  String get log_out => 'Log out';
-
-  @override
-  String get mail => 'Mail';
-
-  @override
-  String get password => 'Password';
-
-  @override
-  String get sign_in => 'Sign In';
-
-  @override
-  String get xmartlabs_projects => 'Xmartlabs\' projects';
-
-  @override
   String get home_title => 'MCP Server Control';
 
   @override

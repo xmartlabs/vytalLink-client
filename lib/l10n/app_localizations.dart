@@ -62,7 +62,7 @@ import 'app_localizations_en.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -85,11 +85,11 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en')];
@@ -135,36 +135,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ops!'**
   String get error_unknown_error_title;
-
-  /// No description provided for @log_out.
-  ///
-  /// In en, this message translates to:
-  /// **'Log out'**
-  String get log_out;
-
-  /// No description provided for @mail.
-  ///
-  /// In en, this message translates to:
-  /// **'Mail'**
-  String get mail;
-
-  /// No description provided for @password.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get password;
-
-  /// No description provided for @sign_in.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign In'**
-  String get sign_in;
-
-  /// No description provided for @xmartlabs_projects.
-  ///
-  /// In en, this message translates to:
-  /// **'Xmartlabs\' projects'**
-  String get xmartlabs_projects;
 
   /// No description provided for @home_title.
   ///
@@ -282,8 +252,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }
