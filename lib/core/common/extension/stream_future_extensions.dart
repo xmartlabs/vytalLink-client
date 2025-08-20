@@ -1,3 +1,4 @@
+//ignore_for_file: unused-files, unused-code
 import 'package:flutter_template/core/common/logger.dart';
 import 'package:flutter_template/core/common/result.dart';
 import 'package:rxdart/rxdart.dart';

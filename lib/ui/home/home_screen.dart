@@ -98,75 +98,70 @@ class _HomeContentScreen extends StatelessWidget {
   Widget _buildActionButton(BuildContext context, HomeState state) {
     switch (state.status) {
       case McpServerStatus.idle:
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: () => context.read<HomeCubit>().startMCPServer(),
-            icon: const Icon(Icons.play_arrow),
-            label: Text(context.localizations.home_button_start_server),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: context.theme.colorScheme.primary,
-              foregroundColor:
-                  context.theme.customColors.textColor?.getShade(100),
-            ),
-          ),
-        );
+        return _startButton(context);
       case McpServerStatus.starting:
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: null,
-            icon: const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
-            label: Text(context.localizations.home_button_starting),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-          ),
+        return _loadingButton(
+          context,
+          context.localizations.home_button_starting,
         );
       case McpServerStatus.running:
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: () => context.read<HomeCubit>().stopMCPServer(),
-            icon: const Icon(Icons.stop),
-            label: Text(context.localizations.home_button_stop_server),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: context.theme.customColors.danger,
-              foregroundColor:
-                  context.theme.customColors.textColor?.getShade(100),
-            ),
-          ),
-        );
+        return _stopButton(context);
       case McpServerStatus.stopping:
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: null,
-            icon: const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
-            label: Text(context.localizations.home_button_stopping),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-          ),
+        return _loadingButton(
+          context,
+          context.localizations.home_button_stopping,
         );
     }
   }
+
+  Widget _startButton(BuildContext context) => SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          onPressed: () => context.read<HomeCubit>().startMCPServer(),
+          icon: const Icon(Icons.play_arrow),
+          label: Text(context.localizations.home_button_start_server),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            backgroundColor: context.theme.colorScheme.primary,
+            foregroundColor:
+                context.theme.customColors.textColor?.getShade(100),
+          ),
+        ),
+      );
+
+  Widget _stopButton(BuildContext context) => SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          onPressed: () => context.read<HomeCubit>().stopMCPServer(),
+          icon: const Icon(Icons.stop),
+          label: Text(context.localizations.home_button_stop_server),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            backgroundColor: context.theme.customColors.danger,
+            foregroundColor:
+                context.theme.customColors.textColor?.getShade(100),
+          ),
+        ),
+      );
+
+  Widget _loadingButton(BuildContext context, String label) => SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          onPressed: null,
+          icon: const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+          label: Text(label),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+          ),
+        ),
+      );
 
   IconData _getServerIcon(HomeState state) {
     switch (state.status) {

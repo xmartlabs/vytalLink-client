@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_template/core/common/config.dart';
 import 'package:flutter_template/core/source/mcp_server.dart';
 import 'package:flutter_template/ui/section/error_handler/global_event_handler_cubit.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -21,11 +22,11 @@ class HomeCubit extends Cubit<HomeState> {
     final ip = await NetworkInfo().getWifiIP();
 
     final config = HealthMcpServerConfig(
-      serverName: 'health-data-server',
-      serverVersion: '1.0.0',
-      host: ip ?? '0.0.0.0',
-      port: 8080,
-      endpoint: '/mcp',
+      serverName: Config.mcpServerName,
+      serverVersion: Config.mcpServerVersion,
+      host: ip ?? Config.mcpHostFallback,
+      port: Config.mcpPort,
+      endpoint: Config.mcpEndpoint,
     );
 
     healthServer = HealthMcpServerService(
@@ -54,7 +55,7 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       );
     } catch (error, stackTrace) {
-      _globalEventHandler.handleError(error, stackTrace, startMCPServer);
+      _globalEventHandler.handleError(error, stackTrace);
       emit(state.copyWith(status: McpServerStatus.idle));
     }
   }
@@ -73,7 +74,7 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       );
     } catch (error, stackTrace) {
-      _globalEventHandler.handleError(error, stackTrace, stopMCPServer);
+      _globalEventHandler.handleError(error, stackTrace);
       emit(
         state.copyWith(
           status: McpServerStatus.idle,

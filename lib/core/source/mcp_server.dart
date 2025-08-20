@@ -28,7 +28,7 @@ class HealthMcpServerException implements Exception {
   const HealthMcpServerException(this.message, [this.cause]);
 
   final String message;
-  final Object? cause;
+  final dynamic cause;
 
   @override
   String toString() =>
@@ -161,7 +161,7 @@ class HealthMcpServerService {
         ),
       ).then((server) => server.successOrNull!);
 
-      await _registerHealthDataTool(server);
+      _registerHealthDataTool(server);
       _mcpServer = server;
 
       return server;
@@ -174,14 +174,14 @@ class HealthMcpServerService {
   }
 
   /// Registers the health data tool with the MCP server
-  Future<void> _registerHealthDataTool(Server server) async {
+  void _registerHealthDataTool(Server server) {
     server.addTool(
       name: "get_health_data",
       description:
           // ignore: lines_longer_than_80_chars
           'Retrieve health data from Apple HealthKit or Google Health Connect for specified data types and time range',
       inputSchema: inputSchema,
-      handler: (args) async => _handleHealthDataRequest(args),
+      handler: (args) => _handleHealthDataRequest(args),
     );
   }
 
