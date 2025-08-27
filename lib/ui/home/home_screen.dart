@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:design_system/design_system.dart';
+import 'package:design_system/extensions/color_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_template/ui/extensions/context_extensions.dart';
 import 'package:flutter_template/ui/home/home_cubit.dart';
 import 'package:flutter_template/ui/section/error_handler/global_event_handler_cubit.dart';
 
@@ -23,12 +25,17 @@ class _HomeContentScreen extends StatelessWidget {
   Widget build(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) => Scaffold(
           appBar: AppBar(
-            title: const Text('MCP Server Control'),
+            title: Text(
+              context.localizations.home_title,
+              style: TextStyle(
+                color: context.theme.customColors.textColor?.getShade(100),
+              ),
+            ),
             centerTitle: true,
           ),
           body: Center(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -37,24 +44,49 @@ class _HomeContentScreen extends StatelessWidget {
                     size: 120,
                     color: _getServerIconColor(context, state),
                   ),
-                  const SizedBox(height: 32),
-                  Text(
-                    _getServerStatusText(state),
-                    style: context.theme.textStyles.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
                   const SizedBox(height: 16),
-                  Text(
-                    _getServerDescriptionText(state),
-                    style: context.theme.textStyles.bodyLarge?.copyWith(
-                      color:
-                          context.theme.colorScheme.onSurface.withOpacity(0.7),
+                  SizedBox(
+                    height: 60,
+                    child: Text(
+                      _getServerDescriptionText(context, state),
+                      style: context.theme.textStyles.bodyLarge?.copyWith(
+                        color: context.theme.colorScheme.onSurface
+                            .withValues(alpha: 0.7),
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 28),
+                  SizedBox(
+                    height: 60,
+                    child: Column(
+                      children: [
+                        if (state.ipAddress.isNotEmpty)
+                          Text(
+                            context.localizations
+                                .home_server_ip_label(state.ipAddress),
+                            style:
+                                context.theme.textStyles.bodyMedium?.copyWith(
+                              color: context.theme.colorScheme.onSurface
+                                  .withValues(alpha: 0.6),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        if (state.endpoint.isNotEmpty)
+                          Text(
+                            context.localizations
+                                .home_endpoint_label(state.endpoint),
+                            style:
+                                context.theme.textStyles.bodyMedium?.copyWith(
+                              color: context.theme.colorScheme.onSurface
+                                  .withValues(alpha: 0.6),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   _buildActionButton(context, state),
                 ],
               ),
@@ -66,73 +98,70 @@ class _HomeContentScreen extends StatelessWidget {
   Widget _buildActionButton(BuildContext context, HomeState state) {
     switch (state.status) {
       case McpServerStatus.idle:
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: () => context.read<HomeCubit>().startMCPServer(),
-            icon: const Icon(Icons.play_arrow),
-            label: const Text('Start MCP Server'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: context.theme.colorScheme.primary,
-              foregroundColor: context.theme.colorScheme.onPrimary,
-            ),
-          ),
-        );
+        return _startButton(context);
       case McpServerStatus.starting:
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: null,
-            icon: const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
-            label: const Text('Starting...'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-          ),
+        return _loadingButton(
+          context,
+          context.localizations.home_button_starting,
         );
       case McpServerStatus.running:
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: () => context.read<HomeCubit>().stopMCPServer(),
-            icon: const Icon(Icons.stop),
-            label: const Text('Stop MCP Server'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              backgroundColor: context.theme.colorScheme.error,
-              foregroundColor: context.theme.colorScheme.onError,
-            ),
-          ),
-        );
+        return _stopButton(context);
       case McpServerStatus.stopping:
-        return SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: null,
-            icon: const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ),
-            label: const Text('Stopping...'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-          ),
+        return _loadingButton(
+          context,
+          context.localizations.home_button_stopping,
         );
     }
   }
+
+  Widget _startButton(BuildContext context) => SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          onPressed: () => context.read<HomeCubit>().startMCPServer(),
+          icon: const Icon(Icons.play_arrow),
+          label: Text(context.localizations.home_button_start_server),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            backgroundColor: context.theme.colorScheme.primary,
+            foregroundColor:
+                context.theme.customColors.textColor?.getShade(100),
+          ),
+        ),
+      );
+
+  Widget _stopButton(BuildContext context) => SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          onPressed: () => context.read<HomeCubit>().stopMCPServer(),
+          icon: const Icon(Icons.stop),
+          label: Text(context.localizations.home_button_stop_server),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            backgroundColor: context.theme.customColors.danger,
+            foregroundColor:
+                context.theme.customColors.textColor?.getShade(100),
+          ),
+        ),
+      );
+
+  Widget _loadingButton(BuildContext context, String label) => SizedBox(
+        width: double.infinity,
+        child: ElevatedButton.icon(
+          onPressed: null,
+          icon: const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+          label: Text(label),
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+          ),
+        ),
+      );
 
   IconData _getServerIcon(HomeState state) {
     switch (state.status) {
@@ -150,7 +179,7 @@ class _HomeContentScreen extends StatelessWidget {
   Color _getServerIconColor(BuildContext context, HomeState state) {
     switch (state.status) {
       case McpServerStatus.idle:
-        return context.theme.colorScheme.onSurface.withOpacity(0.5);
+        return context.theme.colorScheme.onSurface.withValues(alpha: 0.5);
       case McpServerStatus.starting:
         return context.theme.colorScheme.primary;
       case McpServerStatus.running:
@@ -160,29 +189,29 @@ class _HomeContentScreen extends StatelessWidget {
     }
   }
 
-  String _getServerStatusText(HomeState state) {
+  String _getServerStatusText(BuildContext context, HomeState state) {
     switch (state.status) {
       case McpServerStatus.idle:
-        return 'MCP Server Offline';
+        return context.localizations.home_status_offline;
       case McpServerStatus.starting:
-        return 'Starting Server...';
+        return context.localizations.home_status_starting;
       case McpServerStatus.running:
-        return 'MCP Server Running';
+        return context.localizations.home_status_running;
       case McpServerStatus.stopping:
-        return 'Stopping Server...';
+        return context.localizations.home_status_stopping;
     }
   }
 
-  String _getServerDescriptionText(HomeState state) {
+  String _getServerDescriptionText(BuildContext context, HomeState state) {
     switch (state.status) {
       case McpServerStatus.idle:
-        return 'Ready to start the Model Context Protocol server on this device';
+        return context.localizations.home_description_offline;
       case McpServerStatus.starting:
-        return 'Initializing MCP server and binding to port...';
+        return context.localizations.home_description_starting;
       case McpServerStatus.running:
-        return 'Server is active and ready to accept connections';
+        return context.localizations.home_description_running;
       case McpServerStatus.stopping:
-        return 'Shutting down server and closing connections...';
+        return context.localizations.home_description_stopping;
     }
   }
 }

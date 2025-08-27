@@ -62,7 +62,7 @@ import 'app_localizations_en.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -85,11 +85,11 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en')];
@@ -136,35 +136,95 @@ abstract class AppLocalizations {
   /// **'Ops!'**
   String get error_unknown_error_title;
 
-  /// No description provided for @log_out.
+  /// No description provided for @home_button_start_server.
   ///
   /// In en, this message translates to:
-  /// **'Log out'**
-  String get log_out;
+  /// **'Start MCP Server'**
+  String get home_button_start_server;
 
-  /// No description provided for @mail.
+  /// No description provided for @home_button_starting.
   ///
   /// In en, this message translates to:
-  /// **'Mail'**
-  String get mail;
+  /// **'Starting...'**
+  String get home_button_starting;
 
-  /// No description provided for @password.
+  /// No description provided for @home_button_stop_server.
   ///
   /// In en, this message translates to:
-  /// **'Password'**
-  String get password;
+  /// **'Stop MCP Server'**
+  String get home_button_stop_server;
 
-  /// No description provided for @sign_in.
+  /// No description provided for @home_button_stopping.
   ///
   /// In en, this message translates to:
-  /// **'Sign In'**
-  String get sign_in;
+  /// **'Stopping...'**
+  String get home_button_stopping;
 
-  /// No description provided for @xmartlabs_projects.
+  /// No description provided for @home_description_offline.
   ///
   /// In en, this message translates to:
-  /// **'Xmartlabs\' projects'**
-  String get xmartlabs_projects;
+  /// **'Ready to start the MCP server on this device'**
+  String get home_description_offline;
+
+  /// No description provided for @home_description_running.
+  ///
+  /// In en, this message translates to:
+  /// **'Server is active and ready to accept connections'**
+  String get home_description_running;
+
+  /// No description provided for @home_description_starting.
+  ///
+  /// In en, this message translates to:
+  /// **'Initializing MCP server and binding to port...'**
+  String get home_description_starting;
+
+  /// No description provided for @home_description_stopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shutting down server and closing connections...'**
+  String get home_description_stopping;
+
+  /// Shows the endpoint
+  ///
+  /// In en, this message translates to:
+  /// **'Endpoint: {endpoint}'**
+  String home_endpoint_label(String endpoint);
+
+  /// Shows the server IP address
+  ///
+  /// In en, this message translates to:
+  /// **'Server IP: {ipAddress}'**
+  String home_server_ip_label(String ipAddress);
+
+  /// No description provided for @home_status_offline.
+  ///
+  /// In en, this message translates to:
+  /// **'MCP Server Offline'**
+  String get home_status_offline;
+
+  /// No description provided for @home_status_running.
+  ///
+  /// In en, this message translates to:
+  /// **'MCP Server Running'**
+  String get home_status_running;
+
+  /// No description provided for @home_status_starting.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting Server...'**
+  String get home_status_starting;
+
+  /// No description provided for @home_status_stopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopping Server...'**
+  String get home_status_stopping;
+
+  /// No description provided for @home_title.
+  ///
+  /// In en, this message translates to:
+  /// **'MCP Server Control'**
+  String get home_title;
 }
 
 class _AppLocalizationsDelegate
@@ -192,8 +252,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

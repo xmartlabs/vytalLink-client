@@ -19,6 +19,12 @@ interface class Config {
   static late String supabaseApiKey;
   static late String appDirectoryPath;
 
+  static String mcpServerName = 'health-data-server';
+  static String mcpServerVersion = '1.0.0';
+  static String mcpHostFallback = '0.0.0.0';
+  static int mcpPort = 8080;
+  static String mcpEndpoint = '/mcp';
+
   static final _environment = enumFromString(
         Environments.values,
         const String.fromEnvironment('ENV'),

@@ -1,213 +1,139 @@
-# MCP Server for HealthKit and Health Connect Integration
+# Local Health Data Server – Flutter + MCP
 
-## Introduction
+This project allows you to bring your personal health metrics to life inside any MCP-compatible AI client — such as Claude, Cursor, or local LLMs.
 
-The effective cross-platform integration with health platforms like HealthKit (iOS) and Health Connect (Android) presents technical challenges due to their inherent differences. The proposed MCP (Model-Context-Protocol) server seeks to solve this problem by creating a mobile application that functions as a server and exposes data through a minimalist, attractive, and easy-to-use interface from MCP-compatible clients, allowing health-related queries to be made simply and effectively.
+It runs entirely on your phone (Android or iOS) using Flutter, connects to Apple HealthKit or Google Health Connect, and serves your data through an MCP server so AI models can query it in a structured, machine-readable format.
 
-## Objective
+## What’s inside
 
-Create an MCP server that allows uniform access to health data collected from mobile devices and primarily smartwatches, enabling any MCP-compatible client to consume and perform queries on this health data.
+- health — Reads health data cross-platform (HealthKit on iOS, Health Connect on Android).
+- mcp_server — Spins up an HTTP MCP server and registers tools.
+- flutter_bloc + freezed — State and models for the Home screen.
+- auto_route — Simple navigation.
+- network_info_plus + wakelock_plus — Show device IP and keep the device awake while serving.
+- intl — Localized UI.
 
-## Main MCP Features
+## How it works
 
-- **Unified Access:** Provides common methods to access various health metrics such as steps, calories, heart rate, sleep, among others.
-- **Modularity:** Easily extensible for future metrics and additional data sources.
-- **Cross-platform:** Implementation through Flutter for complete iOS and Android coverage.
-- **Intuitive Interface:** Minimalist and attractive UI to facilitate configuration and monitoring.
-- **Automatic Synchronization:** Continuous data updates from health devices.
+The core is `HealthMcpServerService` `(lib/core/source/mcp_server.dart)`, which starts an on-device MCP HTTP server and registers one tool:
 
-## Use Cases
+- Tool name: `get_health_data`
+- Inputs: `{ type: string, start: ISO8601 string, end: ISO8601 string }`
+- Behavior: checks permissions, reads data via the `health` package, returns JSON.
 
-### 1. Continuous Health Monitoring
-- Users who want to monitor their health metrics daily through smartwatch.
-- Automatic updates on key metrics like steps taken, heart rate, and sleep quality.
+Example args:
+- type: `STEPS`
+- start: `2025-01-01T00:00:00Z`
+- end: `2025-01-02T00:00:00Z`
 
-### 2. Proactive Alerts
-- Reception of notifications based on significant changes or specific events (e.g., heart rate spikes).
+## Run it
 
-### 3. Automatic Data Synchronization
-- Users who use multiple devices and want their data synchronized without manual intervention.
+1) Requirements
+- Flutter 3.32+
+- A physical device is best (emulators often lack Health data)
+- Android: Install “Health Connect by Android” from Play Store
 
-## Customer Personas
-
-### Juan (34 years old)
-- **Profession:** Systems Engineer.
-- **Devices:** Uses a smartwatch daily and Android phone.
-- **Interests:** Technology, preventive health, and self-monitoring.
-- **Needs:** Juan seeks to query health data simply, using his preferred LLM to generate quick and specific queries about his personal metrics.
-
-### Sofía (29 years old)
-- **Profession:** Personal Trainer.
-- **Devices:** iPhone and Apple Watch.
-- **Interests:** Physical exercise, comprehensive performance monitoring of her clients.
-- **Needs:** Needs a cross-platform solution that facilitates sharing information with clients, regardless of the type of device they use.
-
-## Project Architecture
-
-### Overview
-
-The project is divided into two main sections:
-
-- **UI (User Interface):** Contains all application screens for configuration and data visualization.
-- **Core:** Contains models, data layer, and MCP server logic.
-
-The design system is located in a package called [design_system][design_system].
-
-### UI Section
-
-[Flutter Bloc][bloc] is used for state management, specifically Cubit to manage screen state.
-Each application section is organized in folders containing three components: the Screen (StatelessWidget for UI), the Cubit, and the state.
-
-The `MainScreen` is the Widget that contains all screens and defines the `MaterialApp` along with the application router.
-
-### Core Section
-
-#### Health Platform Integration
-
-- **HealthKit (iOS):** Native integration for health data access on Apple devices.
-- **Health Connect (Android):** Integration with Google's API for health data on Android.
-- **MCP Server:** Implementation of the MCP protocol to expose data in a unified way.
-
-#### Data Models
-
-Models are defined in the [models folder][models] and include:
-
-- Physical activity metrics (steps, calories, distance)
-- Vital data (heart rate, blood pressure)
-- Sleep information (duration, quality, phases)
-- Nutritional data
-- Training metrics
-
-#### Repositories and Data Sources
-
-The repository pattern is used to manage the data layer.
-A [repository][repository_folder] uses different [data sources][data_source_folder] (local cache, health APIs, MCP synchronization).
-
-## Supported Health Metrics
-
-### Physical Activity
-- `STEPS` - Steps taken
-- `ACTIVE_ENERGY_BURNED` - Active calories burned
-- `TOTAL_CALORIES_BURNED` - Total calories burned
-- `FLIGHTS_CLIMBED` - Floors climbed
-
-### Vital Signs
-- `HEART_RATE` - Heart rate
-- `RESTING_HEART_RATE` - Resting heart rate
-- `BLOOD_PRESSURE_SYSTOLIC` - Systolic blood pressure
-- `BLOOD_PRESSURE_DIASTOLIC` - Diastolic blood pressure
-- `BLOOD_OXYGEN` - Blood oxygen saturation
-- `RESPIRATORY_RATE` - Respiratory rate
-
-### Body Composition
-- `WEIGHT` - Body weight
-- `HEIGHT` - Height
-- `BODY_MASS_INDEX` - Body mass index
-- `BODY_FAT_PERCENTAGE` - Body fat percentage
-- `LEAN_BODY_MASS` - Lean body mass
-
-### Sleep
-- `SLEEP_ASLEEP` - Time asleep
-- `SLEEP_AWAKE` - Time awake
-- `SLEEP_DEEP` - Deep sleep
-- `SLEEP_LIGHT` - Light sleep
-- `SLEEP_REM` - REM sleep
-
-### Others
-- `WATER` - Hydration
-- `WORKOUT` - Workouts
-- `NUTRITION` - Nutritional information
-- `BLOOD_GLUCOSE` - Blood glucose
-- `BODY_TEMPERATURE` - Body temperature
-
-## Project Setup
-
-### Environment Variables
-
-Environment variables are defined in the `default.env` file located in the [`/environments/`](./environments) folder.
-You can find more information about environment variables in the [README.md](./environments/README.md) file.
-
-### Flavor Configuration
-
-Project information is configured using [flavorizr], a Flutter utility to easily create flavors in your application.
-To change it, go to the `flavorizr` section in the [pubspec] file.
-
-Example to add a new flavor:
-
-```yaml
-flavorizr:
-  flavors:
-    development:
-      app:
-        name: "HealthMCP - Dev"
-      android:
-        applicationId: "com.healthmcp.dev"
-      ios:
-        bundleId: "com.healthmcp.dev"
-    production:
-      app:
-        name: "HealthMCP"
-      android:
-        applicationId: "com.healthmcp.app"
-      ios:
-        bundleId: "com.healthmcp.app"
+2) Install dependencies
+```bash
+fvm flutter pub get
 ```
 
-After making changes, run: `flutter pub run flutter_flavorizr`
+3) Launch the app
+```bash
+fvm flutter run
+```
 
-### App Icons
+4) Start the MCP server
+- In the Home screen, tap Start. The app shows the device IP, port, and endpoint (e.g., `http://<ip>:<port>/<endpoint>`).
 
-Icons are generated using the [flutter_launcher_icons] plugin.
-To change them, go to the `flutter_icons` section in the [pubspec] file.
+5) Connect from Cursor (example)
+- Add an MCP HTTP provider using the URL shown in the app, e.g. `http://192.168.1.10:8080/mcp`.
+- Invoke `get_health_data` with args like:
+	- type: `STEPS`
+	- start: `2025-01-01T00:00:00Z`
+	- end: `2025-01-02T00:00:00Z`
 
-After making changes, run: `flutter pub run flutter_launcher_icons:main`
+### Cursor MCP config example
 
-### Splash Screen
+Add this to your MCP config in Cursor (replace the URL with your device’s IP/port/endpoint):
 
-The splash screen is generated using [flutter_native_splash].
-To change it, go to the `flutter_native_splash` section in the [pubspec] file.
+```json
+{
+	"mcpServers": {
+		"MCP Mobile": {
+			"type": "streamable-http",
+			"url": "http://192.168.1.1:8080/mcp",
+			"note": "For Streamable HTTP connections, add this URL directly in your MCP Client"
+		}
+	}
+}
+```
 
-After making changes, run: `flutter pub run flutter_native_splash:create`
+## Using the MCP service in code
 
-## Testing
+The service is wired in `HomeCubit` (`lib/ui/home/home_cubit.dart`). Flow:
+- Build a config (host/IP, port, endpoint)
+- `start()` boots the MCP server and registers tools
+- `stop()` shuts it down
 
-### Mocks
+Contract (simplified):
+- Input: `{ type, start, end }`
+- Output: `{ ok: boolean, data?: any, error?: { message, code? } }`
 
-For mocking, the project uses [mocktail][mocktail], a library inspired by [mockito][mockito] that eliminates the code generation part.
+## Navigation
 
-### Integration Tests
+AutoRoute points to a Home screen that shows server status, IP/endpoint, and Start/Stop controls.
 
-Integration tests for the project are defined in [integration_test][integration_test]. The Dart integration_test package is used for implementation.
+## Permissions to grant
 
-### Code Generation
+iOS (HealthKit):
+- First read prompts for Health permissions. Allow the requested types.
 
-Code generation is created using the `build_runner` package.
-To generate code, run the `clean_up.sh` script in the [scripts] folder or the following command:
-`flutter pub run build_runner build --delete-conflicting-outputs`
+Android (Health Connect):
+- Install the Health Connect app
+- In Health Connect, connect your data sources (Fitbit/Google Fit/etc.)
+- Grant this app read permissions when prompted
+- Ensure your sources are syncing into Health Connect
 
-## Pre-Push Configuration
+General:
+- Network permission and Health scopes are declared in the manifest, but you still must accept runtime prompts. If results are empty, check that the type is supported and the time range has data.
 
-To set up the pre-push hook, go to the project root and run:
-`git config core.hooksPath .github/hooks`
+## Where things live
 
-## Contributing
+- `lib/core/source/mcp_server.dart` — HealthMcpServerService + tool definition
+- `lib/ui/home/` — Screen and cubit that control the server
+- `android/app/src/main/AndroidManifest.xml` — Permissions (including ACCESS_NETWORK_STATE and Health Connect)
 
-This project follows Flutter development best practices and is designed to be easily extensible. Contributions are welcome following established code standards.
+Made with ❤️ by Xmartlabs.
+
+## Contribute
+👉 If you want to contribute please feel free to submit pull requests.
+
+👉 If you have a feature request please open an issue.
+
+👉 If you found a bug or need help please let us know.
+
+👉 If you enjoy using SimonAI we would love to hear about it! Drop us a line on X.
 
 ## License
+```
+Copyright (c) 2025 Xmartlabs SRL
 
-[Specify project license]
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-[design_system]: ./design_system
-[flavorizr]: https://pub.dev/packages/flutter_flavorizr
-[flutter_launcher_icons]: https://pub.dev/packages/flutter_launcher_icons
-[flutter_native_splash]: https://pub.dev/packages/flutter_native_splash
-[pubspec]: ./pubspec.yaml
-[bloc]: https://bloclibrary.dev
-[models]: ./lib/core/model
-[repository_folder]: ./lib/core/repository
-[data_source_folder]: ./lib/core/source
-[scripts]: ./scripts
-[integration_test]: ./integration_test
-[mocktail]: https://pub.dev/packages/mocktail
-[mockito]: https://pub.dev/packages/mockito
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

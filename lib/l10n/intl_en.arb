@@ -15,9 +15,37 @@
   "error_no_internet_connection_error_title": "Error",
   "error_unknown_error_description": "Something went wrong!",
   "error_unknown_error_title": "Ops!",
-  "log_out": "Log out",
-  "mail": "Mail",
-  "password": "Password",
-  "sign_in": "Sign In",
-  "xmartlabs_projects": "Xmartlabs' projects"
+  "home_button_start_server": "Start MCP Server",
+  "home_button_starting": "Starting...",
+  "home_button_stop_server": "Stop MCP Server",
+  "home_button_stopping": "Stopping...",
+  "home_description_offline": "Ready to start the MCP server on this device",
+  "home_description_running": "Server is active and ready to accept connections",
+  "home_description_starting": "Initializing MCP server and binding to port...",
+  "home_description_stopping": "Shutting down server and closing connections...",
+  "home_endpoint_label": "Endpoint: {endpoint}",
+  "@home_endpoint_label": {
+    "description": "Shows the endpoint",
+    "placeholders": {
+      "endpoint": {
+        "type": "String",
+        "example": "/mcp"
+      }
+    }
+  },
+  "home_server_ip_label": "Server IP: {ipAddress}",
+  "@home_server_ip_label": {
+    "description": "Shows the server IP address",
+    "placeholders": {
+      "ipAddress": {
+        "type": "String",
+        "example": "192.168.1.100"
+      }
+    }
+  },
+  "home_status_offline": "MCP Server Offline",
+  "home_status_running": "MCP Server Running",
+  "home_status_starting": "Starting Server...",
+  "home_status_stopping": "Stopping Server...",
+  "home_title": "MCP Server Control"
 }
