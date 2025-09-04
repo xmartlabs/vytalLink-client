@@ -8,5 +8,7 @@ class HomeState with _$HomeState {
     @Default(McpServerStatus.idle) McpServerStatus status,
     @Default("") String ipAddress,
     @Default("") String endpoint,
+    @Default("") String connectionCode,
+    @Default("") String connectionWord,
   }) = _HomeState;
 }

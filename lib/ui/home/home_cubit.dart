@@ -33,6 +33,9 @@ class HomeCubit extends Cubit<HomeState> {
       config: config,
     );
     await healthServer.initialize();
+
+    // Set up connection code callback
+    healthServer.setConnectionCodeCallback(_onConnectionCodeReceived);
   }
 
   @override
@@ -41,11 +44,20 @@ class HomeCubit extends Cubit<HomeState> {
     return super.close();
   }
 
+  void _onConnectionCodeReceived(String code, String word, String message) {
+    emit(
+      state.copyWith(
+        connectionCode: code,
+        connectionWord: word,
+      ),
+    );
+  }
+
   Future<void> startMCPServer() async {
     try {
       emit(state.copyWith(status: McpServerStatus.starting));
 
-      await healthServer.start();
+      await healthServer.connectToBackend();
 
       emit(
         state.copyWith(
@@ -71,6 +83,8 @@ class HomeCubit extends Cubit<HomeState> {
           status: McpServerStatus.idle,
           ipAddress: "",
           endpoint: "",
+          connectionCode: "",
+          connectionWord: "",
         ),
       );
     } catch (error, stackTrace) {
@@ -80,6 +94,8 @@ class HomeCubit extends Cubit<HomeState> {
           status: McpServerStatus.idle,
           ipAddress: "",
           endpoint: "",
+          connectionCode: "",
+          connectionWord: "",
         ),
       );
     }

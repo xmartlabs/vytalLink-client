@@ -19,6 +19,8 @@ mixin _$HomeState {
   McpServerStatus get status => throw _privateConstructorUsedError;
   String get ipAddress => throw _privateConstructorUsedError;
   String get endpoint => throw _privateConstructorUsedError;
+  String get connectionCode => throw _privateConstructorUsedError;
+  String get connectionWord => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -30,7 +32,12 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({McpServerStatus status, String ipAddress, String endpoint});
+  $Res call(
+      {McpServerStatus status,
+      String ipAddress,
+      String endpoint,
+      String connectionCode,
+      String connectionWord});
 }
 
 /// @nodoc
@@ -49,6 +56,8 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? status = null,
     Object? ipAddress = null,
     Object? endpoint = null,
+    Object? connectionCode = null,
+    Object? connectionWord = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -63,6 +72,14 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.endpoint
           : endpoint // ignore: cast_nullable_to_non_nullable
               as String,
+      connectionCode: null == connectionCode
+          ? _value.connectionCode
+          : connectionCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      connectionWord: null == connectionWord
+          ? _value.connectionWord
+          : connectionWord // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -75,7 +92,12 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({McpServerStatus status, String ipAddress, String endpoint});
+  $Res call(
+      {McpServerStatus status,
+      String ipAddress,
+      String endpoint,
+      String connectionCode,
+      String connectionWord});
 }
 
 /// @nodoc
@@ -92,6 +114,8 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? status = null,
     Object? ipAddress = null,
     Object? endpoint = null,
+    Object? connectionCode = null,
+    Object? connectionWord = null,
   }) {
     return _then(_$HomeStateImpl(
       status: null == status
@@ -106,6 +130,14 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.endpoint
           : endpoint // ignore: cast_nullable_to_non_nullable
               as String,
+      connectionCode: null == connectionCode
+          ? _value.connectionCode
+          : connectionCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      connectionWord: null == connectionWord
+          ? _value.connectionWord
+          : connectionWord // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -116,7 +148,9 @@ class _$HomeStateImpl implements _HomeState {
   const _$HomeStateImpl(
       {this.status = McpServerStatus.idle,
       this.ipAddress = "",
-      this.endpoint = ""});
+      this.endpoint = "",
+      this.connectionCode = "",
+      this.connectionWord = ""});
 
   @override
   @JsonKey()
@@ -127,10 +161,16 @@ class _$HomeStateImpl implements _HomeState {
   @override
   @JsonKey()
   final String endpoint;
+  @override
+  @JsonKey()
+  final String connectionCode;
+  @override
+  @JsonKey()
+  final String connectionWord;
 
   @override
   String toString() {
-    return 'HomeState(status: $status, ipAddress: $ipAddress, endpoint: $endpoint)';
+    return 'HomeState(status: $status, ipAddress: $ipAddress, endpoint: $endpoint, connectionCode: $connectionCode, connectionWord: $connectionWord)';
   }
 
   @override
@@ -142,11 +182,16 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.ipAddress, ipAddress) ||
                 other.ipAddress == ipAddress) &&
             (identical(other.endpoint, endpoint) ||
-                other.endpoint == endpoint));
+                other.endpoint == endpoint) &&
+            (identical(other.connectionCode, connectionCode) ||
+                other.connectionCode == connectionCode) &&
+            (identical(other.connectionWord, connectionWord) ||
+                other.connectionWord == connectionWord));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, ipAddress, endpoint);
+  int get hashCode => Object.hash(
+      runtimeType, status, ipAddress, endpoint, connectionCode, connectionWord);
 
   @JsonKey(ignore: true)
   @override
@@ -159,7 +204,9 @@ abstract class _HomeState implements HomeState {
   const factory _HomeState(
       {final McpServerStatus status,
       final String ipAddress,
-      final String endpoint}) = _$HomeStateImpl;
+      final String endpoint,
+      final String connectionCode,
+      final String connectionWord}) = _$HomeStateImpl;
 
   @override
   McpServerStatus get status;
@@ -167,6 +214,10 @@ abstract class _HomeState implements HomeState {
   String get ipAddress;
   @override
   String get endpoint;
+  @override
+  String get connectionCode;
+  @override
+  String get connectionWord;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

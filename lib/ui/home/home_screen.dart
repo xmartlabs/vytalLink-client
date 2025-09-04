@@ -50,38 +50,64 @@ class _HomeContentScreen extends StatelessWidget {
                     child: Text(
                       _getServerDescriptionText(context, state),
                       style: context.theme.textStyles.bodyLarge?.copyWith(
-                        color: context.theme.colorScheme.onSurface
-                            .withValues(alpha: 0.7),
+                        color: context.theme.colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   const SizedBox(height: 28),
                   SizedBox(
-                    height: 60,
+                    height: 200,
                     child: Column(
                       children: [
                         if (state.ipAddress.isNotEmpty)
                           Text(
-                            context.localizations
-                                .home_server_ip_label(state.ipAddress),
-                            style:
-                                context.theme.textStyles.bodyMedium?.copyWith(
-                              color: context.theme.colorScheme.onSurface
-                                  .withValues(alpha: 0.6),
+                            context.localizations.home_server_ip_label(state.ipAddress),
+                            style: context.theme.textStyles.bodyMedium?.copyWith(
+                              color: context.theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                             textAlign: TextAlign.center,
                           ),
                         if (state.endpoint.isNotEmpty)
                           Text(
-                            context.localizations
-                                .home_endpoint_label(state.endpoint),
-                            style:
-                                context.theme.textStyles.bodyMedium?.copyWith(
-                              color: context.theme.colorScheme.onSurface
-                                  .withValues(alpha: 0.6),
+                            context.localizations.home_endpoint_label(state.endpoint),
+                            style: context.theme.textStyles.bodyMedium?.copyWith(
+                              color: context.theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                             textAlign: TextAlign.center,
+                          ),
+                        if (state.connectionCode.isNotEmpty && state.connectionWord.isNotEmpty)
+                          Container(
+                            margin: const EdgeInsets.only(top: 16),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: context.theme.colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: context.theme.colorScheme.primary,
+                                width: 2,
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Connection Code:',
+                                  style: context.theme.textStyles.labelMedium?.copyWith(
+                                    color: context.theme.colorScheme.surface,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  '${state.connectionWord} ${state.connectionCode}',
+                                  style: context.theme.textStyles.headlineSmall?.copyWith(
+                                    color: context.theme.colorScheme.surface,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
                       ],
                     ),
@@ -123,8 +149,7 @@ class _HomeContentScreen extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),
             backgroundColor: context.theme.colorScheme.primary,
-            foregroundColor:
-                context.theme.customColors.textColor?.getShade(100),
+            foregroundColor: context.theme.customColors.textColor?.getShade(100),
           ),
         ),
       );
@@ -138,8 +163,7 @@ class _HomeContentScreen extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),
             backgroundColor: context.theme.customColors.danger,
-            foregroundColor:
-                context.theme.customColors.textColor?.getShade(100),
+            foregroundColor: context.theme.customColors.textColor?.getShade(100),
           ),
         ),
       );
