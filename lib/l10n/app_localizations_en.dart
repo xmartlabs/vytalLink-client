@@ -202,4 +202,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get credentials_keep_app_open => 'Keep app open and device unlocked';
+
+  @override
+  String credentials_text(String word, String pin) {
+    return 'Word: $word • PIN: $pin';
+  }
+
+  @override
+  String get app_name => 'vytalLink';
 }

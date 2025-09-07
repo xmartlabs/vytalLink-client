@@ -107,13 +107,13 @@ ErrorCategory categorizeError(Object? error) {
   if (error is CategorizedError) {
     return error.category;
   }
-  
+
   if (error is DioException &&
       (error.type == DioExceptionType.connectionTimeout ||
-       error.type == DioExceptionType.sendTimeout ||
-       error.type == DioExceptionType.receiveTimeout)) {
+          error.type == DioExceptionType.sendTimeout ||
+          error.type == DioExceptionType.receiveTimeout)) {
     return ErrorCategory.internet;
   }
-  
+
   return ErrorCategory.unknown;
 }

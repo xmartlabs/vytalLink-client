@@ -71,7 +71,8 @@ class HealthMcpServerService {
 
   final Uri _backendUrl = Uri.parse('ws://192.168.1.19:8000/ws/phone');
 
-  void Function(String code, String word, String message)? _onConnectionCodeReceived;
+  void Function(String code, String word, String message)?
+      _onConnectionCodeReceived;
   void Function(String error)? _onConnectionError;
 
   /// Callback for when connection is lost
@@ -149,7 +150,7 @@ class HealthMcpServerService {
       );
 
       await Future.delayed(const Duration(milliseconds: 500));
-      
+
       if (!_isConnected) {
         throw Exception('Connection failed - could not establish');
       }
@@ -320,7 +321,8 @@ class HealthMcpServerService {
     final List<HealthDataPoint> result = [];
 
     if (valueType == HealthDataType.STEPS) {
-      final steps = await _healthClient.getTotalStepsInInterval(startTime, endTime);
+      final steps =
+          await _healthClient.getTotalStepsInInterval(startTime, endTime);
       result.add(createStepsDataPoint(steps ?? 0, startTime, endTime));
     } else {
       final healthData = await _healthClient.getHealthDataFromTypes(

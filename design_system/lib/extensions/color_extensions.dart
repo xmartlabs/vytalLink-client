@@ -9,7 +9,6 @@ extension ColorExtension on Color {
       if (shadeColor != null) {
         return shadeColor;
       }
-      // If the shade doesn't exist, find the closest available shade
       final availableShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
       int closestShade = availableShades.reduce((a, b) => 
         (shade - a).abs() < (shade - b).abs() ? a : b

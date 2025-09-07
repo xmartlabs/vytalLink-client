@@ -435,6 +435,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Keep app open and device unlocked'**
   String get credentials_keep_app_open;
+
+  /// Displays the connection word and PIN
+  ///
+  /// In en, this message translates to:
+  /// **'Word: {word} • PIN: {pin}'**
+  String credentials_text(String word, String pin);
+
+  /// No description provided for @app_name.
+  ///
+  /// In en, this message translates to:
+  /// **'vytalLink'**
+  String get app_name;
 }
 
 class _AppLocalizationsDelegate

@@ -1,7 +1,9 @@
 import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_template/core/common/config.dart';
 import 'package:flutter_template/core/source/mcp_server.dart';
+import 'package:flutter_template/ui/resources.dart';
 import 'package:flutter_template/ui/section/error_handler/global_event_handler_cubit.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:network_info_plus/network_info_plus.dart';
@@ -31,14 +33,11 @@ class HomeCubit extends Cubit<HomeState> {
       endpoint: Config.mcpEndpoint,
     );
 
-    healthServer = HealthMcpServerService(
-      config: config,
-    );
+    healthServer = HealthMcpServerService(config: config)
+      ..setConnectionCodeCallback(_onConnectionCodeReceived)
+      ..setConnectionErrorCallback(_onConnectionError)
+      ..setConnectionLostCallback(_onConnectionLost);
     await healthServer.initialize();
-
-    healthServer.setConnectionCodeCallback(_onConnectionCodeReceived);
-    healthServer.setConnectionErrorCallback(_onConnectionError);
-    healthServer.setConnectionLostCallback(_onConnectionLost);
   }
 
   @override
@@ -69,7 +68,7 @@ class HomeCubit extends Cubit<HomeState> {
           endpoint: "",
           connectionCode: "",
           connectionWord: "",
-          errorMessage: "Connection lost unexpectedly",
+          errorMessage: Resources.localizations.connection_lost_unexpectedly,
         ),
       );
     }
@@ -87,7 +86,10 @@ class HomeCubit extends Cubit<HomeState> {
   void _onConnectionError(String error) {
     _stopConnectionMonitoring();
     _globalEventHandler.handleError(
-      CategorizedError(ErrorCategory.connection, 'Connection error occurred'),
+      CategorizedError(
+        ErrorCategory.connection,
+        Resources.localizations.connection_error_title,
+      ),
       null,
       () => startMCPServer(),
     );
@@ -128,7 +130,8 @@ class HomeCubit extends Cubit<HomeState> {
       await healthServer.connectToBackend();
 
       if (!healthServer.isConnected) {
-        throw CategorizedError(ErrorCategory.connection, 'Could not establish connection');
+        throw CategorizedError(ErrorCategory.connection,
+            Resources.localizations.connection_could_not_establish);
       }
 
       emit(
@@ -180,4 +183,20 @@ class HomeCubit extends Cubit<HomeState> {
       );
     }
   }
+}
+
+class UnifiedCredentials {
+  final String ipAddress;
+  final String endpoint;
+  final String connectionCode;
+  final String connectionWord;
+  final String errorMessage;
+
+  UnifiedCredentials({
+    required this.ipAddress,
+    required this.endpoint,
+    required this.connectionCode,
+    required this.connectionWord,
+    required this.errorMessage,
+  });
 }
