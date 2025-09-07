@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GradientButton extends StatefulWidget {
   const GradientButton({
-    super.key,
     required this.onPressed,
     required this.child,
+    super.key,
     this.gradient,
     this.borderRadius = 25.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -43,17 +43,21 @@ class _GradientButtonState extends State<GradientButton>
     _scaleAnimation = Tween<double>(
       begin: 1.0,
       end: 0.98,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
     _elevationAnimation = Tween<double>(
       begin: widget.elevation,
       end: widget.elevation * 1.5,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
   }
 
   @override
@@ -93,8 +97,7 @@ class _GradientButtonState extends State<GradientButton>
       onTap: widget.enabled ? widget.onPressed : null,
       child: AnimatedBuilder(
         animation: _animationController,
-        builder: (context, child) {
-          return Transform.scale(
+        builder: (context, child) => Transform.scale(
             scale: _scaleAnimation.value,
             child: Container(
               padding: widget.padding,
@@ -104,7 +107,7 @@ class _GradientButtonState extends State<GradientButton>
                         LinearGradient(
                           colors: [
                             theme.colorScheme.primary,
-                            theme.colorScheme.secondary
+                            theme.colorScheme.secondary,
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -135,8 +138,7 @@ class _GradientButtonState extends State<GradientButton>
                 child: widget.child,
               ),
             ),
-          );
-        },
+          ),
       ),
     );
   }
@@ -144,9 +146,9 @@ class _GradientButtonState extends State<GradientButton>
 
 class VytalLinkButton extends StatelessWidget {
   const VytalLinkButton({
-    super.key,
     required this.onPressed,
     required this.child,
+    super.key,
     this.borderRadius = 25.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     this.enabled = true,
@@ -173,7 +175,9 @@ class VytalLinkButton extends StatelessWidget {
         end: Alignment.bottomRight,
       ),
       shadowColor: Color.alphaBlend(
-          theme.colorScheme.primary.withAlpha(76), Colors.white),
+        theme.colorScheme.primary.withAlpha(76),
+        Colors.white,
+      ),
       child: child,
     );
   }

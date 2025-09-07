@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class VytalLinkCard extends StatelessWidget {
   const VytalLinkCard({
-    super.key,
     required this.child,
+    super.key,
     this.padding = const EdgeInsets.all(24),
     this.borderRadius = 12.0,
     this.elevation = 10.0,
@@ -29,8 +29,10 @@ class VytalLinkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultShadowColor = Theme.of(context).shadowColor;
-    Widget card = Container(
+    final defaultShadowColor =
+        Theme.of(context).extension<CustomColors>()?.shadow ??
+            const Color(0x1a000000);
+    final Widget card = Container(
       margin: margin,
       decoration: BoxDecoration(
         color: backgroundColor ?? Colors.white,
@@ -68,10 +70,10 @@ class VytalLinkCard extends StatelessWidget {
 
 class FeatureCard extends StatelessWidget {
   const FeatureCard({
-    super.key,
     required this.icon,
     required this.title,
     required this.description,
+    super.key,
     this.iconColor,
     this.onTap,
     this.padding = const EdgeInsets.all(32),

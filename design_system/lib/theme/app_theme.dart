@@ -148,7 +148,8 @@ class AppTheme {
         checkColor: getMaterialStatesColors(Colors.white),
         fillColor: getMaterialStatesColors(colors.primary.shade500),
         overlayColor: getMaterialStatesColors(
-            Color.alphaBlend(colors.primary.withAlpha(25), Colors.white)),
+          Color.alphaBlend(colors.primary.withAlpha(25), Colors.white),
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.r),
         ),
@@ -160,7 +161,8 @@ class AppTheme {
       radioTheme: RadioThemeData(
         fillColor: getMaterialStatesColors(colors.primary.shade500),
         overlayColor: getMaterialStatesColors(
-            Color.alphaBlend(colors.primary.withAlpha(25), Colors.white)),
+          Color.alphaBlend(colors.primary.withAlpha(25), Colors.white),
+        ),
       ),
     );
   }

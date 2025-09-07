@@ -151,9 +151,9 @@ class CredentialsCardWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(
-                    Icons.info_outline_rounded,
+                    Icons.warning_amber_rounded,
                     size: 16,
-                    color: context.theme.customColors.info,
+                    color: context.theme.customColors.warning,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -161,8 +161,8 @@ class CredentialsCardWidget extends StatelessWidget {
                       AppLocalizations.of(context)!.credentials_keep_app_open,
                       style: TextStyle(
                         fontSize: 12,
-                        color: context.theme.customColors.info,
-                        fontWeight: FontWeight.w500,
+                        color: context.theme.customColors.warning,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),

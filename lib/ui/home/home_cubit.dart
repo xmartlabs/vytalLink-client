@@ -190,19 +190,3 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 }
-
-class UnifiedCredentials {
-  final String ipAddress;
-  final String endpoint;
-  final String connectionCode;
-  final String connectionWord;
-  final String errorMessage;
-
-  UnifiedCredentials({
-    required this.ipAddress,
-    required this.endpoint,
-    required this.connectionCode,
-    required this.connectionWord,
-    required this.errorMessage,
-  });
-}

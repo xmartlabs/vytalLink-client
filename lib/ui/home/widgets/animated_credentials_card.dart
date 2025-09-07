@@ -115,6 +115,9 @@ class _AnimatedCredentialsCard extends StatelessWidget {
       builder: (context) => AlertDialog(
         title: Text(
           context.localizations.connection_credentials_info_title,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
         ),
         content: Text(
           context.localizations.connection_credentials_info_message,

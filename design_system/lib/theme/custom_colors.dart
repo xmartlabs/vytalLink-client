@@ -10,6 +10,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.success,
     required this.warning,
     required this.danger,
+    required this.shadow,
   }) : super();
 
   final Color? textColor;
@@ -17,6 +18,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color? success;
   final Color? warning;
   final Color? danger;
+  final Color? shadow;
 
   static CustomColors getCustomColors() => const CustomColors(
         textColor: MaterialColor(
@@ -69,6 +71,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
             500: Color(0xffb91c1c),
           },
         ),
+        shadow: Color(0x1a000000),
       );
 
   @override
@@ -86,6 +89,7 @@ class CustomColors extends ThemeExtension<CustomColors> {
       success: Color.lerp(success, other.success, t),
       warning: Color.lerp(warning, other.warning, t),
       danger: Color.lerp(danger, other.danger, t),
+      shadow: Color.lerp(shadow, other.shadow, t),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 extension ColorExtension on Color {
@@ -10,8 +11,8 @@ extension ColorExtension on Color {
         return shadeColor;
       }
       final availableShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
-      int closestShade = availableShades.reduce((a, b) => 
-        (shade - a).abs() < (shade - b).abs() ? a : b
+      final int closestShade = availableShades.reduce(
+        (a, b) => (shade - a).abs() < (shade - b).abs() ? a : b,
       );
       return materialColor[closestShade] ?? materialColor;
     }
