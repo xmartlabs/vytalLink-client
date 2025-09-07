@@ -7,7 +7,6 @@ import 'package:health/health.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-/// Configuration class for the Health MCP Server
 class HealthMcpServerConfig {
   const HealthMcpServerConfig({
     required this.serverName,
@@ -26,7 +25,6 @@ class HealthMcpServerConfig {
   final bool isJsonResponseEnabled;
 }
 
-/// Custom exceptions for the Health MCP Server
 class HealthMcpServerException implements Exception {
   const HealthMcpServerException(this.message, [this.cause]);
 
@@ -34,9 +32,8 @@ class HealthMcpServerException implements Exception {
   final dynamic cause;
 
   @override
-  String toString() =>
-      // ignore: lines_longer_than_80_chars
-      'HealthMcpServerException: $message${cause != null ? ' (Cause: $cause)' : ''}';
+  String toString() => 'HealthMcpServerException: $message'
+      '${cause != null ? ' (Cause: $cause)' : ''}';
 }
 
 class HealthPermissionException extends HealthMcpServerException {
@@ -47,13 +44,7 @@ class HealthDataUnavailableException extends HealthMcpServerException {
   const HealthDataUnavailableException(super.message, [super.cause]);
 }
 
-/// A service that provides health data through an MCP (Model Context Protocol)
-/// server.
-///
-/// This service integrates with Apple HealthKit and Google Health Connect to
-/// retrieve health data and expose it through an MCP server interface.
 class HealthMcpServerService {
-  /// Creates a new instance of the Health MCP Server Service.
   HealthMcpServerService({
     required this.config,
     Health? healthClient,
@@ -75,34 +66,26 @@ class HealthMcpServerService {
       _onConnectionCodeReceived;
   void Function(String error)? _onConnectionError;
 
-  /// Callback for when connection is lost
   void Function()? _onConnectionLost;
 
-  /// Sets the callback for connection code events
   void setConnectionCodeCallback(
     void Function(String code, String word, String message) callback,
   ) {
     _onConnectionCodeReceived = callback;
   }
 
-  /// Sets the callback for connection error events
   void setConnectionErrorCallback(
     void Function(String error) callback,
   ) {
     _onConnectionError = callback;
   }
 
-  /// Sets the callback for connection lost events
   void setConnectionLostCallback(
     void Function() callback,
   ) {
     _onConnectionLost = callback;
   }
 
-  /// Initializes the health client configuration
-  ///
-  /// This should be called before starting the server to ensure
-  /// the health client is properly configured.
   Future<void> initialize() async {
     if (_isHealthConfigured) return;
 
@@ -247,7 +230,6 @@ class HealthMcpServerService {
     }
   }
 
-  /// Requests health permissions from the user
   Future<void> requestHealthPermissions(
     List<HealthDataType> healthTypes,
   ) async {
@@ -258,13 +240,12 @@ class HealthMcpServerService {
 
     if (!permissionsGranted) {
       throw const HealthPermissionException(
-        // ignore: lines_longer_than_80_chars
-        'Health permissions not granted. Please open Health Connect app and grant permissions manually.',
+        'Health permissions not granted. '
+        'Please open Health Connect app and grant permissions manually.',
       );
     }
   }
 
-  /// Ensures health data history authorization if needed
   Future<void> ensureHistoryAuthorizationIfNeeded() async {
     final isAuthorized = await _healthClient.isHealthDataHistoryAuthorized();
 
@@ -273,7 +254,6 @@ class HealthMcpServerService {
     }
   }
 
-  /// Ensures health permissions are granted for the specified types
   Future<void> ensureHealthPermissions(
     List<HealthDataType> healthTypes,
   ) async {
@@ -294,7 +274,6 @@ class HealthMcpServerService {
     await ensureHistoryAuthorizationIfNeeded();
   }
 
-  /// Creates a steps data point
   HealthDataPoint createStepsDataPoint(
     int steps,
     DateTime startTime,
@@ -313,7 +292,6 @@ class HealthMcpServerService {
         sourceName: '',
       );
 
-  /// Fetches health data points for the specified type and time range
   Future<List<HealthDataPoint>> fetchHealthDataPoints(
     HealthDataType valueType,
     DateTime startTime,
@@ -337,7 +315,6 @@ class HealthMcpServerService {
     return result;
   }
 
-  /// Formats health values for JSON serialization
   dynamic formatHealthValue(HealthValue value) {
     if (value is NumericHealthValue) {
       return value.numericValue;
@@ -358,7 +335,6 @@ class HealthMcpServerService {
     return value.toString();
   }
 
-  /// Formats health data points to JSON-serializable format
   List<Map<String, dynamic>> formatHealthDataPoints(
     List<HealthDataPoint> dataPoints,
   ) =>
@@ -378,7 +354,6 @@ class HealthMcpServerService {
           )
           .toList();
 
-  /// Retrieves health data based on the provided arguments
   Future<List<Map<String, dynamic>>> retrieveHealthData(
     Map<String, dynamic> args,
   ) async {
@@ -399,7 +374,6 @@ class HealthMcpServerService {
     return formatHealthDataPoints(healthDataPoints);
   }
 
-  /// Formats health data for display in the response
   String _formatDataForDisplay(List<Map<String, dynamic>> data) {
     if (data.isEmpty) {
       return 'No data found for the specified criteria';
@@ -434,7 +408,6 @@ class HealthMcpServerService {
     return buffer.toString();
   }
 
-  /// Builds a success payload for WebSocket clients
   Map<String, dynamic> createSuccessResponse(
     List<Map<String, dynamic>> healthData,
     Map<String, dynamic> args,
@@ -448,13 +421,11 @@ class HealthMcpServerService {
         'endTime': args['endTime'],
       };
 
-  /// Builds an error payload for WebSocket clients
   Map<String, dynamic> createErrorResponse(Object error) => {
         'success': false,
         'error_message': 'Error retrieving health data: ${error.toString()}',
       };
 
-  /// Handles health data requests for WebSocket messages
   Future<Map<String, dynamic>> handleHealthDataRequest(
     Map<String, dynamic> args,
   ) async {
