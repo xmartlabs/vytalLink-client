@@ -37,7 +37,6 @@ class _ErrorButton extends StatelessWidget {
 
   const _ErrorButton({
     required this.errorMessage,
-    super.key,
   });
 
   @override
@@ -104,7 +103,7 @@ class _ErrorButton extends StatelessWidget {
 }
 
 class _LoadingButton extends StatelessWidget {
-  const _LoadingButton({super.key});
+  const _LoadingButton();
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -134,7 +133,7 @@ class _LoadingButton extends StatelessWidget {
 }
 
 class _StopButton extends StatelessWidget {
-  const _StopButton({super.key});
+  const _StopButton();
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -159,7 +158,7 @@ class _StopButton extends StatelessWidget {
 }
 
 class _StartButton extends StatelessWidget {
-  const _StartButton({super.key});
+  const _StartButton();
 
   @override
   Widget build(BuildContext context) => SizedBox(

@@ -122,16 +122,20 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> startMCPServer() async {
     try {
       _globalEventHandler.clearError();
-      emit(state.copyWith(
-        status: McpServerStatus.starting,
-        errorMessage: "",
-      ));
+      emit(
+        state.copyWith(
+          status: McpServerStatus.starting,
+          errorMessage: "",
+        ),
+      );
 
       await healthServer.connectToBackend();
 
       if (!healthServer.isConnected) {
-        throw CategorizedError(ErrorCategory.connection,
-            Resources.localizations.connection_could_not_establish);
+        throw CategorizedError(
+          ErrorCategory.connection,
+          Resources.localizations.connection_could_not_establish,
+        );
       }
 
       emit(
@@ -145,10 +149,12 @@ class HomeCubit extends Cubit<HomeState> {
 
       _startConnectionMonitoring();
     } catch (error) {
-      emit(state.copyWith(
-        status: McpServerStatus.error,
-        errorMessage: "",
-      ));
+      emit(
+        state.copyWith(
+          status: McpServerStatus.error,
+          errorMessage: "",
+        ),
+      );
     }
   }
 

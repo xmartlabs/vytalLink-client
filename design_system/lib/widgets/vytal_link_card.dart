@@ -1,7 +1,7 @@
+import 'package:design_system/extensions/color_extensions.dart';
+import 'package:design_system/theme/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:design_system/theme/custom_colors.dart';
-import 'package:design_system/extensions/color_extensions.dart';
 
 class VytalLinkCard extends StatelessWidget {
   const VytalLinkCard({
@@ -29,8 +29,7 @@ class VytalLinkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultShadowColor = const Color(0x1a000000);
-
+    final defaultShadowColor = Theme.of(context).shadowColor;
     Widget card = Container(
       margin: margin,
       decoration: BoxDecoration(
@@ -99,7 +98,10 @@ class FeatureCard extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: (iconColor ?? primaryColor).withOpacity(0.1),
+              color: Color.alphaBlend(
+                (iconColor ?? primaryColor).withAlpha(25),
+                Colors.white,
+              ),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Icon(
@@ -132,9 +134,9 @@ class FeatureCard extends StatelessWidget {
 
 class StatsCard extends StatelessWidget {
   const StatsCard({
-    super.key,
     required this.title,
     required this.value,
+    super.key,
     this.subtitle,
     this.icon,
     this.valueColor,
@@ -179,7 +181,8 @@ class StatsCard extends StatelessWidget {
             value,
             style: theme.textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.w700,
-              color: valueColor ?? theme.extension<CustomColors>()?.textColor?.getShade(400),
+              color: valueColor ??
+                  theme.extension<CustomColors>()?.textColor?.getShade(400),
             ),
           ),
           if (subtitle != null) ...[
@@ -187,7 +190,8 @@ class StatsCard extends StatelessWidget {
             Text(
               subtitle!,
               style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.extension<CustomColors>()?.textColor?.getShade(300),
+                color:
+                    theme.extension<CustomColors>()?.textColor?.getShade(300),
               ),
             ),
           ],

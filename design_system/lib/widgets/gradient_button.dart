@@ -83,8 +83,8 @@ class _GradientButtonState extends State<GradientButton>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final shadowColor = widget.shadowColor ?? 
-        theme.colorScheme.primary.withOpacity(0.3);
+    final shadowColor = widget.shadowColor ??
+        Color.alphaBlend(theme.colorScheme.primary.withAlpha(76), Colors.white);
 
     return GestureDetector(
       onTapDown: _onTapDown,
@@ -99,11 +99,17 @@ class _GradientButtonState extends State<GradientButton>
             child: Container(
               padding: widget.padding,
               decoration: BoxDecoration(
-                gradient: widget.enabled ? (widget.gradient ?? LinearGradient(
-                  colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )) : null,
+                gradient: widget.enabled
+                    ? (widget.gradient ??
+                        LinearGradient(
+                          colors: [
+                            theme.colorScheme.primary,
+                            theme.colorScheme.secondary
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ))
+                    : null,
                 color: widget.enabled ? null : theme.disabledColor,
                 borderRadius: BorderRadius.circular(widget.borderRadius.r),
                 boxShadow: widget.enabled
@@ -155,7 +161,7 @@ class VytalLinkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return GradientButton(
       onPressed: onPressed,
       borderRadius: borderRadius,
@@ -166,7 +172,8 @@ class VytalLinkButton extends StatelessWidget {
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      shadowColor: theme.colorScheme.primary.withOpacity(0.3),
+      shadowColor: Color.alphaBlend(
+          theme.colorScheme.primary.withAlpha(76), Colors.white),
       child: child,
     );
   }

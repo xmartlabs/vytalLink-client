@@ -241,7 +241,8 @@ class HealthMcpServerService {
 
     if (!isAvailable) {
       throw const HealthDataUnavailableException(
-        'Google Health Connect is not available on this device. Please install it from the Play Store.',
+        'Google Health Connect is not available on this device. '
+        'Please install it from the Play Store.',
       );
     }
   }

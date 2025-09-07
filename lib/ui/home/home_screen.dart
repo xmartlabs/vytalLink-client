@@ -42,10 +42,12 @@ class _HomeContentScreenState extends State<_HomeContentScreen>
     _pulseAnimation = Tween<double>(
       begin: 0.8,
       end: 1.2,
-    ).animate(CurvedAnimation(
-      parent: _pulseController,
-      curve: Curves.easeInOut,
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: _pulseController,
+        curve: Curves.easeInOut,
+      ),
+    );
     _pulseController.repeat(reverse: true);
   }
 

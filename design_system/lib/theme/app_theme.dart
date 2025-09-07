@@ -129,7 +129,8 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: colors.surface.shade50,
         elevation: 2,
-        shadowColor: colors.primary.withOpacity(0.1),
+        shadowColor:
+            Color.alphaBlend(colors.primary.withAlpha(25), Colors.white),
         titleTextStyle: TextStyle(
           color: customColors.textColor!.getShade(400),
           fontWeight: FontWeight.w600,
@@ -146,7 +147,8 @@ class AppTheme {
       checkboxTheme: CheckboxThemeData(
         checkColor: getMaterialStatesColors(Colors.white),
         fillColor: getMaterialStatesColors(colors.primary.shade500),
-        overlayColor: getMaterialStatesColors(colors.primary.withOpacity(0.1)),
+        overlayColor: getMaterialStatesColors(
+            Color.alphaBlend(colors.primary.withAlpha(25), Colors.white)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4.r),
         ),
@@ -157,24 +159,31 @@ class AppTheme {
       ),
       radioTheme: RadioThemeData(
         fillColor: getMaterialStatesColors(colors.primary.shade500),
-        overlayColor: getMaterialStatesColors(colors.primary.withOpacity(0.1)),
+        overlayColor: getMaterialStatesColors(
+            Color.alphaBlend(colors.primary.withAlpha(25), Colors.white)),
       ),
     );
   }
 }
 
 extension ThemeExtensions on ThemeData {
-  CustomColors get customColors => extension<CustomColors>() ?? CustomColors.getCustomColors();
+  CustomColors get customColors =>
+      extension<CustomColors>() ?? CustomColors.getCustomColors();
 
-  AppDimension get dimensions => extension<AppDimension>() ?? AppDimension.getDefaultDimensions();
+  AppDimension get dimensions =>
+      extension<AppDimension>() ?? AppDimension.getDefaultDimensions();
 
-  CustomTextStyles get customTextStyles => extension<CustomTextStyles>() ?? CustomTextStyles.getCustomTextStyles(CustomColors.getCustomColors());
+  CustomTextStyles get customTextStyles =>
+      extension<CustomTextStyles>() ??
+      CustomTextStyles.getCustomTextStyles(CustomColors.getCustomColors());
 
   TextTheme get textStyles => primaryTextTheme;
 
-  AppButtonsStyle get buttonsStyle => extension<AppButtonsStyle>() ?? AppButtonsStyle.getDefaultButtonTheme(
-    CustomColors.getCustomColors(),
-    CustomTextStyles.getCustomTextStyles(CustomColors.getCustomColors()),
-    AppColorScheme.getDefaultColorScheme(),
-  );
+  AppButtonsStyle get buttonsStyle =>
+      extension<AppButtonsStyle>() ??
+      AppButtonsStyle.getDefaultButtonTheme(
+        CustomColors.getCustomColors(),
+        CustomTextStyles.getCustomTextStyles(CustomColors.getCustomColors()),
+        AppColorScheme.getDefaultColorScheme(),
+      );
 }

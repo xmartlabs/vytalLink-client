@@ -1,6 +1,7 @@
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/l10n/app_localizations.dart';
+import 'package:flutter_template/ui/extensions/context_extensions.dart';
 import 'package:flutter_template/ui/home/widgets/credentials_card_widget.dart';
 
 class AnimatedCredentialCard extends StatelessWidget {
@@ -38,7 +39,6 @@ class _AnimatedCredentialsCard extends StatelessWidget {
   const _AnimatedCredentialsCard({
     required this.connectionWord,
     required this.connectionPin,
-    super.key,
   });
 
   @override
@@ -114,9 +114,11 @@ class _AnimatedCredentialsCard extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-            AppLocalizations.of(context)!.connection_credentials_info_title),
+          context.localizations.connection_credentials_info_title,
+        ),
         content: Text(
-            AppLocalizations.of(context)!.connection_credentials_info_message),
+          context.localizations.connection_credentials_info_message,
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),

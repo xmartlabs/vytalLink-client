@@ -188,7 +188,9 @@ class AnimatedServerCard extends StatelessWidget {
   }
 
   String _getServerDescriptionText(
-      BuildContext context, McpServerStatus status) {
+    BuildContext context,
+    McpServerStatus status,
+  ) {
     switch (status) {
       case McpServerStatus.idle:
         return context.localizations.home_description_offline;

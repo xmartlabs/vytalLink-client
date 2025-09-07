@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'global_event_handler_cubit.freezed.dart';
-
 part 'global_event_handler_state.dart';
 
 class GlobalEventHandlerCubit extends Cubit<GlobalEventHandlerState>
@@ -61,6 +60,7 @@ class GlobalEventHandlerCubit extends Cubit<GlobalEventHandlerState>
   @override
   void stopLoading() => emit(const GlobalEventHandlerState.idle());
 
+  @override
   void clearError() => emit(const GlobalEventHandlerState.idle());
 }
 
@@ -70,8 +70,11 @@ abstract interface class GlobalEventHandler {
     StackTrace? stackTrace,
     VoidCallback? retry,
   ]);
+
   void startLoading();
+
   void stopLoading();
+
   void clearError();
 }
 

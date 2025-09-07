@@ -35,12 +35,14 @@ class CredentialsCardWidget extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Clipboard.setData(ClipboardData(
-                      text: context.localizations.credentials_text(
-                        connectionWord,
-                        connectionPin,
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: context.localizations.credentials_text(
+                          connectionWord,
+                          connectionPin,
+                        ),
                       ),
-                    ));
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
