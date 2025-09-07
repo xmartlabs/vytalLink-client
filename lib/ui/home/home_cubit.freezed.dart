@@ -21,6 +21,7 @@ mixin _$HomeState {
   String get endpoint => throw _privateConstructorUsedError;
   String get connectionCode => throw _privateConstructorUsedError;
   String get connectionWord => throw _privateConstructorUsedError;
+  String get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -37,7 +38,8 @@ abstract class $HomeStateCopyWith<$Res> {
       String ipAddress,
       String endpoint,
       String connectionCode,
-      String connectionWord});
+      String connectionWord,
+      String errorMessage});
 }
 
 /// @nodoc
@@ -58,6 +60,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? endpoint = null,
     Object? connectionCode = null,
     Object? connectionWord = null,
+    Object? errorMessage = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -80,6 +83,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.connectionWord
           : connectionWord // ignore: cast_nullable_to_non_nullable
               as String,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -97,7 +104,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       String ipAddress,
       String endpoint,
       String connectionCode,
-      String connectionWord});
+      String connectionWord,
+      String errorMessage});
 }
 
 /// @nodoc
@@ -116,6 +124,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? endpoint = null,
     Object? connectionCode = null,
     Object? connectionWord = null,
+    Object? errorMessage = null,
   }) {
     return _then(_$HomeStateImpl(
       status: null == status
@@ -138,6 +147,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.connectionWord
           : connectionWord // ignore: cast_nullable_to_non_nullable
               as String,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -150,7 +163,8 @@ class _$HomeStateImpl implements _HomeState {
       this.ipAddress = "",
       this.endpoint = "",
       this.connectionCode = "",
-      this.connectionWord = ""});
+      this.connectionWord = "",
+      this.errorMessage = ""});
 
   @override
   @JsonKey()
@@ -167,10 +181,13 @@ class _$HomeStateImpl implements _HomeState {
   @override
   @JsonKey()
   final String connectionWord;
+  @override
+  @JsonKey()
+  final String errorMessage;
 
   @override
   String toString() {
-    return 'HomeState(status: $status, ipAddress: $ipAddress, endpoint: $endpoint, connectionCode: $connectionCode, connectionWord: $connectionWord)';
+    return 'HomeState(status: $status, ipAddress: $ipAddress, endpoint: $endpoint, connectionCode: $connectionCode, connectionWord: $connectionWord, errorMessage: $errorMessage)';
   }
 
   @override
@@ -186,12 +203,14 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.connectionCode, connectionCode) ||
                 other.connectionCode == connectionCode) &&
             (identical(other.connectionWord, connectionWord) ||
-                other.connectionWord == connectionWord));
+                other.connectionWord == connectionWord) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, status, ipAddress, endpoint, connectionCode, connectionWord);
+  int get hashCode => Object.hash(runtimeType, status, ipAddress, endpoint,
+      connectionCode, connectionWord, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -206,7 +225,8 @@ abstract class _HomeState implements HomeState {
       final String ipAddress,
       final String endpoint,
       final String connectionCode,
-      final String connectionWord}) = _$HomeStateImpl;
+      final String connectionWord,
+      final String errorMessage}) = _$HomeStateImpl;
 
   @override
   McpServerStatus get status;
@@ -218,6 +238,8 @@ abstract class _HomeState implements HomeState {
   String get connectionCode;
   @override
   String get connectionWord;
+  @override
+  String get errorMessage;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

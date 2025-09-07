@@ -1,4 +1,21 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.mocks.dart"
+    - "build/**"
+    - "design_system/**"
+
+  errors:
+    avoid_print: error
+    invalid_annotation_target: ignore
+
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+
 linter:
   rules:
     - always_declare_return_types
@@ -109,17 +126,3 @@ dart_code_linter:
     - prefer-moving-to-variable:
         allowed-duplicated-chains: 3
     - prefer-trailing-comma
-
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
-analyzer:
-  exclude:
-    - "**/*.freezed.dart"
-    - "**/*.g.dart"
-    - "**/*.gen.dart"
-    - "**/*.gr.dart"
-    - "bricks"
-    - "lib/generated_plugin_registrant.dart"
-  errors:
-    invalid_annotation_target: ignore
-    unused_element: ignore # https://github.com/dart-lang/sdk/issues/49025

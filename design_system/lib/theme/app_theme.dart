@@ -26,73 +26,73 @@ class AppTheme {
       primaryColor: colors.primary,
       colorScheme: colors,
       dialogTheme: DialogTheme(
-        backgroundColor: colors.surface.shade100,
-        elevation: 2,
+        backgroundColor: colors.surface.shade50,
+        elevation: 8,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.r),
-          side: BorderSide(color: colors.surface.shade500),
+          borderRadius: BorderRadius.circular(12.r),
+          side: BorderSide.none,
         ),
         titleTextStyle: customTextStyles.customOverline
-            .copyWith(color: customColors.textColor!.getShade(300))
+            .copyWith(color: customColors.textColor!.getShade(400))
             .semibold(),
         contentTextStyle: textTheme.bodyMedium
-            ?.copyWith(color: customColors.textColor!.getShade(400)),
+            ?.copyWith(color: customColors.textColor!.getShade(300)),
       ).data,
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: textTheme.bodyMedium
-            ?.copyWith(color: customColors.textColor!.getShade(400)),
+            ?.copyWith(color: customColors.textColor!.getShade(300)),
         filled: true,
         helperStyle: textTheme.bodySmall
-            ?.copyWith(color: customColors.textColor!..getShade(300)),
+            ?.copyWith(color: customColors.textColor!.getShade(200)),
         hintStyle: textTheme.bodyMedium
-            ?.copyWith(color: customColors.textColor!.getShade(300)),
+            ?.copyWith(color: customColors.textColor!.getShade(200)),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide(
-            width: 2,
-            color: customColors.textColor!.getShade(100),
+            width: 1.5,
+            color: customColors.textColor!.getShade(200),
           ),
         ),
-        fillColor: colors.surface.shade100,
+        fillColor: colors.surface.shade50,
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide(
-            width: 2,
+            width: 1.5,
             color: customColors.textColor!.getShade(200),
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide(
-            width: 2,
+            width: 1.5,
             color: customColors.danger!.getShade(300),
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide(
             width: 2,
-            color: colors.primary.shade800,
+            color: colors.primary.shade500,
           ),
         ),
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide(
-            width: 2,
-            color: customColors.textColor!.getShade(200),
+            width: 1.5,
+            color: customColors.textColor!.getShade(100),
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide(
             width: 2,
-            color: colors.error,
+            color: customColors.danger!.getShade(400),
           ),
         ),
         errorStyle: textTheme.labelSmall?.copyWith(color: customColors.danger),
         errorMaxLines: 2,
-        hoverColor: colors.primary.shade400,
-        focusColor: colors.primary.shade800,
+        hoverColor: colors.primary.shade100,
+        focusColor: colors.primary.shade500,
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
         textStyle: textTheme.bodyMedium?.copyWith(
@@ -127,37 +127,54 @@ class AppTheme {
         displayColor: CustomColors.getCustomColors().textColor!.getShade(500),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: colors.primary.shade400,
+        backgroundColor: colors.surface.shade50,
+        elevation: 2,
+        shadowColor: colors.primary.withOpacity(0.1),
         titleTextStyle: TextStyle(
-          color: CustomColors.getCustomColors().textColor!.getShade(500),
+          color: customColors.textColor!.getShade(400),
+          fontWeight: FontWeight.w600,
+          fontSize: 18.sp,
+        ),
+        iconTheme: IconThemeData(
+          color: customColors.textColor!.getShade(400),
+        ),
+        actionsIconTheme: IconThemeData(
+          color: colors.primary.shade500,
         ),
       ),
       primaryTextTheme: textTheme,
       checkboxTheme: CheckboxThemeData(
-        checkColor: getMaterialStatesColors(colors.primary.shade600),
-        fillColor:
-            getMaterialStatesColors(customColors.textColor!..getShade(100)),
+        checkColor: getMaterialStatesColors(Colors.white),
+        fillColor: getMaterialStatesColors(colors.primary.shade500),
+        overlayColor: getMaterialStatesColors(colors.primary.withOpacity(0.1)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.r),
+        ),
         side: BorderSide(
           width: 2,
-          color: customColors.textColor!.getShade(400),
+          color: customColors.textColor!.getShade(300),
         ),
       ),
       radioTheme: RadioThemeData(
-        fillColor:
-            getMaterialStatesColors(customColors.textColor!.getShade(400)),
+        fillColor: getMaterialStatesColors(colors.primary.shade500),
+        overlayColor: getMaterialStatesColors(colors.primary.withOpacity(0.1)),
       ),
     );
   }
 }
 
 extension ThemeExtensions on ThemeData {
-  CustomColors get customColors => extension<CustomColors>()!;
+  CustomColors get customColors => extension<CustomColors>() ?? CustomColors.getCustomColors();
 
-  AppDimension get dimensions => extension<AppDimension>()!;
+  AppDimension get dimensions => extension<AppDimension>() ?? AppDimension.getDefaultDimensions();
 
-  CustomTextStyles get customTextStyles => extension<CustomTextStyles>()!;
+  CustomTextStyles get customTextStyles => extension<CustomTextStyles>() ?? CustomTextStyles.getCustomTextStyles(CustomColors.getCustomColors());
 
   TextTheme get textStyles => primaryTextTheme;
 
-  AppButtonsStyle get buttonsStyle => extension<AppButtonsStyle>()!;
+  AppButtonsStyle get buttonsStyle => extension<AppButtonsStyle>() ?? AppButtonsStyle.getDefaultButtonTheme(
+    CustomColors.getCustomColors(),
+    CustomTextStyles.getCustomTextStyles(CustomColors.getCustomColors()),
+    AppColorScheme.getDefaultColorScheme(),
+  );
 }

@@ -27,6 +27,7 @@ dependencies:
   flutter_native_splash: 2.4.0
   flutter_screenutil: 5.9.3
   flutter_secure_storage: 9.2.2
+  font_awesome_flutter: 10.4.0
   health: 13.1.1
   url_launcher: 6.3.0
   freezed_annotation: 2.4.1

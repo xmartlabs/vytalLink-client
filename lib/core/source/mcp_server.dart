@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_template/core/common/logger.dart';
 import 'package:health/health.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -51,22 +52,6 @@ class HealthDataUnavailableException extends HealthMcpServerException {
 ///
 /// This service integrates with Apple HealthKit and Google Health Connect to
 /// retrieve health data and expose it through an MCP server interface.
-///
-/// Example usage:
-/// ```dart
-/// final healthServer = HealthMcpServerService(
-///   config: HealthMcpServerConfig(
-///     serverName: 'My Health MCP Server',
-///     serverVersion: '1.0.0',
-///     host: 'localhost',
-///     port: 8080,
-///     endpoint: '/mcp',
-///   ),
-/// );
-///
-/// await healthServer.initialize();
-/// final server = await healthServer.start();
-/// ```
 class HealthMcpServerService {
   /// Creates a new instance of the Health MCP Server Service.
   HealthMcpServerService({
@@ -74,29 +59,43 @@ class HealthMcpServerService {
     Health? healthClient,
   }) : _healthClient = healthClient ?? Health();
 
-  /// The configuration for this server instance
   final HealthMcpServerConfig config;
-
-  /// The health client instance for accessing health data
   final Health _healthClient;
 
   late WebSocketChannel webSocketChannel;
 
-  /// Whether the health client has been configured
   bool _isHealthConfigured = false;
-
   bool _isConnected = false;
 
-  final String _backendUrl = 'wss://vytallink.local.xmartlabs.com/ws/phone';
+  bool get isConnected => _isConnected;
 
-  /// Callback for when a connection code is received
+  final Uri _backendUrl = Uri.parse('ws://192.168.1.19:8000/ws/phone');
+
   void Function(String code, String word, String message)? _onConnectionCodeReceived;
+  void Function(String error)? _onConnectionError;
+
+  /// Callback for when connection is lost
+  void Function()? _onConnectionLost;
 
   /// Sets the callback for connection code events
   void setConnectionCodeCallback(
     void Function(String code, String word, String message) callback,
   ) {
     _onConnectionCodeReceived = callback;
+  }
+
+  /// Sets the callback for connection error events
+  void setConnectionErrorCallback(
+    void Function(String error) callback,
+  ) {
+    _onConnectionError = callback;
+  }
+
+  /// Sets the callback for connection lost events
+  void setConnectionLostCallback(
+    void Function() callback,
+  ) {
+    _onConnectionLost = callback;
   }
 
   /// Initializes the health client configuration
@@ -126,30 +125,38 @@ class HealthMcpServerService {
 
   Future<void> connectToBackend() async {
     try {
-      print('Connecting to backend at: $_backendUrl');
+      Logger.d('Connecting to backend at: $_backendUrl');
 
-      webSocketChannel = IOWebSocketChannel.connect(Uri.parse(_backendUrl));
+      webSocketChannel = IOWebSocketChannel.connect(_backendUrl);
       _isConnected = true;
 
-      // Listen for messages from backend
       webSocketChannel.stream.listen(
         (data) {
-          print('Received from backend: $data');
           handleBackendMessage(data);
         },
         onError: (error) {
-          print('WebSocket error: $error');
+          Logger.e('WebSocket error: $error');
           _isConnected = false;
+          _onConnectionError?.call('Connection error: $error');
         },
         onDone: () {
-          print('WebSocket connection closed');
-          _isConnected = false;
+          Logger.d('WebSocket connection closed');
+          if (_isConnected) {
+            _isConnected = false;
+            _onConnectionLost?.call();
+          }
         },
       );
 
-      print('Connected to backend successfully');
+      await Future.delayed(const Duration(milliseconds: 500));
+      
+      if (!_isConnected) {
+        throw Exception('Connection failed - could not establish');
+      }
+
+      Logger.i('Connected to backend successfully');
     } catch (e) {
-      print('Failed to connect to backend: $e');
+      Logger.e('Failed to connect to backend: $e');
       _isConnected = false;
       rethrow;
     }
@@ -162,15 +169,14 @@ class HealthMcpServerService {
 
     final jsonMessage = jsonEncode(message);
     webSocketChannel.sink.add(jsonMessage);
-    print('Sent to backend: $jsonMessage');
+    Logger.d('Sent to backend: $jsonMessage');
   }
 
   Future<void> handleBackendMessage(dynamic data) async {
     try {
       final Map<String, dynamic> message = jsonDecode(data);
-      print('Processing backend message: $message');
+      Logger.d('Processing backend message: ${message['type']}');
 
-      // Handle different message types from backend
       switch (message['type']) {
         case 'health_data_request':
           final data2 = await handleHealthDataRequest(message);
@@ -183,20 +189,17 @@ class HealthMcpServerService {
           });
           break;
         case 'connection_code':
-          // Handle connection code for pairing
           final code = message['code'];
           final word = message['word'];
           final codeMessage = message['message'];
-          print('Received connection code: $word $code');
+          Logger.i('Received connection code: $word $code');
 
-          // Notify about the connection code (you can add a callback here)
           _onConnectionCodeReceived?.call(code, word, codeMessage);
           break;
         case 'error':
-          print('Backend error: ${message['error']}');
+          Logger.e('Backend error: ${message['error']}');
           break;
         case 'ping':
-          // Respond to ping (echo requestId if present)
           await sendToBackend({
             'type': 'pong',
             'requestId': message['requestId'],
@@ -204,14 +207,13 @@ class HealthMcpServerService {
           });
           break;
         default:
-          print('Unknown message type: ${message['type']}');
+          Logger.w('Unknown message type: ${message['type']}');
       }
     } catch (e) {
-      print('Error processing backend message: $e');
+      Logger.e('Error processing backend message: $e');
     }
   }
 
-  /// Parses health data type from string
   HealthDataType parseHealthDataType(String valueTypeStr) {
     try {
       return HealthDataType.values.firstWhere(
@@ -225,7 +227,6 @@ class HealthMcpServerService {
     }
   }
 
-  /// Validates that start time is before end time
   void validateTimeRange(DateTime startTime, DateTime endTime) {
     if (startTime.isAfter(endTime)) {
       throw const HealthMcpServerException(
@@ -234,13 +235,11 @@ class HealthMcpServerService {
     }
   }
 
-  /// Checks if Google Health Connect is available on Android
   Future<void> checkHealthConnectAvailability() async {
     final isAvailable = await _healthClient.isHealthConnectAvailable();
 
     if (!isAvailable) {
       throw const HealthDataUnavailableException(
-        // ignore: lines_longer_than_80_chars
         'Google Health Connect is not available on this device. Please install it from the Play Store.',
       );
     }

@@ -1,6 +1,6 @@
 part of 'home_cubit.dart';
 
-enum McpServerStatus { idle, starting, running, stopping }
+enum McpServerStatus { idle, starting, running, stopping, error }
 
 @freezed
 class HomeState with _$HomeState {
@@ -10,5 +10,6 @@ class HomeState with _$HomeState {
     @Default("") String endpoint,
     @Default("") String connectionCode,
     @Default("") String connectionWord,
+    @Default("") String errorMessage,
   }) = _HomeState;
 }

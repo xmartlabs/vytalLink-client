@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_template/core/common/config.dart';
 import 'package:flutter_template/core/source/mcp_server.dart';
@@ -12,6 +13,7 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final GlobalEventHandler _globalEventHandler;
   late final HealthMcpServerService healthServer;
+  Timer? _connectionCheckTimer;
 
   HomeCubit(this._globalEventHandler) : super(const HomeState()) {
     WakelockPlus.enable();
@@ -34,14 +36,43 @@ class HomeCubit extends Cubit<HomeState> {
     );
     await healthServer.initialize();
 
-    // Set up connection code callback
     healthServer.setConnectionCodeCallback(_onConnectionCodeReceived);
+    healthServer.setConnectionErrorCallback(_onConnectionError);
+    healthServer.setConnectionLostCallback(_onConnectionLost);
   }
 
   @override
   Future<void> close() {
     WakelockPlus.disable();
+    _connectionCheckTimer?.cancel();
     return super.close();
+  }
+
+  void _startConnectionMonitoring() {
+    _connectionCheckTimer?.cancel();
+    _connectionCheckTimer = Timer.periodic(
+      const Duration(seconds: 5),
+      (timer) => _checkConnectionStatus(),
+    );
+  }
+
+  void _stopConnectionMonitoring() {
+    _connectionCheckTimer?.cancel();
+  }
+
+  void _checkConnectionStatus() {
+    if (state.status == McpServerStatus.running && !healthServer.isConnected) {
+      emit(
+        state.copyWith(
+          status: McpServerStatus.error,
+          ipAddress: "",
+          endpoint: "",
+          connectionCode: "",
+          connectionWord: "",
+          errorMessage: "Connection lost unexpectedly",
+        ),
+      );
+    }
   }
 
   void _onConnectionCodeReceived(String code, String word, String message) {
@@ -53,22 +84,68 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  void _onConnectionError(String error) {
+    _stopConnectionMonitoring();
+    _globalEventHandler.handleError(
+      CategorizedError(ErrorCategory.connection, 'Connection error occurred'),
+      null,
+      () => startMCPServer(),
+    );
+    emit(
+      state.copyWith(
+        status: McpServerStatus.error,
+        ipAddress: "",
+        endpoint: "",
+        connectionCode: "",
+        connectionWord: "",
+        errorMessage: "",
+      ),
+    );
+  }
+
+  void _onConnectionLost() {
+    _stopConnectionMonitoring();
+    emit(
+      state.copyWith(
+        status: McpServerStatus.error,
+        ipAddress: "",
+        endpoint: "",
+        connectionCode: "",
+        connectionWord: "",
+        errorMessage: "",
+      ),
+    );
+  }
+
   Future<void> startMCPServer() async {
     try {
-      emit(state.copyWith(status: McpServerStatus.starting));
+      _globalEventHandler.clearError();
+      emit(state.copyWith(
+        status: McpServerStatus.starting,
+        errorMessage: "",
+      ));
 
       await healthServer.connectToBackend();
+
+      if (!healthServer.isConnected) {
+        throw CategorizedError(ErrorCategory.connection, 'Could not establish connection');
+      }
 
       emit(
         state.copyWith(
           status: McpServerStatus.running,
           ipAddress: healthServer.config.host,
           endpoint: healthServer.config.endpoint,
+          errorMessage: "",
         ),
       );
-    } catch (error, stackTrace) {
-      _globalEventHandler.handleError(error, stackTrace);
-      emit(state.copyWith(status: McpServerStatus.idle));
+
+      _startConnectionMonitoring();
+    } catch (error) {
+      emit(state.copyWith(
+        status: McpServerStatus.error,
+        errorMessage: "",
+      ));
     }
   }
 
@@ -76,6 +153,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       emit(state.copyWith(status: McpServerStatus.stopping));
 
+      _stopConnectionMonitoring();
       await healthServer.stop();
 
       emit(
@@ -85,6 +163,7 @@ class HomeCubit extends Cubit<HomeState> {
           endpoint: "",
           connectionCode: "",
           connectionWord: "",
+          errorMessage: "",
         ),
       );
     } catch (error, stackTrace) {
@@ -96,6 +175,7 @@ class HomeCubit extends Cubit<HomeState> {
           endpoint: "",
           connectionCode: "",
           connectionWord: "",
+          errorMessage: "",
         ),
       );
     }

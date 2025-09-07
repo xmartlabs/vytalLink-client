@@ -499,6 +499,8 @@ mixin _$GlobalEventHandlerStateError {
   TResult when<TResult extends Object?>({
     required TResult Function(Object? error, VoidCallback? retry) unknownError,
     required TResult Function(VoidCallback? retry) internetError,
+    required TResult Function(VoidCallback? retry) connectionError,
+    required TResult Function(VoidCallback? retry) serverError,
     required TResult Function(
             String? title, String description, VoidCallback? retry)
         generalError,
@@ -508,6 +510,8 @@ mixin _$GlobalEventHandlerStateError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Object? error, VoidCallback? retry)? unknownError,
     TResult? Function(VoidCallback? retry)? internetError,
+    TResult? Function(VoidCallback? retry)? connectionError,
+    TResult? Function(VoidCallback? retry)? serverError,
     TResult? Function(String? title, String description, VoidCallback? retry)?
         generalError,
   }) =>
@@ -516,6 +520,8 @@ mixin _$GlobalEventHandlerStateError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Object? error, VoidCallback? retry)? unknownError,
     TResult Function(VoidCallback? retry)? internetError,
+    TResult Function(VoidCallback? retry)? connectionError,
+    TResult Function(VoidCallback? retry)? serverError,
     TResult Function(String? title, String description, VoidCallback? retry)?
         generalError,
     required TResult orElse(),
@@ -525,6 +531,8 @@ mixin _$GlobalEventHandlerStateError {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownError value) unknownError,
     required TResult Function(InternetError value) internetError,
+    required TResult Function(ConnectionError value) connectionError,
+    required TResult Function(ServerError value) serverError,
     required TResult Function(GeneralError value) generalError,
   }) =>
       throw _privateConstructorUsedError;
@@ -532,6 +540,8 @@ mixin _$GlobalEventHandlerStateError {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownError value)? unknownError,
     TResult? Function(InternetError value)? internetError,
+    TResult? Function(ConnectionError value)? connectionError,
+    TResult? Function(ServerError value)? serverError,
     TResult? Function(GeneralError value)? generalError,
   }) =>
       throw _privateConstructorUsedError;
@@ -539,6 +549,8 @@ mixin _$GlobalEventHandlerStateError {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownError value)? unknownError,
     TResult Function(InternetError value)? internetError,
+    TResult Function(ConnectionError value)? connectionError,
+    TResult Function(ServerError value)? serverError,
     TResult Function(GeneralError value)? generalError,
     required TResult orElse(),
   }) =>
@@ -656,6 +668,8 @@ class _$UnknownErrorImpl with DiagnosticableTreeMixin implements UnknownError {
   TResult when<TResult extends Object?>({
     required TResult Function(Object? error, VoidCallback? retry) unknownError,
     required TResult Function(VoidCallback? retry) internetError,
+    required TResult Function(VoidCallback? retry) connectionError,
+    required TResult Function(VoidCallback? retry) serverError,
     required TResult Function(
             String? title, String description, VoidCallback? retry)
         generalError,
@@ -668,6 +682,8 @@ class _$UnknownErrorImpl with DiagnosticableTreeMixin implements UnknownError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Object? error, VoidCallback? retry)? unknownError,
     TResult? Function(VoidCallback? retry)? internetError,
+    TResult? Function(VoidCallback? retry)? connectionError,
+    TResult? Function(VoidCallback? retry)? serverError,
     TResult? Function(String? title, String description, VoidCallback? retry)?
         generalError,
   }) {
@@ -679,6 +695,8 @@ class _$UnknownErrorImpl with DiagnosticableTreeMixin implements UnknownError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Object? error, VoidCallback? retry)? unknownError,
     TResult Function(VoidCallback? retry)? internetError,
+    TResult Function(VoidCallback? retry)? connectionError,
+    TResult Function(VoidCallback? retry)? serverError,
     TResult Function(String? title, String description, VoidCallback? retry)?
         generalError,
     required TResult orElse(),
@@ -694,6 +712,8 @@ class _$UnknownErrorImpl with DiagnosticableTreeMixin implements UnknownError {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownError value) unknownError,
     required TResult Function(InternetError value) internetError,
+    required TResult Function(ConnectionError value) connectionError,
+    required TResult Function(ServerError value) serverError,
     required TResult Function(GeneralError value) generalError,
   }) {
     return unknownError(this);
@@ -704,6 +724,8 @@ class _$UnknownErrorImpl with DiagnosticableTreeMixin implements UnknownError {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownError value)? unknownError,
     TResult? Function(InternetError value)? internetError,
+    TResult? Function(ConnectionError value)? connectionError,
+    TResult? Function(ServerError value)? serverError,
     TResult? Function(GeneralError value)? generalError,
   }) {
     return unknownError?.call(this);
@@ -714,6 +736,8 @@ class _$UnknownErrorImpl with DiagnosticableTreeMixin implements UnknownError {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownError value)? unknownError,
     TResult Function(InternetError value)? internetError,
+    TResult Function(ConnectionError value)? connectionError,
+    TResult Function(ServerError value)? serverError,
     TResult Function(GeneralError value)? generalError,
     required TResult orElse(),
   }) {
@@ -805,6 +829,8 @@ class _$InternetErrorImpl
   TResult when<TResult extends Object?>({
     required TResult Function(Object? error, VoidCallback? retry) unknownError,
     required TResult Function(VoidCallback? retry) internetError,
+    required TResult Function(VoidCallback? retry) connectionError,
+    required TResult Function(VoidCallback? retry) serverError,
     required TResult Function(
             String? title, String description, VoidCallback? retry)
         generalError,
@@ -817,6 +843,8 @@ class _$InternetErrorImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Object? error, VoidCallback? retry)? unknownError,
     TResult? Function(VoidCallback? retry)? internetError,
+    TResult? Function(VoidCallback? retry)? connectionError,
+    TResult? Function(VoidCallback? retry)? serverError,
     TResult? Function(String? title, String description, VoidCallback? retry)?
         generalError,
   }) {
@@ -828,6 +856,8 @@ class _$InternetErrorImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Object? error, VoidCallback? retry)? unknownError,
     TResult Function(VoidCallback? retry)? internetError,
+    TResult Function(VoidCallback? retry)? connectionError,
+    TResult Function(VoidCallback? retry)? serverError,
     TResult Function(String? title, String description, VoidCallback? retry)?
         generalError,
     required TResult orElse(),
@@ -843,6 +873,8 @@ class _$InternetErrorImpl
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownError value) unknownError,
     required TResult Function(InternetError value) internetError,
+    required TResult Function(ConnectionError value) connectionError,
+    required TResult Function(ServerError value) serverError,
     required TResult Function(GeneralError value) generalError,
   }) {
     return internetError(this);
@@ -853,6 +885,8 @@ class _$InternetErrorImpl
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownError value)? unknownError,
     TResult? Function(InternetError value)? internetError,
+    TResult? Function(ConnectionError value)? connectionError,
+    TResult? Function(ServerError value)? serverError,
     TResult? Function(GeneralError value)? generalError,
   }) {
     return internetError?.call(this);
@@ -863,6 +897,8 @@ class _$InternetErrorImpl
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownError value)? unknownError,
     TResult Function(InternetError value)? internetError,
+    TResult Function(ConnectionError value)? connectionError,
+    TResult Function(ServerError value)? serverError,
     TResult Function(GeneralError value)? generalError,
     required TResult orElse(),
   }) {
@@ -882,6 +918,324 @@ abstract class InternetError implements GlobalEventHandlerStateError {
   @override
   @JsonKey(ignore: true)
   _$$InternetErrorImplCopyWith<_$InternetErrorImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ConnectionErrorImplCopyWith<$Res>
+    implements $GlobalEventHandlerStateErrorCopyWith<$Res> {
+  factory _$$ConnectionErrorImplCopyWith(_$ConnectionErrorImpl value,
+          $Res Function(_$ConnectionErrorImpl) then) =
+      __$$ConnectionErrorImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({VoidCallback? retry});
+}
+
+/// @nodoc
+class __$$ConnectionErrorImplCopyWithImpl<$Res>
+    extends _$GlobalEventHandlerStateErrorCopyWithImpl<$Res,
+        _$ConnectionErrorImpl> implements _$$ConnectionErrorImplCopyWith<$Res> {
+  __$$ConnectionErrorImplCopyWithImpl(
+      _$ConnectionErrorImpl _value, $Res Function(_$ConnectionErrorImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? retry = freezed,
+  }) {
+    return _then(_$ConnectionErrorImpl(
+      freezed == retry
+          ? _value.retry
+          : retry // ignore: cast_nullable_to_non_nullable
+              as VoidCallback?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ConnectionErrorImpl
+    with DiagnosticableTreeMixin
+    implements ConnectionError {
+  const _$ConnectionErrorImpl([this.retry]);
+
+  @override
+  final VoidCallback? retry;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'GlobalEventHandlerStateError.connectionError(retry: $retry)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty(
+          'type', 'GlobalEventHandlerStateError.connectionError'))
+      ..add(DiagnosticsProperty('retry', retry));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ConnectionErrorImplCopyWith<_$ConnectionErrorImpl> get copyWith =>
+      __$$ConnectionErrorImplCopyWithImpl<_$ConnectionErrorImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Object? error, VoidCallback? retry) unknownError,
+    required TResult Function(VoidCallback? retry) internetError,
+    required TResult Function(VoidCallback? retry) connectionError,
+    required TResult Function(VoidCallback? retry) serverError,
+    required TResult Function(
+            String? title, String description, VoidCallback? retry)
+        generalError,
+  }) {
+    return connectionError(retry);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Object? error, VoidCallback? retry)? unknownError,
+    TResult? Function(VoidCallback? retry)? internetError,
+    TResult? Function(VoidCallback? retry)? connectionError,
+    TResult? Function(VoidCallback? retry)? serverError,
+    TResult? Function(String? title, String description, VoidCallback? retry)?
+        generalError,
+  }) {
+    return connectionError?.call(retry);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Object? error, VoidCallback? retry)? unknownError,
+    TResult Function(VoidCallback? retry)? internetError,
+    TResult Function(VoidCallback? retry)? connectionError,
+    TResult Function(VoidCallback? retry)? serverError,
+    TResult Function(String? title, String description, VoidCallback? retry)?
+        generalError,
+    required TResult orElse(),
+  }) {
+    if (connectionError != null) {
+      return connectionError(retry);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UnknownError value) unknownError,
+    required TResult Function(InternetError value) internetError,
+    required TResult Function(ConnectionError value) connectionError,
+    required TResult Function(ServerError value) serverError,
+    required TResult Function(GeneralError value) generalError,
+  }) {
+    return connectionError(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(UnknownError value)? unknownError,
+    TResult? Function(InternetError value)? internetError,
+    TResult? Function(ConnectionError value)? connectionError,
+    TResult? Function(ServerError value)? serverError,
+    TResult? Function(GeneralError value)? generalError,
+  }) {
+    return connectionError?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UnknownError value)? unknownError,
+    TResult Function(InternetError value)? internetError,
+    TResult Function(ConnectionError value)? connectionError,
+    TResult Function(ServerError value)? serverError,
+    TResult Function(GeneralError value)? generalError,
+    required TResult orElse(),
+  }) {
+    if (connectionError != null) {
+      return connectionError(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ConnectionError implements GlobalEventHandlerStateError {
+  const factory ConnectionError([final VoidCallback? retry]) =
+      _$ConnectionErrorImpl;
+
+  @override
+  VoidCallback? get retry;
+  @override
+  @JsonKey(ignore: true)
+  _$$ConnectionErrorImplCopyWith<_$ConnectionErrorImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ServerErrorImplCopyWith<$Res>
+    implements $GlobalEventHandlerStateErrorCopyWith<$Res> {
+  factory _$$ServerErrorImplCopyWith(
+          _$ServerErrorImpl value, $Res Function(_$ServerErrorImpl) then) =
+      __$$ServerErrorImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({VoidCallback? retry});
+}
+
+/// @nodoc
+class __$$ServerErrorImplCopyWithImpl<$Res>
+    extends _$GlobalEventHandlerStateErrorCopyWithImpl<$Res, _$ServerErrorImpl>
+    implements _$$ServerErrorImplCopyWith<$Res> {
+  __$$ServerErrorImplCopyWithImpl(
+      _$ServerErrorImpl _value, $Res Function(_$ServerErrorImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? retry = freezed,
+  }) {
+    return _then(_$ServerErrorImpl(
+      freezed == retry
+          ? _value.retry
+          : retry // ignore: cast_nullable_to_non_nullable
+              as VoidCallback?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ServerErrorImpl with DiagnosticableTreeMixin implements ServerError {
+  const _$ServerErrorImpl([this.retry]);
+
+  @override
+  final VoidCallback? retry;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'GlobalEventHandlerStateError.serverError(retry: $retry)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty(
+          'type', 'GlobalEventHandlerStateError.serverError'))
+      ..add(DiagnosticsProperty('retry', retry));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ServerErrorImplCopyWith<_$ServerErrorImpl> get copyWith =>
+      __$$ServerErrorImplCopyWithImpl<_$ServerErrorImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Object? error, VoidCallback? retry) unknownError,
+    required TResult Function(VoidCallback? retry) internetError,
+    required TResult Function(VoidCallback? retry) connectionError,
+    required TResult Function(VoidCallback? retry) serverError,
+    required TResult Function(
+            String? title, String description, VoidCallback? retry)
+        generalError,
+  }) {
+    return serverError(retry);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Object? error, VoidCallback? retry)? unknownError,
+    TResult? Function(VoidCallback? retry)? internetError,
+    TResult? Function(VoidCallback? retry)? connectionError,
+    TResult? Function(VoidCallback? retry)? serverError,
+    TResult? Function(String? title, String description, VoidCallback? retry)?
+        generalError,
+  }) {
+    return serverError?.call(retry);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Object? error, VoidCallback? retry)? unknownError,
+    TResult Function(VoidCallback? retry)? internetError,
+    TResult Function(VoidCallback? retry)? connectionError,
+    TResult Function(VoidCallback? retry)? serverError,
+    TResult Function(String? title, String description, VoidCallback? retry)?
+        generalError,
+    required TResult orElse(),
+  }) {
+    if (serverError != null) {
+      return serverError(retry);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UnknownError value) unknownError,
+    required TResult Function(InternetError value) internetError,
+    required TResult Function(ConnectionError value) connectionError,
+    required TResult Function(ServerError value) serverError,
+    required TResult Function(GeneralError value) generalError,
+  }) {
+    return serverError(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(UnknownError value)? unknownError,
+    TResult? Function(InternetError value)? internetError,
+    TResult? Function(ConnectionError value)? connectionError,
+    TResult? Function(ServerError value)? serverError,
+    TResult? Function(GeneralError value)? generalError,
+  }) {
+    return serverError?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UnknownError value)? unknownError,
+    TResult Function(InternetError value)? internetError,
+    TResult Function(ConnectionError value)? connectionError,
+    TResult Function(ServerError value)? serverError,
+    TResult Function(GeneralError value)? generalError,
+    required TResult orElse(),
+  }) {
+    if (serverError != null) {
+      return serverError(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ServerError implements GlobalEventHandlerStateError {
+  const factory ServerError([final VoidCallback? retry]) = _$ServerErrorImpl;
+
+  @override
+  VoidCallback? get retry;
+  @override
+  @JsonKey(ignore: true)
+  _$$ServerErrorImplCopyWith<_$ServerErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -967,6 +1321,8 @@ class _$GeneralErrorImpl with DiagnosticableTreeMixin implements GeneralError {
   TResult when<TResult extends Object?>({
     required TResult Function(Object? error, VoidCallback? retry) unknownError,
     required TResult Function(VoidCallback? retry) internetError,
+    required TResult Function(VoidCallback? retry) connectionError,
+    required TResult Function(VoidCallback? retry) serverError,
     required TResult Function(
             String? title, String description, VoidCallback? retry)
         generalError,
@@ -979,6 +1335,8 @@ class _$GeneralErrorImpl with DiagnosticableTreeMixin implements GeneralError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Object? error, VoidCallback? retry)? unknownError,
     TResult? Function(VoidCallback? retry)? internetError,
+    TResult? Function(VoidCallback? retry)? connectionError,
+    TResult? Function(VoidCallback? retry)? serverError,
     TResult? Function(String? title, String description, VoidCallback? retry)?
         generalError,
   }) {
@@ -990,6 +1348,8 @@ class _$GeneralErrorImpl with DiagnosticableTreeMixin implements GeneralError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Object? error, VoidCallback? retry)? unknownError,
     TResult Function(VoidCallback? retry)? internetError,
+    TResult Function(VoidCallback? retry)? connectionError,
+    TResult Function(VoidCallback? retry)? serverError,
     TResult Function(String? title, String description, VoidCallback? retry)?
         generalError,
     required TResult orElse(),
@@ -1005,6 +1365,8 @@ class _$GeneralErrorImpl with DiagnosticableTreeMixin implements GeneralError {
   TResult map<TResult extends Object?>({
     required TResult Function(UnknownError value) unknownError,
     required TResult Function(InternetError value) internetError,
+    required TResult Function(ConnectionError value) connectionError,
+    required TResult Function(ServerError value) serverError,
     required TResult Function(GeneralError value) generalError,
   }) {
     return generalError(this);
@@ -1015,6 +1377,8 @@ class _$GeneralErrorImpl with DiagnosticableTreeMixin implements GeneralError {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UnknownError value)? unknownError,
     TResult? Function(InternetError value)? internetError,
+    TResult? Function(ConnectionError value)? connectionError,
+    TResult? Function(ServerError value)? serverError,
     TResult? Function(GeneralError value)? generalError,
   }) {
     return generalError?.call(this);
@@ -1025,6 +1389,8 @@ class _$GeneralErrorImpl with DiagnosticableTreeMixin implements GeneralError {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UnknownError value)? unknownError,
     TResult Function(InternetError value)? internetError,
+    TResult Function(ConnectionError value)? connectionError,
+    TResult Function(ServerError value)? serverError,
     TResult Function(GeneralError value)? generalError,
     required TResult orElse(),
   }) {
