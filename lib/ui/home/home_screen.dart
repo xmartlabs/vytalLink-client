@@ -100,6 +100,8 @@ class _HomeContentScreenState extends State<_HomeContentScreen>
                     status: state.status,
                     errorMessage: state.errorMessage,
                     pulseAnimation: _pulseAnimation,
+                    onStartPressed: () =>
+                        context.read<HomeCubit>().checkAndStartServer(),
                   ),
                   const SizedBox(height: 24),
                 ],

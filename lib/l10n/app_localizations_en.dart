@@ -152,6 +152,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get health_permission_required => 'Health permission required';
 
   @override
+  String get health_permissions_dialog_accept => 'Allow';
+
+  @override
+  String get health_permissions_dialog_cancel => 'Cancel';
+
+  @override
+  String get health_permissions_dialog_message =>
+      'To connect and share your health data with AI assistants, you need to grant ALL the following permissions:\n\n• Access to health data (steps, heart rate, sleep, workouts)\n• Access to health history (more than 30 days)\n\nBoth permissions are mandatory for the connection to work.';
+
+  @override
+  String get health_permissions_dialog_title => 'Health Data Access Required';
+
+  @override
   String get home_button_start_server => 'Start MCP Server';
 
   @override
@@ -187,6 +200,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String home_endpoint_label(String endpoint) {
     return 'Endpoint: $endpoint';
   }
+
+  @override
+  String get home_online_status => 'ONLINE';
 
   @override
   String home_server_ip_label(String ipAddress) {

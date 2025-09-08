@@ -346,6 +346,30 @@ abstract class AppLocalizations {
   /// **'Health permission required'**
   String get health_permission_required;
 
+  /// No description provided for @health_permissions_dialog_accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get health_permissions_dialog_accept;
+
+  /// No description provided for @health_permissions_dialog_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get health_permissions_dialog_cancel;
+
+  /// No description provided for @health_permissions_dialog_message.
+  ///
+  /// In en, this message translates to:
+  /// **'To connect and share your health data with AI assistants, you need to grant ALL the following permissions:\n\n• Access to health data (steps, heart rate, sleep, workouts)\n• Access to health history (more than 30 days)\n\nBoth permissions are mandatory for the connection to work.'**
+  String get health_permissions_dialog_message;
+
+  /// No description provided for @health_permissions_dialog_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Data Access Required'**
+  String get health_permissions_dialog_title;
+
   /// No description provided for @home_button_start_server.
   ///
   /// In en, this message translates to:
@@ -405,6 +429,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Endpoint: {endpoint}'**
   String home_endpoint_label(String endpoint);
+
+  /// No description provided for @home_online_status.
+  ///
+  /// In en, this message translates to:
+  /// **'ONLINE'**
+  String get home_online_status;
 
   /// Shows the server IP address
   ///

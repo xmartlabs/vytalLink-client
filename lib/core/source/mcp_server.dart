@@ -59,8 +59,10 @@ class HealthMcpServerService {
   bool _isConnected = false;
 
   bool get isConnected => _isConnected;
+  Health get healthClient => _healthClient;
 
-  final Uri _backendUrl = Uri.parse('ws://192.168.1.19:8000/ws/phone');
+  final Uri _backendUrl =
+      Uri.parse('wss://vytallink.local.xmartlabs.com/ws/phone');
 
   void Function(String code, String word, String message)?
       _onConnectionCodeReceived;

@@ -8,10 +8,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class ServerActionButtonWidget extends StatelessWidget {
   final String errorMessage;
   final McpServerStatus status;
+  final VoidCallback? onStartPressed;
 
   const ServerActionButtonWidget({
     required this.errorMessage,
     required this.status,
+    this.onStartPressed,
     super.key,
   });
 
@@ -19,7 +21,7 @@ class ServerActionButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (status) {
       case McpServerStatus.idle:
-        return const _StartButton();
+        return _StartButton(onPressed: onStartPressed);
       case McpServerStatus.starting:
         return const _LoadingButton();
       case McpServerStatus.running:
@@ -158,13 +160,15 @@ class _StopButton extends StatelessWidget {
 }
 
 class _StartButton extends StatelessWidget {
-  const _StartButton();
+  final VoidCallback? onPressed;
+
+  const _StartButton({this.onPressed});
 
   @override
   Widget build(BuildContext context) => SizedBox(
         width: double.infinity,
         child: ElevatedButton.icon(
-          onPressed: () => context.read<HomeCubit>().startMCPServer(),
+          onPressed: onPressed,
           icon: const Icon(FontAwesomeIcons.play, size: 16),
           label: Text(context.localizations.home_button_start_server),
           style: ElevatedButton.styleFrom(

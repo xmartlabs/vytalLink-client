@@ -9,13 +9,14 @@ import 'package:flutter_template/ui/home/widgets/server_action_button_widget.dar
 class AnimatedServerCard extends StatelessWidget {
   final McpServerStatus status;
   final String errorMessage;
-
   final Animation<double> pulseAnimation;
+  final VoidCallback? onStartPressed;
 
   const AnimatedServerCard({
     required this.pulseAnimation,
     required this.status,
     required this.errorMessage,
+    this.onStartPressed,
     super.key,
   });
 
@@ -120,7 +121,7 @@ class AnimatedServerCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          'ONLINE',
+                          AppLocalizations.of(context)!.home_online_status,
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
@@ -137,6 +138,7 @@ class AnimatedServerCard extends StatelessWidget {
             ServerActionButtonWidget(
               errorMessage: errorMessage,
               status: status,
+              onStartPressed: onStartPressed,
             ),
           ],
         ),

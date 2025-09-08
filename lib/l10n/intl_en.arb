@@ -81,6 +81,10 @@
   "health_client_config_failed": "Failed to configure health client",
   "health_data_unavailable": "Health data unavailable",
   "health_permission_required": "Health permission required",
+  "health_permissions_dialog_accept": "Allow",
+  "health_permissions_dialog_cancel": "Cancel",
+  "health_permissions_dialog_message": "To connect and share your health data with AI assistants, you need to grant ALL the following permissions:\n\n• Access to health data (steps, heart rate, sleep, workouts)\n• Access to health history (more than 30 days)\n\nBoth permissions are mandatory for the connection to work.",
+  "health_permissions_dialog_title": "Health Data Access Required",
   "home_button_start_server": "Start MCP Server",
   "home_button_starting": "Starting...",
   "home_button_stop_server": "Stop MCP Server",
@@ -100,6 +104,7 @@
       }
     }
   },
+  "home_online_status": "ONLINE",
   "home_server_ip_label": "Server IP: {ipAddress}",
   "@home_server_ip_label": {
     "description": "Shows the server IP address",

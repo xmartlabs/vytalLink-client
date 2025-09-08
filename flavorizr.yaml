@@ -5,31 +5,31 @@
 flavors:
   dev:
     app:
-      name: 'Template Dev'
+      name: 'VytalLink Dev'
     android:
-      applicationId: 'com.xmartlabs.template.dev'
+      applicationId: 'com.xmartlabs.vytallink.dev'
     ios:
-      bundleId: 'com.xmartlabs.template.dev'
+      bundleId: 'com.xmartlabs.vytallink.dev'
       variables:
         FLUTTER_TARGET:
           value: 'lib/main.dart'
   staging:
     app:
-      name: 'Template Sta'
+      name: 'VytalLink Sta'
     android:
-      applicationId: 'com.xmartlabs.template.sta'
+      applicationId: 'com.xmartlabs.vytallink.sta'
     ios:
-      bundleId: 'com.xmartlabs.template.sta'
+      bundleId: 'com.xmartlabs.vytallink.sta'
       variables:
         FLUTTER_TARGET:
           value: 'lib/main.dart'
   prod:
     app:
-      name: 'Template'
+      name: 'VytalLink'
     android:
-      applicationId: 'com.xmartlabs.template'
+      applicationId: 'com.xmartlabs.vytallink'
     ios:
-      bundleId: 'com.xmartlabs.template'
+      bundleId: 'com.xmartlabs.vytallink'
       variables:
         FLUTTER_TARGET:
           value: 'lib/main.dart'

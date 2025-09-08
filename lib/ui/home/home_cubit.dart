@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_template/core/common/config.dart';
@@ -6,10 +7,12 @@ import 'package:flutter_template/core/source/mcp_server.dart';
 import 'package:flutter_template/ui/resources.dart';
 import 'package:flutter_template/ui/section/error_handler/global_event_handler_cubit.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:health/health.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 part 'home_cubit.freezed.dart';
+
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -21,6 +24,21 @@ class HomeCubit extends Cubit<HomeState> {
     WakelockPlus.enable();
     _initialize();
   }
+
+  List<HealthDataType> get _requiredHealthDataTypes => [
+        HealthDataType.STEPS,
+        HealthDataType.HEART_RATE,
+        HealthDataType.RESTING_HEART_RATE,
+        HealthDataType.SLEEP_SESSION,
+        HealthDataType.WORKOUT,
+        HealthDataType.DISTANCE_DELTA,
+        HealthDataType.TOTAL_CALORIES_BURNED,
+      ];
+
+  List<HealthDataType> get _platformSpecificHealthDataTypes =>
+      (Platform.isAndroid ? dataTypeKeysAndroid : dataTypeKeysIOS)
+          .where((type) => _requiredHealthDataTypes.contains(type))
+          .toList();
 
   Future<void> _initialize() async {
     final ip = await NetworkInfo().getWifiIP();
@@ -119,7 +137,134 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<bool> hasAllHealthPermissions() async {
+    try {
+      await healthServer.initialize();
+
+      final healthDataTypes = _platformSpecificHealthDataTypes;
+
+      final permissions = List.generate(
+        healthDataTypes.length,
+        (_) => HealthDataAccess.READ,
+      );
+
+      final hasPermissions = await healthServer.healthClient.hasPermissions(
+        healthDataTypes,
+        permissions: permissions,
+      );
+
+      final hasHistoryPermissions =
+          await healthServer.healthClient.isHealthDataHistoryAuthorized();
+
+      return (hasPermissions ?? false) && hasHistoryPermissions;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  Future<bool> requestHealthPermissions() async {
+    try {
+      await healthServer.initialize();
+
+      final healthDataTypes = _platformSpecificHealthDataTypes;
+
+      final permissions = List.generate(
+        healthDataTypes.length,
+        (_) => HealthDataAccess.READ,
+      );
+
+      final permissionsGranted =
+          await healthServer.healthClient.requestAuthorization(
+        healthDataTypes,
+        permissions: permissions,
+      );
+
+      if (!permissionsGranted) {
+        return false;
+      }
+
+      try {
+        await healthServer.healthClient.requestHealthDataHistoryAuthorization();
+
+        final hasHistoryPermissions =
+            await healthServer.healthClient.isHealthDataHistoryAuthorized();
+
+        if (!hasHistoryPermissions) {
+          return false;
+        }
+      } catch (historyError) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   Future<void> startMCPServer() async {
+    try {
+      _globalEventHandler.clearError();
+      emit(
+        state.copyWith(
+          status: McpServerStatus.starting,
+          errorMessage: "",
+        ),
+      );
+
+      final hasPermissions = await hasAllHealthPermissions();
+      if (!hasPermissions) {
+        emit(
+          state.copyWith(
+            status: McpServerStatus.idle,
+            errorMessage: "",
+          ),
+        );
+        return;
+      }
+
+      await healthServer.connectToBackend();
+
+      if (!healthServer.isConnected) {
+        throw CategorizedError(
+          ErrorCategory.connection,
+          Resources.localizations.connection_could_not_establish,
+        );
+      }
+
+      emit(
+        state.copyWith(
+          status: McpServerStatus.running,
+          ipAddress: healthServer.config.host,
+          endpoint: healthServer.config.endpoint,
+          errorMessage: "",
+        ),
+      );
+
+      _startConnectionMonitoring();
+    } catch (error) {
+      emit(
+        state.copyWith(
+          status: McpServerStatus.error,
+          errorMessage: "",
+        ),
+      );
+    }
+  }
+
+  Future<void> checkAndStartServer() async {
+    final hasPermissions = await hasAllHealthPermissions();
+    if (hasPermissions) {
+      await startMCPServerWithPermissions();
+    } else {
+      final permissionsGranted = await requestHealthPermissions();
+      if (permissionsGranted) {
+        await startMCPServerWithPermissions();
+      }
+    }
+  }
+
+  Future<void> startMCPServerWithPermissions() async {
     try {
       _globalEventHandler.clearError();
       emit(
