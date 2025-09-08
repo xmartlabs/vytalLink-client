@@ -451,114 +451,222 @@ h1, h2, h3, h4 {
 .phone-mockup {
     width: 300px;
     height: 600px;
-    background: #1e293b;
-    border-radius: 30px;
-    padding: 20px;
-    box-shadow: var(--shadow-lg);
+    background: linear-gradient(145deg, #2d3748, #1a202c);
+    border-radius: 35px;
+    padding: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
 }
 
 .phone-screen {
     width: 100%;
     height: 100%;
-    background: var(--white);
-    border-radius: 20px;
-    padding: 20px;
+    background: #f8fafc;
+    border-radius: 27px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     overflow: hidden;
 }
 
 .app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--secondary-color);
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(99, 102, 241, 0.1);
 }
 
-.app-header h3 {
+.app-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.app-logo i {
+    font-size: 1.4rem;
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+/* Connection Credentials Card */
+.credentials-card {
+    background: rgba(99, 102, 241, 0.08);
+    border: 2px solid rgba(99, 102, 241, 0.3);
+    border-radius: 16px;
+    padding: 20px;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.card-header {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: 16px;
+}
+
+.card-header i {
     color: var(--primary-color);
-    font-size: 1.1rem;
+    font-size: 1.5rem;
 }
 
-.connection-status {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
+.card-title {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1rem;
 }
 
-.connection-status.connected {
-    background: #d1fae5;
-    color: #065f46;
-}
-
-.app-metrics {
+.credentials-content {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.metric-item {
-    display: flex;
-    align-items: center;
     gap: 12px;
-    padding: 12px;
-    background: var(--secondary-color);
-    border-radius: 12px;
 }
 
-.metric-item i {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    width: 20px;
-}
-
-.metric-value {
-    font-weight: 600;
-    color: var(--text-dark);
-    margin-right: 8px;
-}
-
-.metric-label {
-    color: var(--text-light);
-    font-size: 0.85rem;
-}
-
-.connection-codes {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 12px;
-    border-left: 4px solid var(--primary-color);
-}
-
-.code-display {
+.credential-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    padding: 8px 0;
 }
 
-.code-display:last-child {
-    margin-bottom: 0;
-}
-
-.code-label {
-    font-size: 0.8rem;
+.credential-label {
+    font-size: 0.875rem;
     color: var(--text-light);
+    font-weight: 600;
 }
 
-.code-value {
-    font-family: monospace;
-    font-weight: 600;
+.credential-value {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 1rem;
     color: var(--primary-color);
-    background: var(--white);
-    padding: 2px 8px;
-    border-radius: 4px;
+    letter-spacing: 1px;
+}
+
+/* Server Status Card */
+.server-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    animation: slideInUp 0.8s ease-out;
+}
+
+.server-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.server-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #10b981;
+    animation: serverPulse 2s ease-in-out infinite;
+}
+
+@keyframes serverPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        transform: scale(1);
+    }
+}
+
+.server-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.server-title {
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--text-dark);
+    line-height: 1.2;
+}
+
+.server-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 8px;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #065f46;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Steps Container - New Clean Design */
@@ -1836,9 +1944,32 @@ h1, h2, h3, h4 {
     }
     
     .phone-mockup {
-        width: 250px;
-        height: 500px;
-        padding: 15px;
+        width: 260px;
+        height: 520px;
+        padding: 6px;
+    }
+    
+    .phone-screen {
+        padding: 20px;
+        gap: 20px;
+    }
+    
+    .app-logo {
+        font-size: 1.1rem;
+    }
+    
+    .credentials-card {
+        padding: 16px;
+    }
+    
+    .server-card {
+        padding: 16px;
+    }
+    
+    .server-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
     }
     
     .demo-content {
@@ -1901,8 +2032,40 @@ h1, h2, h3, h4 {
     }
     
     .phone-mockup {
-        width: 220px;
-        height: 440px;
+        width: 230px;
+        height: 460px;
+        padding: 5px;
+    }
+    
+    .phone-screen {
+        padding: 18px 16px;
+        gap: 18px;
+    }
+    
+    .app-logo {
+        font-size: 1rem;
+    }
+    
+    .credentials-card {
+        padding: 14px;
+    }
+    
+    .server-card {
+        padding: 14px;
+    }
+    
+    .server-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+    }
+    
+    .credential-value {
+        font-size: 0.9rem;
+    }
+    
+    .server-title {
+        font-size: 1rem;
     }
     
     .hero-buttons {
