@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_template/l10n/app_localizations.dart';
 import 'package:flutter_template/ui/home/home_cubit.dart';
+import 'package:flutter_template/ui/home/widgets/ai_integration_card.dart';
 import 'package:flutter_template/ui/home/widgets/animated_credentials_card.dart';
 import 'package:flutter_template/ui/home/widgets/animated_server_card.dart';
+import 'package:flutter_template/ui/home/widgets/how_it_works_section.dart';
 import 'package:flutter_template/ui/section/error_handler/global_event_handler_cubit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -103,6 +105,8 @@ class _HomeContentScreenState extends State<_HomeContentScreen>
                     onStartPressed: () =>
                         context.read<HomeCubit>().checkAndStartServer(),
                   ),
+                  const AiIntegrationCard(),
+                  const HowItWorksSection(),
                   const SizedBox(height: 24),
                 ],
               ),

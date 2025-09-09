@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_template/ui/ai_integration/chatgpt_integration_screen.dart';
+import 'package:flutter_template/ui/ai_integration/mcp_integration_screen.dart';
 import 'package:flutter_template/ui/home/home_screen.dart';
 import 'package:flutter_template/ui/section/section_router.dart';
 
@@ -20,6 +22,8 @@ class AppRouter extends _$AppRouter {
             children: [
               RedirectRoute(path: '', redirectTo: initialRoute ?? 'home'),
               AutoRoute(path: 'home', page: HomeRoute.page),
+              AutoRoute(path: 'chatgpt', page: ChatGptIntegrationRoute.page),
+              AutoRoute(path: 'mcp', page: McpIntegrationRoute.page),
             ],
           ),
         ];

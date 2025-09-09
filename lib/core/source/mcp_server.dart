@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_template/core/common/config.dart';
 import 'package:flutter_template/core/common/logger.dart';
 import 'package:health/health.dart';
 import 'package:web_socket_channel/io.dart';
@@ -59,10 +60,10 @@ class HealthMcpServerService {
   bool _isConnected = false;
 
   bool get isConnected => _isConnected;
+
   Health get healthClient => _healthClient;
 
-  final Uri _backendUrl =
-      Uri.parse('wss://vytallink.local.xmartlabs.com/ws/phone');
+  final Uri _backendUrl = Uri.parse(Config.wsUrl);
 
   void Function(String code, String word, String message)?
       _onConnectionCodeReceived;
