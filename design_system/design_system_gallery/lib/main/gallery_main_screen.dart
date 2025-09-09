@@ -42,7 +42,6 @@ enum _GalleryScreen {
   typography,
   dropdown,
   dialog,
-  radioButtons,
   checkbox,
 }
 
@@ -61,8 +60,6 @@ extension _GalleryScreenExtensions on _GalleryScreen {
         return 'Dropdown';
       case _GalleryScreen.dialog:
         return 'Dialog';
-      case _GalleryScreen.radioButtons:
-        return 'Radio Buttons';
       case _GalleryScreen.checkbox:
         return 'Checkbox';
     }
@@ -82,8 +79,6 @@ extension _GalleryScreenExtensions on _GalleryScreen {
         return const GalleryDropdownRoute();
       case _GalleryScreen.dialog:
         return const GalleryDialogRoute();
-      case _GalleryScreen.radioButtons:
-        return const GalleryAppRadioButtonRoute();
       case _GalleryScreen.checkbox:
         return const GalleryAppCheckboxRoute();
     }

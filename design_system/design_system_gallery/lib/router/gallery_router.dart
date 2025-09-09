@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:design_system_gallery/gallery/gallery_app_button_screen.dart';
 import 'package:design_system_gallery/gallery/gallery_app_colors_screen.dart';
-import 'package:design_system_gallery/gallery/gallery_app_radio_button.dart';
 import 'package:design_system_gallery/gallery/gallery_app_typography_screen.dart';
 import 'package:design_system_gallery/gallery/gallery_app_checkbox.dart';
 import 'package:design_system_gallery/gallery/gallery_app_dropdown_screen.dart';
@@ -26,7 +26,6 @@ class GalleryRouter extends _$GalleryRouter {
           AutoRoute(page: GalleryAppTypographyRoute.page),
           AutoRoute(page: GalleryDropdownRoute.page),
           AutoRoute(page: GalleryDialogRoute.page),
-          AutoRoute(page: GalleryAppRadioButtonRoute.page),
           AutoRoute(page: GalleryAppCheckboxRoute.page),
         ];
 }
