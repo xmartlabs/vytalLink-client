@@ -115,7 +115,7 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
-        <package android:name="com.xmartlabs.flutter_template" />
+        <package android:name="com.xmartlabs.vytalLink" />
         <intent>
             <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
         </intent>
