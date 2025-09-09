@@ -94,11 +94,203 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en')];
 
+  /// No description provided for @ai_integration_chatgpt.
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT'**
+  String get ai_integration_chatgpt;
+
+  /// No description provided for @ai_integration_chatgpt_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Popular'**
+  String get ai_integration_chatgpt_subtitle;
+
+  /// No description provided for @ai_integration_mcp.
+  ///
+  /// In en, this message translates to:
+  /// **'MCP'**
+  String get ai_integration_mcp;
+
+  /// No description provided for @ai_integration_mcp_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Claude, Cursor'**
+  String get ai_integration_mcp_subtitle;
+
+  /// No description provided for @ai_integration_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze your health data with ChatGPT, Claude and more'**
+  String get ai_integration_subtitle;
+
+  /// No description provided for @ai_integration_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with AI'**
+  String get ai_integration_title;
+
   /// No description provided for @app_name.
   ///
   /// In en, this message translates to:
   /// **'vytalLink'**
   String get app_name;
+
+  /// No description provided for @chatgpt_example_1.
+  ///
+  /// In en, this message translates to:
+  /// **'What were my average steps this week compared to last week?'**
+  String get chatgpt_example_1;
+
+  /// No description provided for @chatgpt_example_2.
+  ///
+  /// In en, this message translates to:
+  /// **'How did my sleep quality affect my heart rate this month?'**
+  String get chatgpt_example_2;
+
+  /// No description provided for @chatgpt_example_3.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s the trend in my workout intensity over the past 3 months?'**
+  String get chatgpt_example_3;
+
+  /// No description provided for @chatgpt_example_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Can you give me recommendations based on my activity patterns?'**
+  String get chatgpt_example_4;
+
+  /// No description provided for @chatgpt_examples_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Here are some questions you can ask ChatGPT about your health data:'**
+  String get chatgpt_examples_description;
+
+  /// No description provided for @chatgpt_examples_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Example Questions'**
+  String get chatgpt_examples_title;
+
+  /// No description provided for @chatgpt_feature_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Simply ask questions about your health in everyday language'**
+  String get chatgpt_feature_1;
+
+  /// No description provided for @chatgpt_feature_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Get instant, personalized insights about your wellness trends'**
+  String get chatgpt_feature_2;
+
+  /// No description provided for @chatgpt_feature_3.
+  ///
+  /// In en, this message translates to:
+  /// **'No technical knowledge needed - just start a conversation'**
+  String get chatgpt_feature_3;
+
+  /// No description provided for @chatgpt_feature_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Understand your health data with clear, friendly explanations'**
+  String get chatgpt_feature_4;
+
+  /// No description provided for @chatgpt_integration_hero_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT is one of the world\'s most popular AI assistants. With vytalLink\'s custom GPT, analyzing your health data becomes incredibly simple and intuitive.'**
+  String get chatgpt_integration_hero_subtitle;
+
+  /// No description provided for @chatgpt_integration_hero_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with ChatGPT'**
+  String get chatgpt_integration_hero_title;
+
+  /// No description provided for @chatgpt_integration_title.
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT Integration'**
+  String get chatgpt_integration_title;
+
+  /// No description provided for @chatgpt_open_custom_gpt.
+  ///
+  /// In en, this message translates to:
+  /// **'Open vytalLink GPT'**
+  String get chatgpt_open_custom_gpt;
+
+  /// No description provided for @chatgpt_setup_title.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Set Up'**
+  String get chatgpt_setup_title;
+
+  /// No description provided for @chatgpt_start_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with ChatGPT'**
+  String get chatgpt_start_button;
+
+  /// No description provided for @chatgpt_step_1_description.
+  ///
+  /// In en, this message translates to:
+  /// **'First, go to the Home screen and tap \'Start Connection\' to connect this app. You\'ll receive a connection word and PIN that you\'ll use to authenticate with ChatGPT.'**
+  String get chatgpt_step_1_description;
+
+  /// No description provided for @chatgpt_step_1_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect This App'**
+  String get chatgpt_step_1_title;
+
+  /// No description provided for @chatgpt_step_2_description.
+  ///
+  /// In en, this message translates to:
+  /// **'We recommend using ChatGPT on the web at chatgpt.com since this app needs to stay open to send your data to ChatGPT.'**
+  String get chatgpt_step_2_description;
+
+  /// No description provided for @chatgpt_step_2_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Open ChatGPT Web'**
+  String get chatgpt_step_2_title;
+
+  /// No description provided for @chatgpt_step_3_description.
+  ///
+  /// In en, this message translates to:
+  /// **'In ChatGPT, go to GPTs and search for \'vytalLink\'. Click on it and then select \'Start Chat\' to begin.'**
+  String get chatgpt_step_3_description;
+
+  /// No description provided for @chatgpt_step_3_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Find vytalLink GPT'**
+  String get chatgpt_step_3_title;
+
+  /// No description provided for @chatgpt_step_4_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask any question about your health data. ChatGPT will request your connection word and PIN - simply provide the credentials shown in this app, then start exploring your health insights!'**
+  String get chatgpt_step_4_description;
+
+  /// No description provided for @chatgpt_step_4_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect and Start Asking'**
+  String get chatgpt_step_4_title;
+
+  /// No description provided for @chatgpt_what_is_description.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve created a special version of ChatGPT specifically designed for health data analysis. This custom GPT understands health metrics and can provide personalized insights about your wellness journey in simple, easy-to-understand language.'**
+  String get chatgpt_what_is_description;
+
+  /// No description provided for @chatgpt_what_is_title.
+  ///
+  /// In en, this message translates to:
+  /// **'What is vytalLink\'s Custom GPT?'**
+  String get chatgpt_what_is_title;
 
   /// No description provided for @connection_code_label.
   ///
@@ -163,7 +355,7 @@ abstract class AppLocalizations {
   /// No description provided for @connection_error_network_description.
   ///
   /// In en, this message translates to:
-  /// **'Unable to connect to the MCP server. Please check your internet connection and try again.'**
+  /// **'Unable to connect to the vytalLink server. Please check your internet connection and try again.'**
   String get connection_error_network_description;
 
   /// No description provided for @connection_error_network_title.
@@ -187,7 +379,7 @@ abstract class AppLocalizations {
   /// No description provided for @connection_error_server_description.
   ///
   /// In en, this message translates to:
-  /// **'The MCP server is not responding. Please verify the server is running and try again.'**
+  /// **'The vytalLink server is not responding. Please verify the server is running and try again.'**
   String get connection_error_server_description;
 
   /// No description provided for @connection_error_server_title.
@@ -211,7 +403,7 @@ abstract class AppLocalizations {
   /// No description provided for @connection_lost_description.
   ///
   /// In en, this message translates to:
-  /// **'The connection to the MCP server was lost unexpectedly. Please check your network and try reconnecting.'**
+  /// **'The connection to the vytalLink server was lost unexpectedly. Please check your network and try reconnecting.'**
   String get connection_lost_description;
 
   /// No description provided for @connection_lost_title.
@@ -255,6 +447,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Connection Credentials'**
   String get connection_section_title;
+
+  /// No description provided for @copied_to_clipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get copied_to_clipboard;
 
   /// No description provided for @credentials_copied_to_clipboard.
   ///
@@ -328,6 +526,12 @@ abstract class AppLocalizations {
   /// **'Ops!'**
   String get error_unknown_error_title;
 
+  /// No description provided for @example_config_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Example Claude Configuration:'**
+  String get example_config_title;
+
   /// No description provided for @health_client_config_failed.
   ///
   /// In en, this message translates to:
@@ -373,7 +577,7 @@ abstract class AppLocalizations {
   /// No description provided for @home_button_start_server.
   ///
   /// In en, this message translates to:
-  /// **'Start MCP Server'**
+  /// **'Start Connection'**
   String get home_button_start_server;
 
   /// No description provided for @home_button_starting.
@@ -385,7 +589,7 @@ abstract class AppLocalizations {
   /// No description provided for @home_button_stop_server.
   ///
   /// In en, this message translates to:
-  /// **'Stop MCP Server'**
+  /// **'Stop Connection'**
   String get home_button_stop_server;
 
   /// No description provided for @home_button_stopping.
@@ -397,25 +601,25 @@ abstract class AppLocalizations {
   /// No description provided for @home_description_error.
   ///
   /// In en, this message translates to:
-  /// **'Unable to connect to the MCP server. Please check your connection and try again.'**
+  /// **'Unable to connect to the vytalLink server. Please check your connection and try again.'**
   String get home_description_error;
 
   /// No description provided for @home_description_offline.
   ///
   /// In en, this message translates to:
-  /// **'Ready to start the MCP server on this device'**
+  /// **'Ready to start the vytalLink server on this device'**
   String get home_description_offline;
 
   /// No description provided for @home_description_running.
   ///
   /// In en, this message translates to:
-  /// **'MCP server is active and ready to receive connections'**
+  /// **'vytalLink server is active and ready to receive connections'**
   String get home_description_running;
 
   /// No description provided for @home_description_starting.
   ///
   /// In en, this message translates to:
-  /// **'Initializing MCP server and binding to port...'**
+  /// **'Initializing vytalLink server and binding to port...'**
   String get home_description_starting;
 
   /// No description provided for @home_description_stopping.
@@ -451,13 +655,13 @@ abstract class AppLocalizations {
   /// No description provided for @home_status_offline.
   ///
   /// In en, this message translates to:
-  /// **'MCP Server Offline'**
+  /// **'vytalLink Server Offline'**
   String get home_status_offline;
 
   /// No description provided for @home_status_running.
   ///
   /// In en, this message translates to:
-  /// **'MCP Server Running'**
+  /// **'vytalLink Server Running'**
   String get home_status_running;
 
   /// No description provided for @home_status_starting.
@@ -475,8 +679,260 @@ abstract class AppLocalizations {
   /// No description provided for @home_title.
   ///
   /// In en, this message translates to:
-  /// **'MCP Server Control'**
+  /// **'vytalLink Server Control'**
   String get home_title;
+
+  /// No description provided for @how_it_works_step1_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the codes above to connect'**
+  String get how_it_works_step1_description;
+
+  /// No description provided for @how_it_works_step1_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect the server'**
+  String get how_it_works_step1_title;
+
+  /// No description provided for @how_it_works_step2_description.
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT, Claude, or any compatible AI client'**
+  String get how_it_works_step2_description;
+
+  /// No description provided for @how_it_works_step2_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure your AI'**
+  String get how_it_works_step2_title;
+
+  /// No description provided for @how_it_works_step3_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Get personalized insights from your data'**
+  String get how_it_works_step3_description;
+
+  /// No description provided for @how_it_works_step3_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask about your health'**
+  String get how_it_works_step3_title;
+
+  /// No description provided for @how_it_works_title.
+  ///
+  /// In en, this message translates to:
+  /// **'How It Works?'**
+  String get how_it_works_title;
+
+  /// No description provided for @mcp_any_client_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Any client that implements the MCP protocol is supported.'**
+  String get mcp_any_client_description;
+
+  /// No description provided for @mcp_any_client_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Any MCP Client'**
+  String get mcp_any_client_name;
+
+  /// No description provided for @mcp_claude_desktop_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Anthropic\'s desktop AI assistant. Ideal for general use, chat, and productivity.'**
+  String get mcp_claude_desktop_description;
+
+  /// No description provided for @mcp_claude_desktop_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Claude Desktop'**
+  String get mcp_claude_desktop_name;
+
+  /// No description provided for @mcp_cursor_description.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-powered code editor'**
+  String get mcp_cursor_description;
+
+  /// No description provided for @mcp_cursor_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Cursor'**
+  String get mcp_cursor_name;
+
+  /// No description provided for @mcp_example_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze health data directly in Claude Desktop conversations'**
+  String get mcp_example_1;
+
+  /// No description provided for @mcp_example_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Access health metrics in your development workflow with Cursor'**
+  String get mcp_example_2;
+
+  /// No description provided for @mcp_example_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Build health-focused applications with VS Code integration'**
+  String get mcp_example_3;
+
+  /// No description provided for @mcp_example_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Create custom analysis and reporting tools'**
+  String get mcp_example_4;
+
+  /// No description provided for @mcp_examples_description.
+  ///
+  /// In en, this message translates to:
+  /// **'With MCP integration, you can:'**
+  String get mcp_examples_description;
+
+  /// No description provided for @mcp_examples_title.
+  ///
+  /// In en, this message translates to:
+  /// **'What You Can Do'**
+  String get mcp_examples_title;
+
+  /// No description provided for @mcp_feature_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct integration with Claude Desktop and other MCP clients'**
+  String get mcp_feature_1;
+
+  /// No description provided for @mcp_feature_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure and standardized data access protocol'**
+  String get mcp_feature_2;
+
+  /// No description provided for @mcp_feature_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional-grade AI development tools'**
+  String get mcp_feature_3;
+
+  /// No description provided for @mcp_feature_4.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time data synchronization'**
+  String get mcp_feature_4;
+
+  /// No description provided for @mcp_integration_hero_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with Claude, Cursor, VS Code and other professional AI development tools for advanced data analysis.'**
+  String get mcp_integration_hero_subtitle;
+
+  /// No description provided for @mcp_integration_hero_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with Professional AI Tools'**
+  String get mcp_integration_hero_title;
+
+  /// No description provided for @mcp_integration_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional AI Tools'**
+  String get mcp_integration_title;
+
+  /// No description provided for @mcp_recommended_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended'**
+  String get mcp_recommended_badge;
+
+  /// No description provided for @mcp_setup_guide_button.
+  ///
+  /// In en, this message translates to:
+  /// **'View Setup Guide'**
+  String get mcp_setup_guide_button;
+
+  /// Requirement message shown in setup step 1, clarifying that Node.js must be installed.
+  ///
+  /// In en, this message translates to:
+  /// **'You must have Node.js installed on your system to run the vytalLink server.'**
+  String get mcp_setup_nodejs_requirement;
+
+  /// No description provided for @mcp_setup_title.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Set Up'**
+  String get mcp_setup_title;
+
+  /// No description provided for @mcp_start_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with MCP'**
+  String get mcp_start_button;
+
+  /// No description provided for @mcp_step_1_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Install the vytalLink MCP server package on your computer using npm.'**
+  String get mcp_step_1_description;
+
+  /// No description provided for @mcp_step_1_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Install MCP Server'**
+  String get mcp_step_1_title;
+
+  /// No description provided for @mcp_step_2_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Add vytalLink to your Claude Desktop, Cursor, or VS Code MCP configuration.'**
+  String get mcp_step_2_description;
+
+  /// No description provided for @mcp_step_2_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure Your MCP Client'**
+  String get mcp_step_2_title;
+
+  /// No description provided for @mcp_step_3_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Start asking questions about your health data in your MCP client. When prompted, provide the connection word and PIN shown in this app. Once connected, you can analyze your health data directly within your professional AI tools.'**
+  String get mcp_step_3_description;
+
+  /// No description provided for @mcp_step_3_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect and Start Analyzing'**
+  String get mcp_step_3_title;
+
+  /// No description provided for @mcp_supported_clients_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Supported Clients'**
+  String get mcp_supported_clients_title;
+
+  /// No description provided for @mcp_vscode_description.
+  ///
+  /// In en, this message translates to:
+  /// **'With MCP extension support'**
+  String get mcp_vscode_description;
+
+  /// No description provided for @mcp_vscode_name.
+  ///
+  /// In en, this message translates to:
+  /// **'VS Code'**
+  String get mcp_vscode_name;
+
+  /// No description provided for @mcp_what_is_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Model Context Protocol (MCP) is a standard that allows AI applications to securely access external data sources. It\'s used by professional tools like Claude Desktop, Cursor, and VS Code.'**
+  String get mcp_what_is_description;
+
+  /// No description provided for @mcp_what_is_title.
+  ///
+  /// In en, this message translates to:
+  /// **'What is MCP?'**
+  String get mcp_what_is_title;
 }
 
 class _AppLocalizationsDelegate

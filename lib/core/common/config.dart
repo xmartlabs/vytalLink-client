@@ -11,14 +11,20 @@ import 'package:flutter_template/core/common/helper/env_helper.dart';
 import 'package:path_provider/path_provider.dart';
 
 interface class Config {
+  // MCP Client download URLs (not from env)
+  static const String claudeDesktopDownloadUrl = 'https://claude.ai/download';
+  static const String cursorDownloadUrl = 'https://cursor.sh';
+  static const String vscodeDownloadUrl = 'https://code.visualstudio.com';
   static const String environmentFolder = 'environments';
 
   static const debugMode = kDebugMode;
   static bool testingMode = Platform.environment.containsKey('FLUTTER_TEST');
-  static late String apiBaseUrl;
-  static late String supabaseApiKey;
+  static late String wsUrl;
+  static late String gptIntegrationUrl;
   static late String appDirectoryPath;
+  static late String landingUrl;
 
+  static String get setupMcpDocumentationUri => '$landingUrl/mcp-setup.html';
   static String mcpServerName = 'health-data-server';
   static String mcpServerVersion = '1.0.0';
   static String mcpHostFallback = '0.0.0.0';
@@ -38,19 +44,22 @@ interface class Config {
   }
 
   static void _initializeEnvVariables() {
-    apiBaseUrl = _EnvConfig.getEnvVariable(_EnvConfig.ENV_KEY_API_BASE_URL)!;
-    supabaseApiKey =
-        _EnvConfig.getEnvVariable(_EnvConfig.ENV_KEY_SUPABASE_API_KEY)!;
+    wsUrl = _EnvConfig.getEnvVariable(_EnvConfig.ENV_WS_URL)!;
+    gptIntegrationUrl =
+        _EnvConfig.getEnvVariable(_EnvConfig.ENV_GPT_INTEGRATION_KEY)!;
+    landingUrl = _EnvConfig.getEnvVariable(_EnvConfig.ENV_LANDING_URL_KEY)!;
   }
 }
 
 abstract class _EnvConfig {
-  static const ENV_KEY_API_BASE_URL = 'API_BASE_URL';
-  static const ENV_KEY_SUPABASE_API_KEY = 'SUPABASE_API_KEY';
+  static const ENV_WS_URL = 'WS_URL';
+  static const ENV_GPT_INTEGRATION_KEY = 'GPT_URL';
+  static const ENV_LANDING_URL_KEY = 'LANDING_URL';
 
   static const systemEnv = {
-    ENV_KEY_API_BASE_URL: String.fromEnvironment(ENV_KEY_API_BASE_URL),
-    ENV_KEY_SUPABASE_API_KEY: String.fromEnvironment(ENV_KEY_SUPABASE_API_KEY),
+    ENV_WS_URL: String.fromEnvironment(ENV_WS_URL),
+    ENV_GPT_INTEGRATION_KEY: String.fromEnvironment(ENV_GPT_INTEGRATION_KEY),
+    ENV_LANDING_URL_KEY: String.fromEnvironment(ENV_LANDING_URL_KEY),
   };
 
   static final Map<String, String> _envFileEnv = {};

@@ -9,7 +9,119 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get ai_integration_chatgpt => 'ChatGPT';
+
+  @override
+  String get ai_integration_chatgpt_subtitle => 'Most Popular';
+
+  @override
+  String get ai_integration_mcp => 'MCP';
+
+  @override
+  String get ai_integration_mcp_subtitle => 'Claude, Cursor';
+
+  @override
+  String get ai_integration_subtitle =>
+      'Analyze your health data with ChatGPT, Claude and more';
+
+  @override
+  String get ai_integration_title => 'Connect with AI';
+
+  @override
   String get app_name => 'vytalLink';
+
+  @override
+  String get chatgpt_example_1 =>
+      'What were my average steps this week compared to last week?';
+
+  @override
+  String get chatgpt_example_2 =>
+      'How did my sleep quality affect my heart rate this month?';
+
+  @override
+  String get chatgpt_example_3 =>
+      'What\'s the trend in my workout intensity over the past 3 months?';
+
+  @override
+  String get chatgpt_example_4 =>
+      'Can you give me recommendations based on my activity patterns?';
+
+  @override
+  String get chatgpt_examples_description =>
+      'Here are some questions you can ask ChatGPT about your health data:';
+
+  @override
+  String get chatgpt_examples_title => 'Example Questions';
+
+  @override
+  String get chatgpt_feature_1 =>
+      'Simply ask questions about your health in everyday language';
+
+  @override
+  String get chatgpt_feature_2 =>
+      'Get instant, personalized insights about your wellness trends';
+
+  @override
+  String get chatgpt_feature_3 =>
+      'No technical knowledge needed - just start a conversation';
+
+  @override
+  String get chatgpt_feature_4 =>
+      'Understand your health data with clear, friendly explanations';
+
+  @override
+  String get chatgpt_integration_hero_subtitle =>
+      'ChatGPT is one of the world\'s most popular AI assistants. With vytalLink\'s custom GPT, analyzing your health data becomes incredibly simple and intuitive.';
+
+  @override
+  String get chatgpt_integration_hero_title => 'Connect with ChatGPT';
+
+  @override
+  String get chatgpt_integration_title => 'ChatGPT Integration';
+
+  @override
+  String get chatgpt_open_custom_gpt => 'Open vytalLink GPT';
+
+  @override
+  String get chatgpt_setup_title => 'How to Set Up';
+
+  @override
+  String get chatgpt_start_button => 'Start with ChatGPT';
+
+  @override
+  String get chatgpt_step_1_description =>
+      'First, go to the Home screen and tap \'Start Connection\' to connect this app. You\'ll receive a connection word and PIN that you\'ll use to authenticate with ChatGPT.';
+
+  @override
+  String get chatgpt_step_1_title => 'Connect This App';
+
+  @override
+  String get chatgpt_step_2_description =>
+      'We recommend using ChatGPT on the web at chatgpt.com since this app needs to stay open to send your data to ChatGPT.';
+
+  @override
+  String get chatgpt_step_2_title => 'Open ChatGPT Web';
+
+  @override
+  String get chatgpt_step_3_description =>
+      'In ChatGPT, go to GPTs and search for \'vytalLink\'. Click on it and then select \'Start Chat\' to begin.';
+
+  @override
+  String get chatgpt_step_3_title => 'Find vytalLink GPT';
+
+  @override
+  String get chatgpt_step_4_description =>
+      'Ask any question about your health data. ChatGPT will request your connection word and PIN - simply provide the credentials shown in this app, then start exploring your health insights!';
+
+  @override
+  String get chatgpt_step_4_title => 'Connect and Start Asking';
+
+  @override
+  String get chatgpt_what_is_description =>
+      'We\'ve created a special version of ChatGPT specifically designed for health data analysis. This custom GPT understands health metrics and can provide personalized insights about your wellness journey in simple, easy-to-understand language.';
+
+  @override
+  String get chatgpt_what_is_title => 'What is vytalLink\'s Custom GPT?';
 
   @override
   String get connection_code_label => 'Connection Code';
@@ -48,7 +160,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get connection_error_network_description =>
-      'Unable to connect to the MCP server. Please check your internet connection and try again.';
+      'Unable to connect to the vytalLink server. Please check your internet connection and try again.';
 
   @override
   String get connection_error_network_title => 'Connection Failed';
@@ -63,7 +175,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get connection_error_server_description =>
-      'The MCP server is not responding. Please verify the server is running and try again.';
+      'The vytalLink server is not responding. Please verify the server is running and try again.';
 
   @override
   String get connection_error_server_title => 'Server Connection Error';
@@ -77,7 +189,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get connection_lost_description =>
-      'The connection to the MCP server was lost unexpectedly. Please check your network and try reconnecting.';
+      'The connection to the vytalLink server was lost unexpectedly. Please check your network and try reconnecting.';
 
   @override
   String get connection_lost_title => 'Connection Lost';
@@ -99,6 +211,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get connection_section_title => 'Connection Credentials';
+
+  @override
+  String get copied_to_clipboard => 'Copied to clipboard';
 
   @override
   String get credentials_copied_to_clipboard =>
@@ -143,6 +258,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error_unknown_error_title => 'Ops!';
 
   @override
+  String get example_config_title => 'Example Claude Configuration:';
+
+  @override
   String get health_client_config_failed => 'Failed to configure health client';
 
   @override
@@ -165,32 +283,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get health_permissions_dialog_title => 'Health Data Access Required';
 
   @override
-  String get home_button_start_server => 'Start MCP Server';
+  String get home_button_start_server => 'Start Connection';
 
   @override
   String get home_button_starting => 'Starting...';
 
   @override
-  String get home_button_stop_server => 'Stop MCP Server';
+  String get home_button_stop_server => 'Stop Connection';
 
   @override
   String get home_button_stopping => 'Stopping...';
 
   @override
   String get home_description_error =>
-      'Unable to connect to the MCP server. Please check your connection and try again.';
+      'Unable to connect to the vytalLink server. Please check your connection and try again.';
 
   @override
   String get home_description_offline =>
-      'Ready to start the MCP server on this device';
+      'Ready to start the vytalLink server on this device';
 
   @override
   String get home_description_running =>
-      'MCP server is active and ready to receive connections';
+      'vytalLink server is active and ready to receive connections';
 
   @override
   String get home_description_starting =>
-      'Initializing MCP server and binding to port...';
+      'Initializing vytalLink server and binding to port...';
 
   @override
   String get home_description_stopping =>
@@ -213,10 +331,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home_status_error => 'Connection Error';
 
   @override
-  String get home_status_offline => 'MCP Server Offline';
+  String get home_status_offline => 'vytalLink Server Offline';
 
   @override
-  String get home_status_running => 'MCP Server Running';
+  String get home_status_running => 'vytalLink Server Running';
 
   @override
   String get home_status_starting => 'Starting Server...';
@@ -225,5 +343,145 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home_status_stopping => 'Stopping Server...';
 
   @override
-  String get home_title => 'MCP Server Control';
+  String get home_title => 'vytalLink Server Control';
+
+  @override
+  String get how_it_works_step1_description => 'Use the codes above to connect';
+
+  @override
+  String get how_it_works_step1_title => 'Connect the server';
+
+  @override
+  String get how_it_works_step2_description =>
+      'ChatGPT, Claude, or any compatible AI client';
+
+  @override
+  String get how_it_works_step2_title => 'Configure your AI';
+
+  @override
+  String get how_it_works_step3_description =>
+      'Get personalized insights from your data';
+
+  @override
+  String get how_it_works_step3_title => 'Ask about your health';
+
+  @override
+  String get how_it_works_title => 'How It Works?';
+
+  @override
+  String get mcp_any_client_description =>
+      'Any client that implements the MCP protocol is supported.';
+
+  @override
+  String get mcp_any_client_name => 'Any MCP Client';
+
+  @override
+  String get mcp_claude_desktop_description =>
+      'Anthropic\'s desktop AI assistant. Ideal for general use, chat, and productivity.';
+
+  @override
+  String get mcp_claude_desktop_name => 'Claude Desktop';
+
+  @override
+  String get mcp_cursor_description => 'AI-powered code editor';
+
+  @override
+  String get mcp_cursor_name => 'Cursor';
+
+  @override
+  String get mcp_example_1 =>
+      'Analyze health data directly in Claude Desktop conversations';
+
+  @override
+  String get mcp_example_2 =>
+      'Access health metrics in your development workflow with Cursor';
+
+  @override
+  String get mcp_example_3 =>
+      'Build health-focused applications with VS Code integration';
+
+  @override
+  String get mcp_example_4 => 'Create custom analysis and reporting tools';
+
+  @override
+  String get mcp_examples_description => 'With MCP integration, you can:';
+
+  @override
+  String get mcp_examples_title => 'What You Can Do';
+
+  @override
+  String get mcp_feature_1 =>
+      'Direct integration with Claude Desktop and other MCP clients';
+
+  @override
+  String get mcp_feature_2 => 'Secure and standardized data access protocol';
+
+  @override
+  String get mcp_feature_3 => 'Professional-grade AI development tools';
+
+  @override
+  String get mcp_feature_4 => 'Real-time data synchronization';
+
+  @override
+  String get mcp_integration_hero_subtitle =>
+      'Connect with Claude, Cursor, VS Code and other professional AI development tools for advanced data analysis.';
+
+  @override
+  String get mcp_integration_hero_title => 'Connect with Professional AI Tools';
+
+  @override
+  String get mcp_integration_title => 'Professional AI Tools';
+
+  @override
+  String get mcp_recommended_badge => 'Recommended';
+
+  @override
+  String get mcp_setup_guide_button => 'View Setup Guide';
+
+  @override
+  String get mcp_setup_nodejs_requirement =>
+      'You must have Node.js installed on your system to run the vytalLink server.';
+
+  @override
+  String get mcp_setup_title => 'How to Set Up';
+
+  @override
+  String get mcp_start_button => 'Start with MCP';
+
+  @override
+  String get mcp_step_1_description =>
+      'Install the vytalLink MCP server package on your computer using npm.';
+
+  @override
+  String get mcp_step_1_title => 'Install MCP Server';
+
+  @override
+  String get mcp_step_2_description =>
+      'Add vytalLink to your Claude Desktop, Cursor, or VS Code MCP configuration.';
+
+  @override
+  String get mcp_step_2_title => 'Configure Your MCP Client';
+
+  @override
+  String get mcp_step_3_description =>
+      'Start asking questions about your health data in your MCP client. When prompted, provide the connection word and PIN shown in this app. Once connected, you can analyze your health data directly within your professional AI tools.';
+
+  @override
+  String get mcp_step_3_title => 'Connect and Start Analyzing';
+
+  @override
+  String get mcp_supported_clients_title => 'Supported Clients';
+
+  @override
+  String get mcp_vscode_description => 'With MCP extension support';
+
+  @override
+  String get mcp_vscode_name => 'VS Code';
+
+  @override
+  String get mcp_what_is_description =>
+      'Model Context Protocol (MCP) is a standard that allows AI applications to securely access external data sources. It\'s used by professional tools like Claude Desktop, Cursor, and VS Code.';
+
+  @override
+  String get mcp_what_is_title => 'What is MCP?';
 }

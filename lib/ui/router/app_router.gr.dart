@@ -21,10 +21,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AuthenticatedSectionRouter(),
       );
     },
+    ChatGptIntegrationRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ChatGptIntegrationScreen(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const HomeScreen(),
+      );
+    },
+    McpIntegrationRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const McpIntegrationScreen(),
       );
     },
     UnauthenticatedSectionRoute.name: (routeData) {
@@ -51,6 +63,20 @@ class AuthenticatedSectionRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ChatGptIntegrationScreen]
+class ChatGptIntegrationRoute extends PageRouteInfo<void> {
+  const ChatGptIntegrationRoute({List<PageRouteInfo>? children})
+      : super(
+          ChatGptIntegrationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChatGptIntegrationRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [HomeScreen]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})
@@ -60,6 +86,20 @@ class HomeRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'HomeRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [McpIntegrationScreen]
+class McpIntegrationRoute extends PageRouteInfo<void> {
+  const McpIntegrationRoute({List<PageRouteInfo>? children})
+      : super(
+          McpIntegrationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'McpIntegrationRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

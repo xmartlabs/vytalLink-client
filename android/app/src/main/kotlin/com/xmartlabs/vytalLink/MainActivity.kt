@@ -1,4 +1,4 @@
-package com.xmartlabs.flutter_template
+package com.xmartlabs.vytalLink
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
