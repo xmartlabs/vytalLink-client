@@ -54,6 +54,18 @@ class SectionRouter extends StatelessWidget {
                 .localizations.error_no_internet_connection_error_description,
             retry,
           ),
+        ConnectionError(retry: final retry) => _showDialog(
+            context,
+            context.localizations.connection_error_network_title,
+            context.localizations.connection_error_network_description,
+            retry,
+          ),
+        ServerError(retry: final retry) => _showDialog(
+            context,
+            context.localizations.connection_lost_title,
+            context.localizations.connection_lost_description,
+            retry,
+          ),
         GeneralError(
           title: final titleLarge,
           description: final description,

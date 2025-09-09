@@ -1,10 +1,23 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 extension ColorExtension on Color {
-  Color getShade(int shade) => this is MaterialColor
-      ? (this as MaterialColor)[shade]!
-      : _generateMaterialColor();
+  Color getShade(int shade) {
+    if (this is MaterialColor) {
+      final materialColor = this as MaterialColor;
+      final shadeColor = materialColor[shade];
+      if (shadeColor != null) {
+        return shadeColor;
+      }
+      final availableShades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+      final int closestShade = availableShades.reduce(
+        (a, b) => (shade - a).abs() < (shade - b).abs() ? a : b,
+      );
+      return materialColor[closestShade] ?? materialColor;
+    }
+    return _generateMaterialColor()[shade] ?? this;
+  }
 
   MaterialColor _generateMaterialColor() => MaterialColor(toARGB32(), {
         50: _tintColor(0.9),
@@ -38,24 +51,4 @@ extension ColorExtension on Color {
         _shadeValue((b * 255.0).round() & 0xff, factor),
         1,
       );
-
-  // Color? get shade100 => _getShade(100);
-  //
-  // Color? get shade200 => _getShade(200);
-  //
-  // Color? get shade300 => _getShade(300);
-  //
-  // Color? get shade400 => _getShade(400);
-  //
-  // Color? get shade500 => _getShade(500);
-  //
-  // Color? get shade600 => _getShade(600);
-  //
-  // Color? get shade700 => _getShade(700);
-  //
-  // Color? get shade800 => _getShade(800);
-  //
-  // Color? get shade900 => _getShade(900);
-  //
-  // Color? get shade1000 => _getShade(1000);
 }

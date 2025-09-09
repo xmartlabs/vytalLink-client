@@ -23,6 +23,14 @@ sealed class GlobalEventHandlerStateError with _$GlobalEventHandlerStateError {
     VoidCallback? retry,
   ]) = InternetError;
 
+  const factory GlobalEventHandlerStateError.connectionError([
+    VoidCallback? retry,
+  ]) = ConnectionError;
+
+  const factory GlobalEventHandlerStateError.serverError([
+    VoidCallback? retry,
+  ]) = ServerError;
+
   const factory GlobalEventHandlerStateError.generalError(
     String? title,
     String description, [

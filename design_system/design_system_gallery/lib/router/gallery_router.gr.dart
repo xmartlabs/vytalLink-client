@@ -33,12 +33,6 @@ abstract class _$GalleryRouter extends RootStackRouter {
         child: const GalleryAppColorsScreen(),
       );
     },
-    GalleryAppRadioButtonRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const GalleryAppRadioButtonScreen(),
-      );
-    },
     GalleryAppTypographyRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -110,20 +104,6 @@ class GalleryAppColorsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'GalleryAppColorsRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [GalleryAppRadioButtonScreen]
-class GalleryAppRadioButtonRoute extends PageRouteInfo<void> {
-  const GalleryAppRadioButtonRoute({List<PageRouteInfo>? children})
-      : super(
-          GalleryAppRadioButtonRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'GalleryAppRadioButtonRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

@@ -1,10 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_template/core/source/mcp_schema.dart';
+import 'package:flutter_template/core/common/logger.dart';
 import 'package:health/health.dart';
-import 'package:mcp_server/mcp_server.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
-/// Configuration class for the Health MCP Server
 class HealthMcpServerConfig {
   const HealthMcpServerConfig({
     required this.serverName,
@@ -23,7 +25,6 @@ class HealthMcpServerConfig {
   final bool isJsonResponseEnabled;
 }
 
-/// Custom exceptions for the Health MCP Server
 class HealthMcpServerException implements Exception {
   const HealthMcpServerException(this.message, [this.cause]);
 
@@ -31,9 +32,8 @@ class HealthMcpServerException implements Exception {
   final dynamic cause;
 
   @override
-  String toString() =>
-      // ignore: lines_longer_than_80_chars
-      'HealthMcpServerException: $message${cause != null ? ' (Cause: $cause)' : ''}';
+  String toString() => 'HealthMcpServerException: $message'
+      '${cause != null ? ' (Cause: $cause)' : ''}';
 }
 
 class HealthPermissionException extends HealthMcpServerException {
@@ -44,63 +44,50 @@ class HealthDataUnavailableException extends HealthMcpServerException {
   const HealthDataUnavailableException(super.message, [super.cause]);
 }
 
-/// A service that provides health data through an MCP (Model Context Protocol)
-/// server.
-///
-/// This service integrates with Apple HealthKit and Google Health Connect to
-/// retrieve health data and expose it through an MCP server interface.
-///
-/// Example usage:
-/// ```dart
-/// final healthServer = HealthMcpServerService(
-///   config: HealthMcpServerConfig(
-///     serverName: 'My Health MCP Server',
-///     serverVersion: '1.0.0',
-///     host: 'localhost',
-///     port: 8080,
-///     endpoint: '/mcp',
-///   ),
-/// );
-///
-/// await healthServer.initialize();
-/// final server = await healthServer.start();
-/// ```
 class HealthMcpServerService {
-  /// Creates a new instance of the Health MCP Server Service.
   HealthMcpServerService({
     required this.config,
     Health? healthClient,
   }) : _healthClient = healthClient ?? Health();
 
-  /// The configuration for this server instance
   final HealthMcpServerConfig config;
-
-  /// The health client instance for accessing health data
   final Health _healthClient;
 
-  /// The MCP server instance (null if not started)
-  Server? _mcpServer;
+  late WebSocketChannel webSocketChannel;
 
-  /// Whether the health client has been configured
   bool _isHealthConfigured = false;
+  bool _isConnected = false;
 
-  /// Gets the current MCP server instance
-  ///
-  /// Throws [StateError] if the server has not been started yet.
-  Server get mcpServer {
-    if (_mcpServer == null) {
-      throw StateError('MCP server has not been started. Call start() first.');
-    }
-    return _mcpServer!;
+  bool get isConnected => _isConnected;
+  Health get healthClient => _healthClient;
+
+  final Uri _backendUrl =
+      Uri.parse('wss://vytallink.local.xmartlabs.com/ws/phone');
+
+  void Function(String code, String word, String message)?
+      _onConnectionCodeReceived;
+  void Function(String error)? _onConnectionError;
+
+  void Function()? _onConnectionLost;
+
+  void setConnectionCodeCallback(
+    void Function(String code, String word, String message) callback,
+  ) {
+    _onConnectionCodeReceived = callback;
   }
 
-  /// Whether the server is currently running
-  bool get isRunning => _mcpServer != null;
+  void setConnectionErrorCallback(
+    void Function(String error) callback,
+  ) {
+    _onConnectionError = callback;
+  }
 
-  /// Initializes the health client configuration
-  ///
-  /// This should be called before starting the server to ensure
-  /// the health client is properly configured.
+  void setConnectionLostCallback(
+    void Function() callback,
+  ) {
+    _onConnectionLost = callback;
+  }
+
   Future<void> initialize() async {
     if (_isHealthConfigured) return;
 
@@ -115,111 +102,105 @@ class HealthMcpServerService {
     }
   }
 
-  /// Stops the MCP server and cleans up resources
-  ///
-  /// Returns `true` if the server was successfully stopped,
-  /// `false` if it was already stopped.
-  Future<bool> stop() async {
-    if (_mcpServer == null) return false;
+  Future<void> stop() async {
+    if (_isConnected) {
+      await webSocketChannel.sink.close();
+      _isConnected = false;
+    }
+  }
 
+  Future<void> connectToBackend() async {
     try {
-      _mcpServer!.disconnect();
-      _mcpServer = null;
-      return true;
-    } catch (e) {
-      throw HealthMcpServerException(
-        'Failed to stop MCP server',
-        e,
+      Logger.d('Connecting to backend at: $_backendUrl');
+
+      webSocketChannel = IOWebSocketChannel.connect(_backendUrl);
+      _isConnected = true;
+
+      webSocketChannel.stream.listen(
+        (data) {
+          handleBackendMessage(data);
+        },
+        onError: (error) {
+          Logger.e('WebSocket error: $error');
+          _isConnected = false;
+          _onConnectionError?.call('Connection error: $error');
+        },
+        onDone: () {
+          Logger.d('WebSocket connection closed');
+          if (_isConnected) {
+            _isConnected = false;
+            _onConnectionLost?.call();
+          }
+        },
       );
-    }
-  }
 
-  /// Starts the MCP server with health data tools
-  ///
-  /// Returns the configured and running [Server] instance.
-  /// Throws [HealthMcpServerException] if server fails to start.
-  Future<Server> start() async {
-    if (_mcpServer != null) {
-      throw StateError('Server is already running. Call stop() first.');
-    }
+      await Future.delayed(const Duration(milliseconds: 500));
 
-    if (!_isHealthConfigured) {
-      await initialize();
-    }
+      if (!_isConnected) {
+        throw Exception('Connection failed - could not establish');
+      }
 
-    try {
-      final server = await McpServer.createAndStart(
-        config: McpServer.simpleConfig(
-          name: config.serverName,
-          version: config.serverVersion,
-        ),
-        transportConfig: TransportConfig.streamableHttp(
-          host: config.host,
-          port: config.port,
-          endpoint: config.endpoint,
-          isJsonResponseEnabled: config.isJsonResponseEnabled,
-        ),
-      ).then((server) => server.successOrNull!);
-
-      _registerHealthDataTool(server);
-      _mcpServer = server;
-
-      return server;
+      Logger.i('Connected to backend successfully');
     } catch (e) {
-      throw HealthMcpServerException(
-        'Failed to start MCP server',
-        e,
-      );
+      Logger.e('Failed to connect to backend: $e');
+      _isConnected = false;
+      rethrow;
     }
   }
 
-  /// Registers the health data tool with the MCP server
-  void _registerHealthDataTool(Server server) {
-    server.addTool(
-      name: "get_health_data",
-      description:
-          // ignore: lines_longer_than_80_chars
-          'Retrieve health data from Apple HealthKit or Google Health Connect for specified data types and time range',
-      inputSchema: inputSchema,
-      handler: (args) => _handleHealthDataRequest(args),
-    );
+  Future<void> sendToBackend(Map<String, dynamic> message) async {
+    if (!_isConnected) {
+      throw Exception('Not connected to backend');
+    }
+
+    final jsonMessage = jsonEncode(message);
+    webSocketChannel.sink.add(jsonMessage);
+    Logger.d('Sent to backend: $jsonMessage');
   }
 
-  /// Handles health data requests from the MCP server
-  Future<CallToolResult> _handleHealthDataRequest(
-    Map<String, dynamic> args,
-  ) async {
+  Future<void> handleBackendMessage(dynamic data) async {
     try {
-      final healthData = await _retrieveHealthData(args);
-      return _createSuccessResponse(healthData, args);
+      final Map<String, dynamic> message = jsonDecode(data);
+      Logger.d('Processing backend message: ${message['type']}');
+
+      switch (message['type']) {
+        case 'health_data_request':
+          final data2 = await handleHealthDataRequest(message);
+
+          await sendToBackend({
+            'type': 'response_metric',
+            'data': data2,
+            'requestId': message['requestId'],
+            'timestamp': DateTime.now().toIso8601String(),
+          });
+          break;
+        case 'connection_code':
+          final code = message['code'];
+          final word = message['word'];
+          final codeMessage = message['message'];
+          Logger.i('Received connection code: $word $code');
+
+          _onConnectionCodeReceived?.call(code, word, codeMessage);
+          break;
+        case 'error':
+          Logger.e('Backend error: ${message['error']}');
+          break;
+        case 'ping':
+          await sendToBackend({
+            'type': 'pong',
+            'requestId': message['requestId'],
+            'timestamp': DateTime.now().toIso8601String(),
+          });
+          break;
+        default:
+          Logger.w('Unknown message type: ${message['type']}');
+      }
     } catch (e) {
-      return _createErrorResponse(e);
+      Logger.e('Error processing backend message: $e');
     }
   }
 
-  /// Retrieves health data based on the provided arguments
-  Future<List<Map<String, dynamic>>> _retrieveHealthData(
-    Map<String, dynamic> args,
-  ) async {
-    final String valueTypeStr = args['value_type'];
-    final String startTimeString = args['startTime'];
-    final String endTimeString = args['endTime'];
-
-    final HealthDataType valueType = _parseHealthDataType(valueTypeStr);
-    final DateTime startTime = DateTime.parse(startTimeString);
-    final DateTime endTime = DateTime.parse(endTimeString);
-
-    _validateTimeRange(startTime, endTime);
-    await _ensureHealthPermissions([valueType]);
-
-    final List<HealthDataPoint> healthDataPoints =
-        await _fetchHealthDataPoints(valueType, startTime, endTime);
-
-    return _formatHealthDataPoints(healthDataPoints);
-  }
-
-  /// Parses health data type from string
-  HealthDataType _parseHealthDataType(String valueTypeStr) {
+  HealthDataType parseHealthDataType(String valueTypeStr) {
     try {
       return HealthDataType.values.firstWhere(
         (type) => type.name == valueTypeStr,
@@ -232,8 +213,7 @@ class HealthMcpServerService {
     }
   }
 
-  /// Validates that start time is before end time
-  void _validateTimeRange(DateTime startTime, DateTime endTime) {
+  void validateTimeRange(DateTime startTime, DateTime endTime) {
     if (startTime.isAfter(endTime)) {
       throw const HealthMcpServerException(
         'Start time must be before end time',
@@ -241,41 +221,18 @@ class HealthMcpServerService {
     }
   }
 
-  /// Ensures health permissions are granted for the specified types
-  Future<void> _ensureHealthPermissions(
-    List<HealthDataType> healthTypes,
-  ) async {
-    if (Platform.isAndroid) {
-      await _checkHealthConnectAvailability();
-    }
-
-    final bool hasPermissions = await _healthClient.hasPermissions(
-          healthTypes,
-          permissions: [HealthDataAccess.READ],
-        ) ??
-        false;
-
-    if (!hasPermissions) {
-      await _requestHealthPermissions(healthTypes);
-    }
-
-    await _ensureHistoryAuthorizationIfNeeded();
-  }
-
-  /// Checks if Google Health Connect is available on Android
-  Future<void> _checkHealthConnectAvailability() async {
+  Future<void> checkHealthConnectAvailability() async {
     final isAvailable = await _healthClient.isHealthConnectAvailable();
 
     if (!isAvailable) {
       throw const HealthDataUnavailableException(
-        // ignore: lines_longer_than_80_chars
-        'Google Health Connect is not available on this device. Please install it from the Play Store.',
+        'Google Health Connect is not available on this device. '
+        'Please install it from the Play Store.',
       );
     }
   }
 
-  /// Requests health permissions from the user
-  Future<void> _requestHealthPermissions(
+  Future<void> requestHealthPermissions(
     List<HealthDataType> healthTypes,
   ) async {
     final bool permissionsGranted = await _healthClient.requestAuthorization(
@@ -285,14 +242,13 @@ class HealthMcpServerService {
 
     if (!permissionsGranted) {
       throw const HealthPermissionException(
-        // ignore: lines_longer_than_80_chars
-        'Health permissions not granted. Please open Health Connect app and grant permissions manually.',
+        'Health permissions not granted. '
+        'Please open Health Connect app and grant permissions manually.',
       );
     }
   }
 
-  /// Ensures health data history authorization if needed
-  Future<void> _ensureHistoryAuthorizationIfNeeded() async {
+  Future<void> ensureHistoryAuthorizationIfNeeded() async {
     final isAuthorized = await _healthClient.isHealthDataHistoryAuthorized();
 
     if (!isAuthorized) {
@@ -300,32 +256,27 @@ class HealthMcpServerService {
     }
   }
 
-  /// Fetches health data points for the specified type and time range
-  Future<List<HealthDataPoint>> _fetchHealthDataPoints(
-    HealthDataType valueType,
-    DateTime startTime,
-    DateTime endTime,
+  Future<void> ensureHealthPermissions(
+    List<HealthDataType> healthTypes,
   ) async {
-    final List<HealthDataPoint> result = [];
-
-    if (valueType == HealthDataType.STEPS) {
-      final steps =
-          await _healthClient.getTotalStepsInInterval(startTime, endTime);
-      result.add(_createStepsDataPoint(steps ?? 0, startTime, endTime));
-    } else {
-      final healthData = await _healthClient.getHealthDataFromTypes(
-        types: [valueType],
-        startTime: startTime,
-        endTime: endTime,
-      );
-      result.addAll(healthData);
+    if (Platform.isAndroid) {
+      await checkHealthConnectAvailability();
     }
 
-    return result;
+    final bool hasPermissions = await _healthClient.hasPermissions(
+          healthTypes,
+          permissions: [HealthDataAccess.READ],
+        ) ??
+        false;
+
+    if (!hasPermissions) {
+      await requestHealthPermissions(healthTypes);
+    }
+
+    await ensureHistoryAuthorizationIfNeeded();
   }
 
-  /// Creates a steps data point
-  HealthDataPoint _createStepsDataPoint(
+  HealthDataPoint createStepsDataPoint(
     int steps,
     DateTime startTime,
     DateTime endTime,
@@ -343,63 +294,30 @@ class HealthMcpServerService {
         sourceName: '',
       );
 
-  /// Formats health data points to JSON-serializable format
-  List<Map<String, dynamic>> _formatHealthDataPoints(
-    List<HealthDataPoint> dataPoints,
-  ) =>
-      dataPoints
-          .map(
-            (dataPoint) => {
-              'type': dataPoint.type.name,
-              'value': _formatHealthValue(dataPoint.value),
-              'unit': dataPoint.unit.name,
-              'dateFrom': dataPoint.dateFrom.toIso8601String(),
-              'dateTo': dataPoint.dateTo.toIso8601String(),
-              'sourcePlatform': dataPoint.sourcePlatform.name,
-              'sourceDeviceId': dataPoint.sourceDeviceId,
-              'sourceId': dataPoint.sourceId,
-              'sourceName': dataPoint.sourceName,
-            },
-          )
-          .toList();
+  Future<List<HealthDataPoint>> fetchHealthDataPoints(
+    HealthDataType valueType,
+    DateTime startTime,
+    DateTime endTime,
+  ) async {
+    final List<HealthDataPoint> result = [];
 
-  /// Creates a success response for the MCP server
-  CallToolResult _createSuccessResponse(
-    List<Map<String, dynamic>> healthData,
-    Map<String, dynamic> args,
-  ) {
-    final startTime = DateTime.parse(args['startTime']);
-    final endTime = DateTime.parse(args['endTime']);
-    final valueType = args['value_type'];
+    if (valueType == HealthDataType.STEPS) {
+      final steps =
+          await _healthClient.getTotalStepsInInterval(startTime, endTime);
+      result.add(createStepsDataPoint(steps ?? 0, startTime, endTime));
+    } else {
+      final healthData = await _healthClient.getHealthDataFromTypes(
+        types: [valueType],
+        startTime: startTime,
+        endTime: endTime,
+      );
+      result.addAll(healthData);
+    }
 
-    return CallToolResult(
-      content: [
-        TextContent(
-          text: '''Health Data Retrieved Successfully
-
-Total data points: ${healthData.length}
-Time range: ${startTime.toIso8601String()} to ${endTime.toIso8601String()}
-Type requested: $valueType
-
-Data:
-${_formatDataForDisplay(healthData)}''',
-        ),
-      ],
-    );
+    return result;
   }
 
-  /// Creates an error response for the MCP server
-  CallToolResult _createErrorResponse(Object error) => CallToolResult(
-        content: [
-          TextContent(
-            text: 'Error retrieving health data: ${error.toString()}',
-          ),
-        ],
-        isError: true,
-      );
-
-  /// Formats health values for JSON serialization
-  dynamic _formatHealthValue(HealthValue value) {
+  dynamic formatHealthValue(HealthValue value) {
     if (value is NumericHealthValue) {
       return value.numericValue;
     } else if (value is WorkoutHealthValue) {
@@ -419,7 +337,45 @@ ${_formatDataForDisplay(healthData)}''',
     return value.toString();
   }
 
-  /// Formats health data for display in the response
+  List<Map<String, dynamic>> formatHealthDataPoints(
+    List<HealthDataPoint> dataPoints,
+  ) =>
+      dataPoints
+          .map(
+            (dataPoint) => {
+              'type': dataPoint.type.name,
+              'value': formatHealthValue(dataPoint.value),
+              'unit': dataPoint.unit.name,
+              'dateFrom': dataPoint.dateFrom.toIso8601String(),
+              'dateTo': dataPoint.dateTo.toIso8601String(),
+              'sourcePlatform': dataPoint.sourcePlatform.name,
+              'sourceDeviceId': dataPoint.sourceDeviceId,
+              'sourceId': dataPoint.sourceId,
+              'sourceName': dataPoint.sourceName,
+            },
+          )
+          .toList();
+
+  Future<List<Map<String, dynamic>>> retrieveHealthData(
+    Map<String, dynamic> args,
+  ) async {
+    final String valueTypeStr = args['value_type'];
+    final String startTimeString = args['startTime'];
+    final String endTimeString = args['endTime'];
+
+    final HealthDataType valueType = parseHealthDataType(valueTypeStr);
+    final DateTime startTime = DateTime.parse(startTimeString);
+    final DateTime endTime = DateTime.parse(endTimeString);
+
+    validateTimeRange(startTime, endTime);
+    await ensureHealthPermissions([valueType]);
+
+    final List<HealthDataPoint> healthDataPoints =
+        await fetchHealthDataPoints(valueType, startTime, endTime);
+
+    return formatHealthDataPoints(healthDataPoints);
+  }
+
   String _formatDataForDisplay(List<Map<String, dynamic>> data) {
     if (data.isEmpty) {
       return 'No data found for the specified criteria';
@@ -452,5 +408,34 @@ ${_formatDataForDisplay(healthData)}''',
     });
 
     return buffer.toString();
+  }
+
+  Map<String, dynamic> createSuccessResponse(
+    List<Map<String, dynamic>> healthData,
+    Map<String, dynamic> args,
+  ) =>
+      {
+        'success': true,
+        'count': healthData.length,
+        'healthData': healthData,
+        'value_type': args['value_type'],
+        'startTime': args['startTime'],
+        'endTime': args['endTime'],
+      };
+
+  Map<String, dynamic> createErrorResponse(Object error) => {
+        'success': false,
+        'error_message': 'Error retrieving health data: ${error.toString()}',
+      };
+
+  Future<Map<String, dynamic>> handleHealthDataRequest(
+    Map<String, dynamic> args,
+  ) async {
+    try {
+      final healthData = await retrieveHealthData(args['payload']);
+      return createSuccessResponse(healthData, args);
+    } catch (e) {
+      return createErrorResponse(e);
+    }
   }
 }

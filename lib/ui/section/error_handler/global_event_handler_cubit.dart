@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'global_event_handler_cubit.freezed.dart';
-
 part 'global_event_handler_state.dart';
 
 class GlobalEventHandlerCubit extends Cubit<GlobalEventHandlerState>
@@ -17,30 +16,41 @@ class GlobalEventHandlerCubit extends Cubit<GlobalEventHandlerState>
     StackTrace? stackTrace,
     VoidCallback? retry,
   ]) {
-    if (error is DioException &&
-        (error.type == DioExceptionType.connectionTimeout ||
-            error.type == DioExceptionType.sendTimeout ||
-            error.type == DioExceptionType.receiveTimeout)) {
-      emit(
-        const GlobalEventHandlerState.error(
-          GlobalEventHandlerStateError.internetError(),
-        ),
-      );
-    } else if (error is GeneralError) {
-      emit(
-        GlobalEventHandlerState.error(
-          GlobalEventHandlerStateError.generalError(
-            error.title,
-            error.description,
+    if (state is GlobalEventHandlerStateError) {
+      return;
+    }
+
+    final category = categorizeError(error);
+
+    switch (category) {
+      case ErrorCategory.internet:
+        emit(
+          const GlobalEventHandlerState.error(
+            GlobalEventHandlerStateError.internetError(),
           ),
-        ),
-      );
-    } else {
-      emit(
-        GlobalEventHandlerState.error(
-          GlobalEventHandlerStateError.unknownError(error),
-        ),
-      );
+        );
+        break;
+      case ErrorCategory.connection:
+        emit(
+          GlobalEventHandlerState.error(
+            GlobalEventHandlerStateError.connectionError(retry),
+          ),
+        );
+        break;
+      case ErrorCategory.server:
+        emit(
+          GlobalEventHandlerState.error(
+            GlobalEventHandlerStateError.serverError(retry),
+          ),
+        );
+        break;
+      case ErrorCategory.unknown:
+        emit(
+          GlobalEventHandlerState.error(
+            GlobalEventHandlerStateError.unknownError(error, retry),
+          ),
+        );
+        break;
     }
   }
 
@@ -49,6 +59,9 @@ class GlobalEventHandlerCubit extends Cubit<GlobalEventHandlerState>
 
   @override
   void stopLoading() => emit(const GlobalEventHandlerState.idle());
+
+  @override
+  void clearError() => emit(const GlobalEventHandlerState.idle());
 }
 
 abstract interface class GlobalEventHandler {
@@ -57,8 +70,12 @@ abstract interface class GlobalEventHandler {
     StackTrace? stackTrace,
     VoidCallback? retry,
   ]);
+
   void startLoading();
+
   void stopLoading();
+
+  void clearError();
 }
 
 //ignore: unused-code
@@ -69,4 +86,37 @@ extension GlobalEventExtension on GlobalEventHandler {
     stopLoading();
     return response;
   }
+}
+
+enum ErrorCategory {
+  internet,
+  connection,
+  server,
+  unknown,
+}
+
+class CategorizedError implements Exception {
+  final ErrorCategory category;
+  final String message;
+  final Exception? originalError;
+
+  CategorizedError(this.category, this.message, [this.originalError]);
+
+  @override
+  String toString() => message;
+}
+
+ErrorCategory categorizeError(Object? error) {
+  if (error is CategorizedError) {
+    return error.category;
+  }
+
+  if (error is DioException &&
+      (error.type == DioExceptionType.connectionTimeout ||
+          error.type == DioExceptionType.sendTimeout ||
+          error.type == DioExceptionType.receiveTimeout)) {
+    return ErrorCategory.internet;
+  }
+
+  return ErrorCategory.unknown;
 }

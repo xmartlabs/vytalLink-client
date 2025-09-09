@@ -1,11 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:design_system/design_system.dart';
-import 'package:design_system/extensions/color_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_template/ui/extensions/context_extensions.dart';
+import 'package:flutter_template/l10n/app_localizations.dart';
 import 'package:flutter_template/ui/home/home_cubit.dart';
+import 'package:flutter_template/ui/home/widgets/animated_credentials_card.dart';
+import 'package:flutter_template/ui/home/widgets/animated_server_card.dart';
 import 'package:flutter_template/ui/section/error_handler/global_event_handler_cubit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
@@ -18,200 +20,94 @@ class HomeScreen extends StatelessWidget {
       );
 }
 
-class _HomeContentScreen extends StatelessWidget {
+class _HomeContentScreen extends StatefulWidget {
   const _HomeContentScreen();
+
+  @override
+  State<_HomeContentScreen> createState() => _HomeContentScreenState();
+}
+
+class _HomeContentScreenState extends State<_HomeContentScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _pulseAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1.2,
+    ).animate(
+      CurvedAnimation(
+        parent: _pulseController,
+        curve: Curves.easeInOut,
+      ),
+    );
+    _pulseController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) => Scaffold(
+          backgroundColor: context.theme.colorScheme.surface,
           appBar: AppBar(
-            title: Text(
-              context.localizations.home_title,
-              style: TextStyle(
-                color: context.theme.customColors.textColor?.getShade(100),
-              ),
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  FontAwesomeIcons.heartPulse,
+                  color: context.theme.colorScheme.primary,
+                  size: 28,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  AppLocalizations.of(context)!.app_name,
+                  style: TextStyle(
+                    color: context.theme.colorScheme.primary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
             ),
             centerTitle: true,
+            backgroundColor: context.theme.colorScheme.surface,
+            elevation: 2,
+            shadowColor: context.theme.colorScheme.primary
+                .withAlpha((0.1 * 255).toInt()),
           ),
-          body: Center(
-            child: Padding(
+          body: SafeArea(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    _getServerIcon(state),
-                    size: 120,
-                    color: _getServerIconColor(context, state),
+                  AnimatedCredentialCard(
+                    connectionWord: state.connectionWord,
+                    connectionCode: state.connectionCode,
                   ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    height: 60,
-                    child: Text(
-                      _getServerDescriptionText(context, state),
-                      style: context.theme.textStyles.bodyLarge?.copyWith(
-                        color: context.theme.colorScheme.onSurface
-                            .withValues(alpha: 0.7),
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                  AnimatedServerCard(
+                    status: state.status,
+                    errorMessage: state.errorMessage,
+                    pulseAnimation: _pulseAnimation,
+                    onStartPressed: () =>
+                        context.read<HomeCubit>().checkAndStartServer(),
                   ),
-                  const SizedBox(height: 28),
-                  SizedBox(
-                    height: 60,
-                    child: Column(
-                      children: [
-                        if (state.ipAddress.isNotEmpty)
-                          Text(
-                            context.localizations
-                                .home_server_ip_label(state.ipAddress),
-                            style:
-                                context.theme.textStyles.bodyMedium?.copyWith(
-                              color: context.theme.colorScheme.onSurface
-                                  .withValues(alpha: 0.6),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        if (state.endpoint.isNotEmpty)
-                          Text(
-                            context.localizations
-                                .home_endpoint_label(state.endpoint),
-                            style:
-                                context.theme.textStyles.bodyMedium?.copyWith(
-                              color: context.theme.colorScheme.onSurface
-                                  .withValues(alpha: 0.6),
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  _buildActionButton(context, state),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),
           ),
         ),
       );
-
-  Widget _buildActionButton(BuildContext context, HomeState state) {
-    switch (state.status) {
-      case McpServerStatus.idle:
-        return _startButton(context);
-      case McpServerStatus.starting:
-        return _loadingButton(
-          context,
-          context.localizations.home_button_starting,
-        );
-      case McpServerStatus.running:
-        return _stopButton(context);
-      case McpServerStatus.stopping:
-        return _loadingButton(
-          context,
-          context.localizations.home_button_stopping,
-        );
-    }
-  }
-
-  Widget _startButton(BuildContext context) => SizedBox(
-        width: double.infinity,
-        child: ElevatedButton.icon(
-          onPressed: () => context.read<HomeCubit>().startMCPServer(),
-          icon: const Icon(Icons.play_arrow),
-          label: Text(context.localizations.home_button_start_server),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            backgroundColor: context.theme.colorScheme.primary,
-            foregroundColor:
-                context.theme.customColors.textColor?.getShade(100),
-          ),
-        ),
-      );
-
-  Widget _stopButton(BuildContext context) => SizedBox(
-        width: double.infinity,
-        child: ElevatedButton.icon(
-          onPressed: () => context.read<HomeCubit>().stopMCPServer(),
-          icon: const Icon(Icons.stop),
-          label: Text(context.localizations.home_button_stop_server),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            backgroundColor: context.theme.customColors.danger,
-            foregroundColor:
-                context.theme.customColors.textColor?.getShade(100),
-          ),
-        ),
-      );
-
-  Widget _loadingButton(BuildContext context, String label) => SizedBox(
-        width: double.infinity,
-        child: ElevatedButton.icon(
-          onPressed: null,
-          icon: const SizedBox(
-            width: 20,
-            height: 20,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-          ),
-          label: Text(label),
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-          ),
-        ),
-      );
-
-  IconData _getServerIcon(HomeState state) {
-    switch (state.status) {
-      case McpServerStatus.idle:
-        return Icons.cloud_off;
-      case McpServerStatus.starting:
-        return Icons.cloud_sync;
-      case McpServerStatus.running:
-        return Icons.cloud_done;
-      case McpServerStatus.stopping:
-        return Icons.cloud_sync;
-    }
-  }
-
-  Color _getServerIconColor(BuildContext context, HomeState state) {
-    switch (state.status) {
-      case McpServerStatus.idle:
-        return context.theme.colorScheme.onSurface.withValues(alpha: 0.5);
-      case McpServerStatus.starting:
-        return context.theme.colorScheme.primary;
-      case McpServerStatus.running:
-        return Colors.green;
-      case McpServerStatus.stopping:
-        return context.theme.colorScheme.primary;
-    }
-  }
-
-  String _getServerStatusText(BuildContext context, HomeState state) {
-    switch (state.status) {
-      case McpServerStatus.idle:
-        return context.localizations.home_status_offline;
-      case McpServerStatus.starting:
-        return context.localizations.home_status_starting;
-      case McpServerStatus.running:
-        return context.localizations.home_status_running;
-      case McpServerStatus.stopping:
-        return context.localizations.home_status_stopping;
-    }
-  }
-
-  String _getServerDescriptionText(BuildContext context, HomeState state) {
-    switch (state.status) {
-      case McpServerStatus.idle:
-        return context.localizations.home_description_offline;
-      case McpServerStatus.starting:
-        return context.localizations.home_description_starting;
-      case McpServerStatus.running:
-        return context.localizations.home_description_running;
-      case McpServerStatus.stopping:
-        return context.localizations.home_description_stopping;
-    }
-  }
 }
