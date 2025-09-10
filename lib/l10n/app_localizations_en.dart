@@ -277,6 +277,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get health_permission_required => 'Health permission required';
 
   @override
+  String get health_permissions_alert_accept => 'Accept';
+
+  @override
+  String get health_permissions_alert_cancel => 'Cancel';
+
+  @override
+  String get health_permissions_alert_message =>
+      'We do not store or keep any of your health data. We simply act as an intermediary with the provider you choose. To connect to the server, you must first accept and grant permissions to access your health wearables. Only then can we send your data as you request.';
+
+  @override
+  String get health_permissions_alert_title => 'Health Data Privacy';
+
+  @override
   String get health_permissions_dialog_accept => 'Allow';
 
   @override
@@ -615,17 +628,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboarding_welcome_title => 'Welcome to vytalLink';
-
-  @override
-  String get health_permissions_alert_title => 'Health Data Privacy';
-
-  @override
-  String get health_permissions_alert_message =>
-      'We do not store or keep any of your health data. We simply act as an intermediary with the provider you choose. To connect to the server, you must first accept and grant permissions to access your health wearables. Only then can we send your data as you request.';
-
-  @override
-  String get health_permissions_alert_accept => 'Accept';
-
-  @override
-  String get health_permissions_alert_cancel => 'Cancel';
 }

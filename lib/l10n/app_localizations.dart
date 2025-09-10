@@ -6,7 +6,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
-import 'app_localizations_es.dart';
 
 // ignore_for_file: type=lint
 
@@ -93,10 +92,7 @@ abstract class AppLocalizations {
   ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[
-    Locale('en'),
-    Locale('es')
-  ];
+  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
 
   /// No description provided for @ai_integration_chatgpt.
   ///
@@ -565,6 +561,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Health permission required'**
   String get health_permission_required;
+
+  /// No description provided for @health_permissions_alert_accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get health_permissions_alert_accept;
+
+  /// No description provided for @health_permissions_alert_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get health_permissions_alert_cancel;
+
+  /// No description provided for @health_permissions_alert_message.
+  ///
+  /// In en, this message translates to:
+  /// **'We do not store or keep any of your health data. We simply act as an intermediary with the provider you choose. To connect to the server, you must first accept and grant permissions to access your health wearables. Only then can we send your data as you request.'**
+  String get health_permissions_alert_message;
+
+  /// No description provided for @health_permissions_alert_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Data Privacy'**
+  String get health_permissions_alert_title;
 
   /// No description provided for @health_permissions_dialog_accept.
   ///
@@ -1153,30 +1173,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome to vytalLink'**
   String get onboarding_welcome_title;
-
-  /// No description provided for @health_permissions_alert_title.
-  ///
-  /// In en, this message translates to:
-  /// **'Health Data Privacy'**
-  String get health_permissions_alert_title;
-
-  /// No description provided for @health_permissions_alert_message.
-  ///
-  /// In en, this message translates to:
-  /// **'We do not store or keep any of your health data. We simply act as an intermediary with the provider you choose. To connect to the server, you must first accept and grant permissions to access your health wearables. Only then can we send your data as you request.'**
-  String get health_permissions_alert_message;
-
-  /// No description provided for @health_permissions_alert_accept.
-  ///
-  /// In en, this message translates to:
-  /// **'Accept'**
-  String get health_permissions_alert_accept;
-
-  /// No description provided for @health_permissions_alert_cancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get health_permissions_alert_cancel;
 }
 
 class _AppLocalizationsDelegate
@@ -1190,7 +1186,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'es'].contains(locale.languageCode);
+      <String>['en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1201,8 +1197,6 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
   }
 
   throw FlutterError(
