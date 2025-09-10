@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_template/ui/extensions/context_extensions.dart';
 import 'package:flutter_template/ui/onboarding/onboarding_cubit.dart';
+import 'package:flutter_template/ui/onboarding/onboarding_pages.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 @RoutePage()
@@ -34,63 +35,39 @@ class _OnboardingScreenState extends State<_OnboardingContentScreen>
   late Animation<double> _iconAnimation;
   late Animation<double> _fadeAnimation;
 
-  List<_OnboardingPage> get _pages => [
-        _OnboardingPage(
-          icon: FontAwesomeIcons.heartPulse,
-          title: context.localizations.onboarding_welcome_title,
-          subtitle: context.localizations.onboarding_welcome_subtitle,
-          description: context.localizations.onboarding_welcome_description,
-          features: [],
+  Widget _buildContentColumn(OnboardingState state) {
+    final pages = generateOnboardingPages(context);
+    return Column(
+      children: [
+        OnboardingHeader(onSkip: _finishOnboarding),
+        _OnboardingPageIndicator(
+          pages: pages,
+          currentPage: state.currentPage,
         ),
-        _OnboardingPage(
-          icon: FontAwesomeIcons.chartLine,
-          title: context.localizations.onboarding_health_monitoring_title,
-          subtitle: context.localizations.onboarding_health_monitoring_subtitle,
-          description:
-              context.localizations.onboarding_health_monitoring_description,
-          features: [
-            context.localizations.onboarding_health_monitoring_feature_1,
-            context.localizations.onboarding_health_monitoring_feature_2,
-            context.localizations.onboarding_health_monitoring_feature_3,
-          ],
+        Expanded(
+          child: PageView.builder(
+            controller: _pageController,
+            onPageChanged: (index) {
+              context.read<OnboardingCubit>().setCurrentPage(index);
+            },
+            itemCount: pages.length,
+            itemBuilder: (context, index) => _OnboardingPageWidget(
+              page: pages[index],
+              iconAnimation: _iconAnimation,
+              fadeAnimation: _fadeAnimation,
+            ),
+          ),
         ),
-        _OnboardingPage(
-          icon: FontAwesomeIcons.gears,
-          title: context.localizations.onboarding_how_it_works_title,
-          subtitle: context.localizations.onboarding_how_it_works_subtitle,
-          description:
-              context.localizations.onboarding_how_it_works_description,
-          features: [
-            context.localizations.onboarding_how_it_works_feature_1,
-            context.localizations.onboarding_how_it_works_feature_2,
-            context.localizations.onboarding_how_it_works_feature_3,
-          ],
+        _OnboardingNavigationSection(
+          currentPage: state.currentPage,
+          pageController: _pageController,
+          pages: pages,
+          finishOnboarding: _finishOnboarding,
+          restartAnimations: _restartAnimations,
         ),
-        _OnboardingPage(
-          icon: FontAwesomeIcons.comments,
-          title: context.localizations.onboarding_ask_questions_title,
-          subtitle: context.localizations.onboarding_ask_questions_subtitle,
-          description:
-              context.localizations.onboarding_ask_questions_description,
-          features: [
-            context.localizations.onboarding_ask_questions_feature_1,
-            context.localizations.onboarding_ask_questions_feature_2,
-            context.localizations.onboarding_ask_questions_feature_3,
-          ],
-        ),
-        _OnboardingPage(
-          icon: FontAwesomeIcons.rocket,
-          title: context.localizations.onboarding_ai_integration_title,
-          subtitle: context.localizations.onboarding_ai_integration_subtitle,
-          description:
-              context.localizations.onboarding_ai_integration_description,
-          features: [
-            context.localizations.onboarding_ai_integration_feature_1,
-            context.localizations.onboarding_ai_integration_feature_2,
-            context.localizations.onboarding_ai_integration_feature_3,
-          ],
-        ),
-      ];
+      ],
+    );
+  }
 
   @override
   void initState() {
@@ -134,43 +111,46 @@ class _OnboardingScreenState extends State<_OnboardingContentScreen>
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: context.theme.colorScheme.surface,
-        body: SafeArea(
-          child: BlocBuilder<OnboardingCubit, OnboardingState>(
-            builder: (context, state) => Column(
-              children: [
-                OnboardingHeader(onSkip: _finishOnboarding),
-                _OnboardingPageIndicator(
-                  pages: _pages,
-                  currentPage: state.currentPage,
-                ),
-                Expanded(
-                  child: PageView.builder(
-                    controller: _pageController,
-                    onPageChanged: (index) {
-                      context.read<OnboardingCubit>().setCurrentPage(index);
-                    },
-                    itemCount: _pages.length,
-                    itemBuilder: (context, index) => _OnboardingPageWidget(
-                      page: _pages[index],
-                      iconAnimation: _iconAnimation,
-                      fadeAnimation: _fadeAnimation,
-                    ),
+  Widget build(BuildContext context) {
+    final pages = generateOnboardingPages(context);
+    return Scaffold(
+      backgroundColor: context.theme.colorScheme.surface,
+      body: SafeArea(
+        child: BlocBuilder<OnboardingCubit, OnboardingState>(
+          builder: (context, state) => Column(
+            children: [
+              OnboardingHeader(onSkip: _finishOnboarding),
+              _OnboardingPageIndicator(
+                pages: pages,
+                currentPage: state.currentPage,
+              ),
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    context.read<OnboardingCubit>().setCurrentPage(index);
+                  },
+                  itemCount: pages.length,
+                  itemBuilder: (context, index) => _OnboardingPageWidget(
+                    page: pages[index],
+                    iconAnimation: _iconAnimation,
+                    fadeAnimation: _fadeAnimation,
                   ),
                 ),
-                _OnboardingNavigationSection(
-                  currentPage: state.currentPage,
-                  pageController: _pageController,
-                  pages: _pages,
-                  finishOnboarding: _finishOnboarding,
-                  restartAnimations: _restartAnimations,
-                ),
-              ],
-            ),
+              ),
+              _OnboardingNavigationSection(
+                currentPage: state.currentPage,
+                pageController: _pageController,
+                pages: pages,
+                finishOnboarding: _finishOnboarding,
+                restartAnimations: _restartAnimations,
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
+  }
 
   void _finishOnboarding() {
     context.read<OnboardingCubit>().completeOnboarding();
@@ -223,13 +203,13 @@ class OnboardingHeader extends StatelessWidget {
 
 class _OnboardingPageIndicator extends StatelessWidget {
   const _OnboardingPageIndicator({
-    required List<_OnboardingPage> pages,
+    required List<OnboardingPage> pages,
     required int currentPage,
     super.key,
   })  : _pages = pages,
         _currentPage = currentPage;
 
-  final List<_OnboardingPage> _pages;
+  final List<OnboardingPage> _pages;
   final int _currentPage;
 
   @override
@@ -256,7 +236,7 @@ class _OnboardingPageIndicator extends StatelessWidget {
 }
 
 class _OnboardingPageWidget extends StatelessWidget {
-  final _OnboardingPage page;
+  final OnboardingPage page;
   final Animation<double> iconAnimation;
   final Animation<double> fadeAnimation;
 
@@ -410,14 +390,14 @@ class _FeatureItem extends StatelessWidget {
   }
 }
 
-class _OnboardingPage {
+class OnboardingPage {
   final IconData icon;
   final String title;
   final String subtitle;
   final String description;
   final List<String> features;
 
-  _OnboardingPage({
+  OnboardingPage({
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -429,7 +409,7 @@ class _OnboardingPage {
 class _OnboardingNavigationSection extends StatelessWidget {
   final int currentPage;
   final PageController pageController;
-  final List<_OnboardingPage> pages;
+  final List<OnboardingPage> pages;
   final VoidCallback finishOnboarding;
   final VoidCallback restartAnimations;
 

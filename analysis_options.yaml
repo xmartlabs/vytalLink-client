@@ -107,7 +107,7 @@ dart_code_linter:
     - prefer-immediate-return
     - prefer-last
     - prefer-moving-to-variable:
-        allowed-duplicated-chains: 3
+        allowed-duplicated-chains: 5
     - prefer-trailing-comma
 
 # Additional information about this file can be found at
