@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter_template/core/common/config.dart';
 import 'package:flutter_template/core/common/logger.dart';
+import 'package:flutter_template/model/vytal_health_data_category.dart';
 import 'package:health/health.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -201,9 +202,9 @@ class HealthMcpServerService {
     }
   }
 
-  HealthDataType parseHealthDataType(String valueTypeStr) {
+  VytalHealthDataCategory parseHealthDataType(String valueTypeStr) {
     try {
-      return HealthDataType.values.firstWhere(
+      return VytalHealthDataCategory.values.firstWhere(
         (type) => type.name == valueTypeStr,
       );
     } catch (e) {
@@ -238,7 +239,7 @@ class HealthMcpServerService {
   ) async {
     final bool permissionsGranted = await _healthClient.requestAuthorization(
       healthTypes,
-      permissions: [HealthDataAccess.READ],
+      permissions: healthTypes.map((_) => HealthDataAccess.READ).toList(),
     );
 
     if (!permissionsGranted) {
@@ -266,7 +267,7 @@ class HealthMcpServerService {
 
     final bool hasPermissions = await _healthClient.hasPermissions(
           healthTypes,
-          permissions: [HealthDataAccess.READ],
+          permissions: healthTypes.map((_) => HealthDataAccess.READ).toList(),
         ) ??
         false;
 
@@ -349,10 +350,6 @@ class HealthMcpServerService {
               'unit': dataPoint.unit.name,
               'dateFrom': dataPoint.dateFrom.toIso8601String(),
               'dateTo': dataPoint.dateTo.toIso8601String(),
-              'sourcePlatform': dataPoint.sourcePlatform.name,
-              'sourceDeviceId': dataPoint.sourceDeviceId,
-              'sourceId': dataPoint.sourceId,
-              'sourceName': dataPoint.sourceName,
             },
           )
           .toList();
@@ -364,15 +361,17 @@ class HealthMcpServerService {
     final String startTimeString = args['startTime'];
     final String endTimeString = args['endTime'];
 
-    final HealthDataType valueType = parseHealthDataType(valueTypeStr);
+    final VytalHealthDataCategory valueType = parseHealthDataType(valueTypeStr);
     final DateTime startTime = DateTime.parse(startTimeString);
     final DateTime endTime = DateTime.parse(endTimeString);
 
     validateTimeRange(startTime, endTime);
-    await ensureHealthPermissions([valueType]);
+    await ensureHealthPermissions(valueType.platformHealthDataTypes);
 
-    final List<HealthDataPoint> healthDataPoints =
-        await fetchHealthDataPoints(valueType, startTime, endTime);
+    final List<HealthDataPoint> healthDataPoints = await Future.wait(
+      valueType.platformHealthDataTypes
+          .map((type) => fetchHealthDataPoints(type, startTime, endTime)),
+    ).then((lists) => lists.expand((list) => list).toList());
 
     return formatHealthDataPoints(healthDataPoints);
   }

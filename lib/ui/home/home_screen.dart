@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_template/core/service/once_service.dart';
 import 'package:flutter_template/ui/extensions/context_extensions.dart';
 import 'package:flutter_template/ui/home/home_cubit.dart';
 import 'package:flutter_template/ui/home/widgets/ai_integration_card.dart';
@@ -31,6 +32,8 @@ class _HomeContentScreen extends StatefulWidget {
 
 class _HomeContentScreenState extends State<_HomeContentScreen>
     with TickerProviderStateMixin {
+  static const _showHealthPermissionsAlertKey = 'showHealthPermissionsAlert';
+
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
 
@@ -143,10 +146,16 @@ class _HomeContentScreenState extends State<_HomeContentScreen>
   Future<void> _checkPermissionsAndStartServer() async {
     final cubit = context.read<HomeCubit>();
     final hasPermissions = await cubit.hasAllHealthPermissions();
-    if (!hasPermissions) {
+
+    if (!hasPermissions &&
+        !await OnceService.beenDone(_showHealthPermissionsAlertKey)) {
       final accepted = await _showHealthPermissionsAlert();
       if (accepted != true) return;
     }
-    await cubit.checkAndStartServer();
+
+    final startServer = await cubit.checkAndStartServer();
+    if (startServer) {
+      await OnceService.markDone(_showHealthPermissionsAlertKey);
+    }
   }
 }

@@ -9,6 +9,8 @@ import 'package:flutter_template/ui/onboarding/onboarding_cubit.dart';
 import 'package:flutter_template/ui/onboarding/onboarding_pages.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+const double _kSmallScreenHeightThreshold = 700;
+
 @RoutePage()
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -248,81 +250,96 @@ class _OnboardingPageWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
-        child: Column(
-          children: [
-            SizedBox(height: 40.h),
-            ScaleTransition(
-              scale: iconAnimation,
-              child: Container(
-                width: 120.w,
-                height: 120.w,
-                decoration: BoxDecoration(
-                  color:
-                      context.theme.colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(60.r),
-                ),
-                child: Icon(
-                  page.icon,
-                  size: 48.sp,
-                  color: context.theme.colorScheme.primary,
-                ),
-              ),
+  Widget build(BuildContext context) {
+    final bool isSmallScreen = _isSmallScreen(context);
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      child: Column(
+        children: [
+          SizedBox(height: isSmallScreen ? 28.h : 40.h),
+          ScaleTransition(
+            scale: iconAnimation,
+            child: Builder(
+              builder: (context) {
+                final double logoSize = isSmallScreen ? 80.w : 120.w;
+                return Container(
+                  width: logoSize,
+                  height: logoSize,
+                  decoration: BoxDecoration(
+                    color: context.theme.colorScheme.primary
+                        .withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(logoSize / 2),
+                  ),
+                  child: Icon(
+                    page.icon,
+                    size: 48.sp,
+                    color: context.theme.colorScheme.primary,
+                  ),
+                );
+              },
             ),
-            SizedBox(height: 28.h),
-            FadeTransition(
-              opacity: fadeAnimation,
-              child: Text(
-                page.title,
-                style: context.theme.textTheme.headlineMedium?.copyWith(
-                  color: context.theme.customColors.textColor!.getShade(500),
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(height: 6.h),
-            FadeTransition(
-              opacity: fadeAnimation,
-              child: Text(
-                page.subtitle,
-                style: context.theme.textTheme.bodyLarge?.copyWith(
-                  color: context.theme.colorScheme.primary,
-                  fontWeight: FontWeight.w500,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Text(
-              page.description,
-              style: context.theme.textTheme.bodyLarge?.copyWith(
-                color: context.theme.customColors.textColor!.getShade(300),
-                height: 1.4,
+          ),
+          SizedBox(height: isSmallScreen ? 20.h : 28.h),
+          FadeTransition(
+            opacity: fadeAnimation,
+            child: Text(
+              page.title,
+              style: context.theme.textTheme.headlineMedium?.copyWith(
+                color: context.theme.customColors.textColor!.getShade(500),
+                fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 24.h),
-            if (page.features.isNotEmpty)
-              Flexible(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    for (int i = 0; i < page.features.length; i++) ...[
-                      _FeatureItem(
-                        text: page.features[i],
-                        isQuestion: page.features[i].startsWith('"'),
-                      ),
-                      if (i < page.features.length - 1) SizedBox(height: 12.h),
-                    ],
-                  ],
-                ),
+          ),
+          SizedBox(height: isSmallScreen ? 4.h : 6.h),
+          FadeTransition(
+            opacity: fadeAnimation,
+            child: Text(
+              page.subtitle,
+              style: context.theme.textTheme.bodyLarge?.copyWith(
+                color: context.theme.colorScheme.primary,
+                fontWeight: FontWeight.w500,
               ),
-            SizedBox(height: 20.h),
-          ],
-        ),
-      );
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(height: isSmallScreen ? 14.h : 20.h),
+          Text(
+            page.description,
+            style: context.theme.textTheme.bodyLarge?.copyWith(
+              color: context.theme.customColors.textColor!.getShade(300),
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: isSmallScreen ? 16.h : 24.h),
+          if (page.features.isNotEmpty)
+            Flexible(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (int i = 0; i < page.features.length; i++) ...[
+                    _FeatureItem(
+                      text: page.features[i],
+                      isQuestion: page.features[i].startsWith('"'),
+                    ),
+                    if (i < page.features.length - 1)
+                      SizedBox(height: isSmallScreen ? 8.h : 12.h),
+                  ],
+                ],
+              ),
+            ),
+          SizedBox(height: isSmallScreen ? 14.h : 20.h),
+        ],
+      ),
+    );
+  }
+
+  bool _isSmallScreen(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    return screenHeight < _kSmallScreenHeightThreshold;
+  }
 }
 
 class _FeatureItem extends StatelessWidget {
