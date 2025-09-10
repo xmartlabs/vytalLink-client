@@ -39,6 +39,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const McpIntegrationScreen(),
       );
     },
+    OnboardingRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const OnboardingScreen(),
+      );
+    },
     UnauthenticatedSectionRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -100,6 +106,20 @@ class McpIntegrationRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'McpIntegrationRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [OnboardingScreen]
+class OnboardingRoute extends PageRouteInfo<void> {
+  const OnboardingRoute({List<PageRouteInfo>? children})
+      : super(
+          OnboardingRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'OnboardingRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

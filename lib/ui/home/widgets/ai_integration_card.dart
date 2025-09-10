@@ -5,6 +5,9 @@ import 'package:flutter_template/l10n/app_localizations.dart';
 import 'package:flutter_template/ui/router/app_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+const String chatGptHeroTag = "chatgpt-hero";
+const String mcpHeroTag = "mcp-hero";
+
 class AiIntegrationCard extends StatelessWidget {
   const AiIntegrationCard({super.key});
 
@@ -85,6 +88,7 @@ class AiIntegrationCard extends StatelessWidget {
                     subtitle: AppLocalizations.of(context)!
                         .ai_integration_chatgpt_subtitle,
                     color: const Color(0xFF10A37F),
+                    heroTag: chatGptHeroTag,
                     onTap: () =>
                         context.router.push(const ChatGptIntegrationRoute()),
                   ),
@@ -97,6 +101,7 @@ class AiIntegrationCard extends StatelessWidget {
                     subtitle: AppLocalizations.of(context)!
                         .ai_integration_mcp_subtitle,
                     color: const Color(0xFF6366F1),
+                    heroTag: mcpHeroTag,
                     onTap: () =>
                         context.router.push(const McpIntegrationRoute()),
                   ),
@@ -113,6 +118,7 @@ class _IntegrationOption extends StatelessWidget {
   final String title;
   final String subtitle;
   final Color color;
+  final String heroTag;
   final VoidCallback onTap;
 
   const _IntegrationOption({
@@ -120,7 +126,9 @@ class _IntegrationOption extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.color,
+    required this.heroTag,
     required this.onTap,
+    super.key,
   });
 
   @override
@@ -138,18 +146,21 @@ class _IntegrationOption extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: color.withAlpha((0.1 * 255).toInt()),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: Icon(
-                    icon,
-                    color: color,
-                    size: 22,
+              Hero(
+                tag: heroTag,
+                child: Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: color.withAlpha((0.1 * 255).toInt()),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      icon,
+                      color: color,
+                      size: 22,
+                    ),
                   ),
                 ),
               ),

@@ -32,19 +32,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatgpt_example_1 =>
-      'What were my average steps this week compared to last week?';
+      'What were my average heart rate and steps yesterday?';
 
   @override
-  String get chatgpt_example_2 =>
-      'How did my sleep quality affect my heart rate this month?';
+  String get chatgpt_example_2 => 'Show me my sleep patterns for the last week';
 
   @override
   String get chatgpt_example_3 =>
-      'What\'s the trend in my workout intensity over the past 3 months?';
+      'How many calories did I burn during my last workout?';
 
   @override
   String get chatgpt_example_4 =>
-      'Can you give me recommendations based on my activity patterns?';
+      'Compare my activity levels between this month and last month';
+
+  @override
+  String get chatgpt_example_5 =>
+      'What time did I go to bed on average this week?';
+
+  @override
+  String get chatgpt_example_6 =>
+      'Show me my health trends over the past 30 days';
 
   @override
   String get chatgpt_examples_description =>
@@ -376,6 +383,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mcp_any_client_name => 'Any MCP Client';
 
   @override
+  String get mcp_choose_development_tool => 'Choose your development tool';
+
+  @override
   String get mcp_claude_desktop_description =>
       'Anthropic\'s desktop AI assistant. Ideal for general use, chat, and productivity.';
 
@@ -387,6 +397,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mcp_cursor_name => 'Cursor';
+
+  @override
+  String get mcp_development_tools_description =>
+      'Professional code editors with MCP support';
+
+  @override
+  String get mcp_development_tools_name => 'Development Tools';
 
   @override
   String get mcp_example_1 =>
@@ -484,4 +501,118 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mcp_what_is_title => 'What is MCP?';
+
+  @override
+  String get onboarding_ai_integration_description =>
+      'You\'re all set! Start connecting your health data with AI assistants to get personalized insights and take control of your wellness journey.';
+
+  @override
+  String get onboarding_ai_integration_feature_1 =>
+      'Secure and private data sharing';
+
+  @override
+  String get onboarding_ai_integration_feature_2 =>
+      'Instant setup with connection codes';
+
+  @override
+  String get onboarding_ai_integration_feature_3 => '24/7 AI health companion';
+
+  @override
+  String get onboarding_ai_integration_subtitle =>
+      'Ready to explore your health with AI?';
+
+  @override
+  String get onboarding_ai_integration_title => 'Get Started';
+
+  @override
+  String get onboarding_ask_questions_description =>
+      'Simply ask questions about your health data in everyday language and get personalized insights.';
+
+  @override
+  String get onboarding_ask_questions_feature_1 =>
+      'How has my sleep quality changed?';
+
+  @override
+  String get onboarding_ask_questions_feature_2 =>
+      'Show my heart rate during workouts';
+
+  @override
+  String get onboarding_ask_questions_feature_3 =>
+      'Graph my steps for the entire week';
+
+  @override
+  String get onboarding_ask_questions_subtitle =>
+      'Get insights in natural language';
+
+  @override
+  String get onboarding_ask_questions_title => 'Ask Questions';
+
+  @override
+  String get onboarding_get_started => 'Get Started';
+
+  @override
+  String get onboarding_health_monitoring_description =>
+      'Monitor your heart rate, steps, sleep patterns, and more with seamless integration to your favorite health apps.';
+
+  @override
+  String get onboarding_health_monitoring_feature_1 =>
+      'Real-time heart rate monitoring';
+
+  @override
+  String get onboarding_health_monitoring_feature_2 =>
+      'Daily step and activity tracking';
+
+  @override
+  String get onboarding_health_monitoring_feature_3 =>
+      'Integration with Google Fit & Apple Health';
+
+  @override
+  String get onboarding_health_monitoring_subtitle =>
+      'Track your vital signs in real-time';
+
+  @override
+  String get onboarding_health_monitoring_title => 'Health Monitoring';
+
+  @override
+  String get onboarding_how_it_works_description =>
+      'vytalLink seamlessly integrates with ChatGPT GPTs and MCP clients like Claude Desktop, Cursor, and VS Code.';
+
+  @override
+  String get onboarding_how_it_works_feature_1 =>
+      'ChatGPT Custom GPTs integration';
+
+  @override
+  String get onboarding_how_it_works_feature_2 =>
+      'MCP server for Claude & professional tools';
+
+  @override
+  String get onboarding_how_it_works_feature_3 =>
+      'Secure authentication with connection codes';
+
+  @override
+  String get onboarding_how_it_works_subtitle =>
+      'Connect with your favorite AI tools';
+
+  @override
+  String get onboarding_how_it_works_title => 'How It Works';
+
+  @override
+  String get onboarding_next => 'Next';
+
+  @override
+  String get onboarding_previous => 'Previous';
+
+  @override
+  String get onboarding_skip => 'Skip';
+
+  @override
+  String get onboarding_welcome_description =>
+      'Transform how you understand and manage your health with intelligent insights and comprehensive monitoring.';
+
+  @override
+  String get onboarding_welcome_subtitle =>
+      'Your personal health companion powered by AI';
+
+  @override
+  String get onboarding_welcome_title => 'Welcome to vytalLink';
 }
