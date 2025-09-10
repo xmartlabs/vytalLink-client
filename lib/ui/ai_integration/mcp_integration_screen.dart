@@ -64,8 +64,6 @@ class McpIntegrationScreen extends StatelessWidget {
                 HowToSetupSection(),
                 SizedBox(height: 24),
                 WhatYouCanDoSection(),
-                SizedBox(height: 32),
-                McpIntegrationButtonSection(),
               ],
             ),
           ),
