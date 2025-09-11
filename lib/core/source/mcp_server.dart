@@ -8,17 +8,17 @@ import 'package:health/health.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-enum StatisticsType {
+enum StatisticType {
   count('COUNT'),
   average('AVERAGE');
 
-  const StatisticsType(this.value);
+  const StatisticType(this.value);
   final String value;
 
-  static StatisticsType fromString(String value) =>
-      StatisticsType.values.firstWhere(
+  static StatisticType fromString(String value) =>
+      StatisticType.values.firstWhere(
         (type) => type.value == value.toUpperCase(),
-        orElse: () => throw ArgumentError('Invalid statistics type: $value'),
+        orElse: () => throw ArgumentError('Invalid  type: $value'),
       );
 }
 
@@ -29,7 +29,7 @@ class HealthDataAggregationParameters {
     required this.startTime,
     required this.endTime,
     required this.groupBy,
-    required this.statisticsType,
+    required this.statisticType,
   });
 
   final List<Map<String, dynamic>> formattedData;
@@ -37,7 +37,7 @@ class HealthDataAggregationParameters {
   final DateTime startTime;
   final DateTime endTime;
   final String groupBy;
-  final StatisticsType statisticsType;
+  final StatisticType statisticType;
 }
 
 class HealthMcpServerConfig {
@@ -396,7 +396,7 @@ class HealthMcpServerService {
   ///   - 'week': Aggregate data by week (Monday to Sunday)
   ///   - 'month': Aggregate data by month
   ///   - null/empty: Return raw data points without aggregation
-  /// - statics: Optional. Statistics type:
+  /// - statics: Optional. Statistic type:
   ///   - 'COUNT': Return count/sum of data points
   ///   - 'AVERAGE': Return average of data points
   Future<List<Map<String, dynamic>>> retrieveHealthData(
@@ -406,12 +406,12 @@ class HealthMcpServerService {
     final String startTimeString = args['startTime'];
     final String endTimeString = args['endTime'];
     final String groupBy = args['group_by'];
-    final String staticsStr = args['statics'];
+    final String statisticStr = args['statistic'];
 
     final HealthDataType valueType = parseHealthDataType(valueTypeStr);
     final DateTime startTime = DateTime.parse(startTimeString);
     final DateTime endTime = DateTime.parse(endTimeString);
-    final StatisticsType statisticsType = StatisticsType.fromString(staticsStr);
+    final StatisticType statisticType = StatisticType.fromString(statisticStr);
 
     validateTimeRange(startTime, endTime);
     await ensureHealthPermissions([valueType]);
@@ -428,21 +428,21 @@ class HealthMcpServerService {
       endTime,
     );
 
-    switch (statisticsType) {
-      case StatisticsType.count:
+    switch (statisticType) {
+      case StatisticType.count:
         final context = HealthDataAggregationParameters(
           formattedData: formattedData,
           aggregatedData: aggregatedData,
           startTime: startTime,
           endTime: endTime,
           groupBy: groupBy,
-          statisticsType: statisticsType,
+          statisticType: statisticType,
         );
         return _buildOverallAverageResponse(context);
-      case StatisticsType.average:
+      case StatisticType.average:
         return _buildAggregatedStatisticsResponse(
           aggregatedData,
-          statisticsType,
+          statisticType,
         );
     }
   }
@@ -490,20 +490,20 @@ class HealthMcpServerService {
         'groupBy': aggregationParameters.groupBy,
         'dataPoints': totalDataPoints,
         'isAverage': true,
-        'statisticsType': aggregationParameters.statisticsType.value,
+        'statisticType': aggregationParameters.statisticType.value,
       },
     ];
   }
 
   List<Map<String, dynamic>> _buildAggregatedStatisticsResponse(
     List<Map<String, dynamic>> aggregatedData,
-    StatisticsType statisticsType,
+    StatisticType statisticType,
   ) =>
       aggregatedData
           .map(
             (dataPoint) => {
               ...dataPoint,
-              'statisticsType': statisticsType.value,
+              'statisticType': statisticType.value,
             },
           )
           .toList();
@@ -724,9 +724,9 @@ class HealthMcpServerService {
       response['isAggregated'] = false;
     }
 
-    // Include statistics type if present
-    if (args['statics'] != null) {
-      response['statisticsType'] = args['statics'];
+    // Include statistic type if present
+    if (args['statistic'] != null) {
+      response['statisticType'] = args['statistic'];
     }
 
     return response;
