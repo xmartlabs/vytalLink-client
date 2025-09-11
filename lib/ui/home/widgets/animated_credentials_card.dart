@@ -39,6 +39,7 @@ class _AnimatedCredentialsCard extends StatelessWidget {
   const _AnimatedCredentialsCard({
     required this.connectionWord,
     required this.connectionPin,
+    super.key,
   });
 
   @override

@@ -139,26 +139,38 @@ abstract class AppLocalizations {
   /// No description provided for @chatgpt_example_1.
   ///
   /// In en, this message translates to:
-  /// **'What were my average steps this week compared to last week?'**
+  /// **'What were my average heart rate and steps yesterday?'**
   String get chatgpt_example_1;
 
   /// No description provided for @chatgpt_example_2.
   ///
   /// In en, this message translates to:
-  /// **'How did my sleep quality affect my heart rate this month?'**
+  /// **'Show me my sleep patterns for the last week'**
   String get chatgpt_example_2;
 
   /// No description provided for @chatgpt_example_3.
   ///
   /// In en, this message translates to:
-  /// **'What\'s the trend in my workout intensity over the past 3 months?'**
+  /// **'How many calories did I burn during my last workout?'**
   String get chatgpt_example_3;
 
   /// No description provided for @chatgpt_example_4.
   ///
   /// In en, this message translates to:
-  /// **'Can you give me recommendations based on my activity patterns?'**
+  /// **'Compare my activity levels between this month and last month'**
   String get chatgpt_example_4;
+
+  /// No description provided for @chatgpt_example_5.
+  ///
+  /// In en, this message translates to:
+  /// **'What time did I go to bed on average this week?'**
+  String get chatgpt_example_5;
+
+  /// No description provided for @chatgpt_example_6.
+  ///
+  /// In en, this message translates to:
+  /// **'Show me my health trends over the past 30 days'**
+  String get chatgpt_example_6;
 
   /// No description provided for @chatgpt_examples_description.
   ///
@@ -550,6 +562,30 @@ abstract class AppLocalizations {
   /// **'Health permission required'**
   String get health_permission_required;
 
+  /// No description provided for @health_permissions_alert_accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get health_permissions_alert_accept;
+
+  /// No description provided for @health_permissions_alert_cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get health_permissions_alert_cancel;
+
+  /// No description provided for @health_permissions_alert_message.
+  ///
+  /// In en, this message translates to:
+  /// **'We do not store or keep any of your health data. We simply act as an intermediary with the provider you choose. To connect to the server, you must first accept and grant permissions to access your health wearables. Only then can we send your data as you request.'**
+  String get health_permissions_alert_message;
+
+  /// No description provided for @health_permissions_alert_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Data Privacy'**
+  String get health_permissions_alert_title;
+
   /// No description provided for @health_permissions_dialog_accept.
   ///
   /// In en, this message translates to:
@@ -736,6 +772,12 @@ abstract class AppLocalizations {
   /// **'Any MCP Client'**
   String get mcp_any_client_name;
 
+  /// No description provided for @mcp_choose_development_tool.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your development tool'**
+  String get mcp_choose_development_tool;
+
   /// No description provided for @mcp_claude_desktop_description.
   ///
   /// In en, this message translates to:
@@ -759,6 +801,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cursor'**
   String get mcp_cursor_name;
+
+  /// No description provided for @mcp_development_tools_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional code editors with MCP support'**
+  String get mcp_development_tools_description;
+
+  /// No description provided for @mcp_development_tools_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Development Tools'**
+  String get mcp_development_tools_name;
 
   /// No description provided for @mcp_example_1.
   ///
@@ -933,6 +987,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'What is MCP?'**
   String get mcp_what_is_title;
+
+  /// No description provided for @onboarding_ai_integration_description.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all set! Start connecting your health data with AI assistants to get personalized insights and take control of your wellness journey.'**
+  String get onboarding_ai_integration_description;
+
+  /// No description provided for @onboarding_ai_integration_feature_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure and private data sharing'**
+  String get onboarding_ai_integration_feature_1;
+
+  /// No description provided for @onboarding_ai_integration_feature_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant setup with connection codes'**
+  String get onboarding_ai_integration_feature_2;
+
+  /// No description provided for @onboarding_ai_integration_feature_3.
+  ///
+  /// In en, this message translates to:
+  /// **'24/7 AI health companion'**
+  String get onboarding_ai_integration_feature_3;
+
+  /// No description provided for @onboarding_ai_integration_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to explore your health with AI?'**
+  String get onboarding_ai_integration_subtitle;
+
+  /// No description provided for @onboarding_ai_integration_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboarding_ai_integration_title;
+
+  /// No description provided for @onboarding_ask_questions_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Simply ask questions about your health data in everyday language and get personalized insights.'**
+  String get onboarding_ask_questions_description;
+
+  /// No description provided for @onboarding_ask_questions_feature_1.
+  ///
+  /// In en, this message translates to:
+  /// **'How has my sleep quality changed?'**
+  String get onboarding_ask_questions_feature_1;
+
+  /// No description provided for @onboarding_ask_questions_feature_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Show my heart rate during workouts'**
+  String get onboarding_ask_questions_feature_2;
+
+  /// No description provided for @onboarding_ask_questions_feature_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Graph my steps for the entire week'**
+  String get onboarding_ask_questions_feature_3;
+
+  /// No description provided for @onboarding_ask_questions_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get insights in natural language'**
+  String get onboarding_ask_questions_subtitle;
+
+  /// No description provided for @onboarding_ask_questions_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Questions'**
+  String get onboarding_ask_questions_title;
+
+  /// No description provided for @onboarding_get_started.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboarding_get_started;
+
+  /// No description provided for @onboarding_health_monitoring_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitor your heart rate, steps, sleep patterns, and more with seamless integration to your favorite health apps.'**
+  String get onboarding_health_monitoring_description;
+
+  /// No description provided for @onboarding_health_monitoring_feature_1.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time heart rate monitoring'**
+  String get onboarding_health_monitoring_feature_1;
+
+  /// No description provided for @onboarding_health_monitoring_feature_2.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily step and activity tracking'**
+  String get onboarding_health_monitoring_feature_2;
+
+  /// No description provided for @onboarding_health_monitoring_feature_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Integration with Google Fit & Apple Health'**
+  String get onboarding_health_monitoring_feature_3;
+
+  /// No description provided for @onboarding_health_monitoring_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your vital signs in real-time'**
+  String get onboarding_health_monitoring_subtitle;
+
+  /// No description provided for @onboarding_health_monitoring_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Monitoring'**
+  String get onboarding_health_monitoring_title;
+
+  /// No description provided for @onboarding_how_it_works_description.
+  ///
+  /// In en, this message translates to:
+  /// **'vytalLink seamlessly integrates with ChatGPT GPTs and MCP clients like Claude Desktop, Cursor, and VS Code.'**
+  String get onboarding_how_it_works_description;
+
+  /// No description provided for @onboarding_how_it_works_feature_1.
+  ///
+  /// In en, this message translates to:
+  /// **'ChatGPT Custom GPTs integration'**
+  String get onboarding_how_it_works_feature_1;
+
+  /// No description provided for @onboarding_how_it_works_feature_2.
+  ///
+  /// In en, this message translates to:
+  /// **'MCP server for Claude & professional tools'**
+  String get onboarding_how_it_works_feature_2;
+
+  /// No description provided for @onboarding_how_it_works_feature_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure authentication with connection codes'**
+  String get onboarding_how_it_works_feature_3;
+
+  /// No description provided for @onboarding_how_it_works_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with your favorite AI tools'**
+  String get onboarding_how_it_works_subtitle;
+
+  /// No description provided for @onboarding_how_it_works_title.
+  ///
+  /// In en, this message translates to:
+  /// **'How It Works'**
+  String get onboarding_how_it_works_title;
+
+  /// No description provided for @onboarding_next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboarding_next;
+
+  /// No description provided for @onboarding_previous.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get onboarding_previous;
+
+  /// No description provided for @onboarding_skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboarding_skip;
+
+  /// No description provided for @onboarding_welcome_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Transform how you understand and manage your health with intelligent insights and comprehensive monitoring.'**
+  String get onboarding_welcome_description;
+
+  /// No description provided for @onboarding_welcome_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal health companion powered by AI'**
+  String get onboarding_welcome_subtitle;
+
+  /// No description provided for @onboarding_welcome_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to vytalLink'**
+  String get onboarding_welcome_title;
 }
 
 class _AppLocalizationsDelegate

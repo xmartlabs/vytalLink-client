@@ -93,6 +93,7 @@ class _StepItem extends StatelessWidget {
     required this.description,
     required this.icon,
     required this.isLast,
+    super.key,
   });
 
   @override

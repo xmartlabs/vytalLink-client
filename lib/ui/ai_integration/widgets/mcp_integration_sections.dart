@@ -2,10 +2,12 @@ import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/core/common/config.dart';
 import 'package:flutter_template/ui/ai_integration/widgets/client_card.dart';
+import 'package:flutter_template/ui/ai_integration/widgets/expandable_section.dart';
 import 'package:flutter_template/ui/ai_integration/widgets/section_card.dart';
 import 'package:flutter_template/ui/ai_integration/widgets/setup_step.dart';
 import 'package:flutter_template/ui/extensions/context_extensions.dart';
 import 'package:flutter_template/ui/helpers/url_launcher_helper.dart';
+import 'package:flutter_template/ui/home/widgets/ai_integration_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const String _setupMcpCommand =
@@ -17,10 +19,11 @@ class WhatIsMcpSection extends StatelessWidget {
   const WhatIsMcpSection({super.key});
 
   @override
-  Widget build(BuildContext context) => SectionCard(
+  Widget build(BuildContext context) => ExpandableSection(
         icon: FontAwesomeIcons.circleInfo,
         title: context.localizations.mcp_what_is_title,
-        content: Column(
+        isInitiallyExpanded: false,
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -47,10 +50,37 @@ class HowToSetupSection extends StatelessWidget {
   const HowToSetupSection({super.key});
 
   @override
-  Widget build(BuildContext context) => SectionCard(
+  Widget build(BuildContext context) => ExpandableSection(
         icon: FontAwesomeIcons.gear,
         title: context.localizations.mcp_setup_title,
-        content: Column(
+        isInitiallyExpanded: false,
+        actionButton: SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () => UrlLauncherHelper.launch(
+              Config.setupMcpDocumentationUri,
+            ),
+            icon: const Icon(
+              FontAwesomeIcons.arrowUpRightFromSquare,
+              size: 14,
+            ),
+            label: Text(context.localizations.mcp_setup_guide_button),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: context.theme.colorScheme.primary,
+              side: BorderSide(
+                color: context.theme.colorScheme.primary,
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 14,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SetupStep(
@@ -98,32 +128,6 @@ class HowToSetupSection extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
-                      onPressed: () => UrlLauncherHelper.launch(
-                        Config.setupMcpDocumentationUri,
-                      ),
-                      icon: const Icon(
-                        FontAwesomeIcons.arrowUpRightFromSquare,
-                        size: 14,
-                      ),
-                      label: Text(context.localizations.mcp_setup_guide_button),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: context.theme.colorScheme.primary,
-                        side: BorderSide(
-                          color: context.theme.colorScheme.primary,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -142,10 +146,11 @@ class WhatYouCanDoSection extends StatelessWidget {
   const WhatYouCanDoSection({super.key});
 
   @override
-  Widget build(BuildContext context) => SectionCard(
+  Widget build(BuildContext context) => ExpandableSection(
         icon: FontAwesomeIcons.star,
         title: context.localizations.mcp_examples_title,
-        content: Column(
+        isInitiallyExpanded: false,
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -171,7 +176,10 @@ class WhatYouCanDoSection extends StatelessWidget {
 class _FeatureList extends StatelessWidget {
   final List<String> features;
 
-  const _FeatureList({required this.features});
+  const _FeatureList({
+    required this.features,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => Column(
@@ -183,7 +191,10 @@ class _FeatureList extends StatelessWidget {
 class _UseCaseList extends StatelessWidget {
   final List<String> useCases;
 
-  const _UseCaseList({required this.useCases});
+  const _UseCaseList({
+    required this.useCases,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => Column(
@@ -247,21 +258,7 @@ class SupportedClientsSection extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            ClientCard(
-              icon: FontAwesomeIcons.code,
-              name: context.localizations.mcp_cursor_name,
-              description: context.localizations.mcp_cursor_description,
-              color: context.theme.colorScheme.primary,
-              onTap: () => UrlLauncherHelper.launch(Config.cursorDownloadUrl),
-            ),
-            const SizedBox(height: 12),
-            ClientCard(
-              icon: FontAwesomeIcons.laptopCode,
-              name: context.localizations.mcp_vscode_name,
-              description: context.localizations.mcp_vscode_description,
-              color: context.theme.colorScheme.primary,
-              onTap: () => UrlLauncherHelper.launch(Config.vscodeDownloadUrl),
-            ),
+            const _DevelopmentToolsCard(),
             const SizedBox(height: 12),
             ClientCard(
               icon: FontAwesomeIcons.plugCircleCheck,
@@ -273,43 +270,6 @@ class SupportedClientsSection extends StatelessWidget {
             ),
           ],
         ),
-      );
-}
-
-class McpIntegrationButtonSection extends StatelessWidget {
-  const McpIntegrationButtonSection({super.key});
-
-  @override
-  Widget build(BuildContext context) => Row(
-        children: [
-          Expanded(
-            child: ElevatedButton.icon(
-              onPressed: () => UrlLauncherHelper.launch(
-                Config.setupMcpDocumentationUri,
-              ),
-              icon: const Icon(FontAwesomeIcons.book, size: 18),
-              label: Text(
-                context.localizations.mcp_setup_guide_button,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: context.theme.colorScheme.surfaceContainer,
-                foregroundColor: context.theme.colorScheme.onSurface,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: context.theme.colorScheme.primary,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-        ],
       );
 }
 
@@ -337,18 +297,21 @@ class McpHeroCardSection extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: context.theme.colorScheme.primary,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Center(
-                child: Icon(
-                  FontAwesomeIcons.server,
-                  color: Colors.white,
-                  size: 36,
+            Hero(
+              tag: mcpHeroTag,
+              child: Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF6366F1),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Center(
+                  child: Icon(
+                    FontAwesomeIcons.server,
+                    color: Colors.white,
+                    size: 36,
+                  ),
                 ),
               ),
             ),
@@ -371,5 +334,96 @@ class McpHeroCardSection extends StatelessWidget {
             ),
           ],
         ),
+      );
+}
+
+class _DevelopmentToolsCard extends StatelessWidget {
+  const _DevelopmentToolsCard({super.key});
+
+  @override
+  Widget build(BuildContext context) => ClientCard(
+        icon: FontAwesomeIcons.code,
+        name: context.localizations.mcp_development_tools_name,
+        description: '${context.localizations.mcp_cursor_name} & '
+            '${context.localizations.mcp_vscode_name} - '
+            '${context.localizations.mcp_development_tools_description}',
+        color: context.theme.colorScheme.primary,
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              final primaryColor = context.theme.colorScheme.primary;
+              return Container(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      context.localizations.mcp_choose_development_tool,
+                      style: context.theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    ListTile(
+                      leading: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: primaryColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          FontAwesomeIcons.terminal,
+                          color: primaryColor,
+                          size: 20,
+                        ),
+                      ),
+                      title: Text(context.localizations.mcp_cursor_name),
+                      subtitle:
+                          Text(context.localizations.mcp_cursor_description),
+                      trailing: const Icon(
+                        FontAwesomeIcons.arrowUpRightFromSquare,
+                        size: 16,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        UrlLauncherHelper.launch(Config.cursorDownloadUrl);
+                      },
+                    ),
+                    const Divider(),
+                    ListTile(
+                      leading: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: primaryColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          FontAwesomeIcons.laptopCode,
+                          color: primaryColor,
+                          size: 20,
+                        ),
+                      ),
+                      title: Text(context.localizations.mcp_vscode_name),
+                      subtitle:
+                          Text(context.localizations.mcp_vscode_description),
+                      trailing: const Icon(
+                        FontAwesomeIcons.arrowUpRightFromSquare,
+                        size: 16,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        UrlLauncherHelper.launch(Config.vscodeDownloadUrl);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              );
+            },
+          );
+        },
       );
 }

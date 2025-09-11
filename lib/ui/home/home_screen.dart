@@ -2,7 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_template/l10n/app_localizations.dart';
+import 'package:flutter_template/core/service/once_service.dart';
+import 'package:flutter_template/ui/extensions/context_extensions.dart';
 import 'package:flutter_template/ui/home/home_cubit.dart';
 import 'package:flutter_template/ui/home/widgets/ai_integration_card.dart';
 import 'package:flutter_template/ui/home/widgets/animated_credentials_card.dart';
@@ -31,8 +32,36 @@ class _HomeContentScreen extends StatefulWidget {
 
 class _HomeContentScreenState extends State<_HomeContentScreen>
     with TickerProviderStateMixin {
+  static const _showHealthPermissionsAlertKey = 'showHealthPermissionsAlert';
+
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
+
+  Future<bool?> _showHealthPermissionsAlert() => showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            context.localizations.health_permissions_alert_title,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          content: Text(context.localizations.health_permissions_alert_message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child:
+                  Text(context.localizations.health_permissions_alert_cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child:
+                  Text(context.localizations.health_permissions_alert_accept),
+            ),
+          ],
+        ),
+      );
 
   @override
   void initState() {
@@ -74,7 +103,7 @@ class _HomeContentScreenState extends State<_HomeContentScreen>
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  AppLocalizations.of(context)!.app_name,
+                  context.localizations.app_name,
                   style: TextStyle(
                     color: context.theme.colorScheme.primary,
                     fontWeight: FontWeight.w700,
@@ -102,8 +131,7 @@ class _HomeContentScreenState extends State<_HomeContentScreen>
                     status: state.status,
                     errorMessage: state.errorMessage,
                     pulseAnimation: _pulseAnimation,
-                    onStartPressed: () =>
-                        context.read<HomeCubit>().checkAndStartServer(),
+                    onStartPressed: () => _checkPermissionsAndStartServer(),
                   ),
                   const AiIntegrationCard(),
                   const HowItWorksSection(),
@@ -114,4 +142,20 @@ class _HomeContentScreenState extends State<_HomeContentScreen>
           ),
         ),
       );
+
+  Future<void> _checkPermissionsAndStartServer() async {
+    final cubit = context.read<HomeCubit>();
+    final hasPermissions = await cubit.hasAllHealthPermissions();
+
+    if (!hasPermissions &&
+        !await OnceService.beenDone(_showHealthPermissionsAlertKey)) {
+      final accepted = await _showHealthPermissionsAlert();
+      if (accepted != true) return;
+    }
+
+    final startServer = await cubit.checkAndStartServer();
+    if (startServer) {
+      await OnceService.markDone(_showHealthPermissionsAlertKey);
+    }
+  }
 }
