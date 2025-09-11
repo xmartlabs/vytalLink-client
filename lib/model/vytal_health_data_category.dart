@@ -1,9 +1,10 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:io';
 
 import 'package:dartx/dartx.dart';
 import 'package:health/health.dart';
 
-// ignore_for_file: constant_identifier_names
 enum VytalHealthDataCategory {
   STEPS,
   HEART_RATE,
