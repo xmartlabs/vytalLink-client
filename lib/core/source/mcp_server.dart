@@ -8,6 +8,38 @@ import 'package:health/health.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+enum StatisticsType {
+  count('COUNT'),
+  average('AVERAGE');
+
+  const StatisticsType(this.value);
+  final String value;
+
+  static StatisticsType fromString(String value) =>
+      StatisticsType.values.firstWhere(
+        (type) => type.value == value.toUpperCase(),
+        orElse: () => throw ArgumentError('Invalid statistics type: $value'),
+      );
+}
+
+class HealthDataAggregationParameters {
+  const HealthDataAggregationParameters({
+    required this.formattedData,
+    required this.aggregatedData,
+    required this.startTime,
+    required this.endTime,
+    required this.groupBy,
+    required this.statisticsType,
+  });
+
+  final List<Map<String, dynamic>> formattedData;
+  final List<Map<String, dynamic>> aggregatedData;
+  final DateTime startTime;
+  final DateTime endTime;
+  final String groupBy;
+  final StatisticsType statisticsType;
+}
+
 class HealthMcpServerConfig {
   const HealthMcpServerConfig({
     required this.serverName,
@@ -65,6 +97,7 @@ class HealthMcpServerService {
 
   final Uri _backendUrl = Uri.parse(Config.wsUrl);
 
+  // ignore: lines_longer_than_80_chars
   void Function(String code, String word, String message)?
       _onConnectionCodeReceived;
   void Function(String error)? _onConnectionError;
@@ -302,18 +335,12 @@ class HealthMcpServerService {
   ) async {
     final List<HealthDataPoint> result = [];
 
-    if (valueType == HealthDataType.STEPS) {
-      final steps =
-          await _healthClient.getTotalStepsInInterval(startTime, endTime);
-      result.add(createStepsDataPoint(steps ?? 0, startTime, endTime));
-    } else {
-      final healthData = await _healthClient.getHealthDataFromTypes(
-        types: [valueType],
-        startTime: startTime,
-        endTime: endTime,
-      );
-      result.addAll(healthData);
-    }
+    final healthData = await _healthClient.getHealthDataFromTypes(
+      types: [valueType],
+      startTime: startTime,
+      endTime: endTime,
+    );
+    result.addAll(healthData);
 
     return result;
   }
@@ -357,16 +384,34 @@ class HealthMcpServerService {
           )
           .toList();
 
+  /// Retrieves health data based on the provided arguments
+  ///
+  /// Args can include:
+  /// - value_type: The type of health data to retrieve
+  /// - startTime: Start time in ISO8601 format
+  /// - endTime: End time in ISO8601 format
+  /// - groupBy: Optional. Time period for data aggregation:
+  ///   - 'hour': Aggregate data by hour
+  ///   - 'day': Aggregate data by day
+  ///   - 'week': Aggregate data by week (Monday to Sunday)
+  ///   - 'month': Aggregate data by month
+  ///   - null/empty: Return raw data points without aggregation
+  /// - statics: Optional. Statistics type:
+  ///   - 'COUNT': Return count/sum of data points
+  ///   - 'AVERAGE': Return average of data points
   Future<List<Map<String, dynamic>>> retrieveHealthData(
     Map<String, dynamic> args,
   ) async {
     final String valueTypeStr = args['value_type'];
     final String startTimeString = args['startTime'];
     final String endTimeString = args['endTime'];
+    final String groupBy = args['group_by'];
+    final String staticsStr = args['statics'];
 
     final HealthDataType valueType = parseHealthDataType(valueTypeStr);
     final DateTime startTime = DateTime.parse(startTimeString);
     final DateTime endTime = DateTime.parse(endTimeString);
+    final StatisticsType statisticsType = StatisticsType.fromString(staticsStr);
 
     validateTimeRange(startTime, endTime);
     await ensureHealthPermissions([valueType]);
@@ -374,7 +419,254 @@ class HealthMcpServerService {
     final List<HealthDataPoint> healthDataPoints =
         await fetchHealthDataPoints(valueType, startTime, endTime);
 
-    return formatHealthDataPoints(healthDataPoints);
+    final formattedData = formatHealthDataPoints(healthDataPoints);
+
+    final aggregatedData = _aggregateHealthData(
+      formattedData,
+      groupBy,
+      startTime,
+      endTime,
+    );
+
+    switch (statisticsType) {
+      case StatisticsType.count:
+        final context = HealthDataAggregationParameters(
+          formattedData: formattedData,
+          aggregatedData: aggregatedData,
+          startTime: startTime,
+          endTime: endTime,
+          groupBy: groupBy,
+          statisticsType: statisticsType,
+        );
+        return _buildOverallAverageResponse(context);
+      case StatisticsType.average:
+        return _buildAggregatedStatisticsResponse(
+          aggregatedData,
+          statisticsType,
+        );
+    }
+  }
+
+  List<Map<String, dynamic>> _buildOverallAverageResponse(
+    HealthDataAggregationParameters aggregationParameters,
+  ) {
+    double totalValue = 0;
+    int totalDataPoints = 0;
+
+    for (final dataPoint in aggregationParameters.aggregatedData) {
+      final value = dataPoint['value'] as double;
+      final dataPoints = dataPoint['dataPoints'] as int;
+
+      if (dataPoints > 0) {
+        totalValue += value;
+        totalDataPoints += dataPoints;
+      }
+    }
+
+    // ignore: lines_longer_than_80_chars
+    final overallAverage =
+        // ignore: lines_longer_than_80_chars
+        totalDataPoints > 0
+            ? totalValue / aggregationParameters.aggregatedData.length
+            : 0.0;
+
+    return [
+      {
+        // ignore: lines_longer_than_80_chars
+        'type': aggregationParameters.formattedData.isNotEmpty
+            ? aggregationParameters.formattedData.first['type']
+            : 'UNKNOWN',
+        'value': overallAverage,
+        // ignore: lines_longer_than_80_chars
+        'unit': aggregationParameters.formattedData.isNotEmpty
+            ? aggregationParameters.formattedData.first['unit']
+            : 'NO_UNIT',
+        'dateFrom': aggregationParameters.startTime.toIso8601String(),
+        'dateTo': aggregationParameters.endTime.toIso8601String(),
+        'sourcePlatform': 'Aggregated',
+        'sourceDeviceId': '',
+        'sourceId': '',
+        'sourceName': 'Overall average for ${aggregationParameters.groupBy}',
+        'groupBy': aggregationParameters.groupBy,
+        'dataPoints': totalDataPoints,
+        'isAverage': true,
+        'statisticsType': aggregationParameters.statisticsType.value,
+      },
+    ];
+  }
+
+  List<Map<String, dynamic>> _buildAggregatedStatisticsResponse(
+    List<Map<String, dynamic>> aggregatedData,
+    StatisticsType statisticsType,
+  ) =>
+      aggregatedData
+          .map(
+            (dataPoint) => {
+              ...dataPoint,
+              'statisticsType': statisticsType.value,
+            },
+          )
+          .toList();
+
+  /// Aggregates health data by the specified time period
+  List<Map<String, dynamic>> _aggregateHealthData(
+    List<Map<String, dynamic>> data,
+    String groupBy,
+    DateTime startTime,
+    DateTime endTime,
+  ) {
+    if (data.isEmpty) return [];
+
+    // Generate time segments for the entire range
+    final List<DateTime> timeSegments = _generateTimeSegments(
+      startTime,
+      endTime,
+      groupBy,
+    );
+    final List<Map<String, dynamic>> aggregatedData = [];
+
+    for (int i = 0; i < timeSegments.length - 1; i++) {
+      final DateTime segmentStart = timeSegments[i];
+      final DateTime segmentEnd = timeSegments[i + 1];
+
+      // Filter data points that fall within this specific segment
+      final filteredData = data.where((point) {
+        final DateTime pointDate = DateTime.parse(point['dateFrom']);
+        return pointDate.isAfter(
+              segmentStart.subtract(
+                const Duration(
+                  milliseconds: 1,
+                ),
+              ),
+            ) &&
+            pointDate.isBefore(segmentEnd);
+      }).toList();
+
+      final aggregatedValue = _aggregateValues(filteredData);
+
+      aggregatedData.add({
+        'type': data.isNotEmpty ? data.first['type'] : 'UNKNOWN',
+        'value': aggregatedValue,
+        'unit': data.isNotEmpty ? data.first['unit'] : 'NO_UNIT',
+        'dateFrom': segmentStart.toIso8601String(),
+        'dateTo': segmentEnd.toIso8601String(),
+        'sourcePlatform': 'Aggregated',
+        'sourceDeviceId': '',
+        'sourceId': '',
+        'sourceName': 'Grouped by $groupBy',
+        'groupBy': groupBy,
+        'dataPoints': filteredData.length,
+      });
+    }
+
+    return aggregatedData;
+  }
+
+  /// Generates time segments for the given range and groupBy period
+  List<DateTime> _generateTimeSegments(
+    DateTime startTime,
+    DateTime endTime,
+    String groupBy,
+  ) {
+    final List<DateTime> segments = [];
+    DateTime current = _alignToGroupBy(startTime, groupBy);
+
+    while (current.isBefore(endTime)) {
+      segments.add(current);
+      current = _getNextSegment(current, groupBy);
+    }
+
+    // Add the final segment end
+    if (segments.isEmpty || segments.last.isBefore(endTime)) {
+      segments.add(endTime);
+    }
+
+    return segments;
+  }
+
+  /// Aligns a datetime to the start of the groupBy period
+  DateTime _alignToGroupBy(DateTime dateTime, String groupBy) {
+    switch (groupBy.toLowerCase()) {
+      case 'hour':
+        return DateTime(
+          dateTime.year,
+          dateTime.month,
+          dateTime.day,
+          dateTime.hour,
+        );
+      case 'day':
+        return DateTime(dateTime.year, dateTime.month, dateTime.day);
+      case 'week':
+        final int daysToSubtract = dateTime.weekday - 1;
+        return DateTime(
+          dateTime.year,
+          dateTime.month,
+          dateTime.day - daysToSubtract,
+        );
+      case 'month':
+        return DateTime(dateTime.year, dateTime.month);
+      default:
+        return dateTime;
+    }
+  }
+
+  /// Gets the next segment based on the groupBy period
+  DateTime _getNextSegment(DateTime current, String groupBy) {
+    switch (groupBy.toLowerCase()) {
+      case 'hour':
+        return current.add(const Duration(hours: 1));
+      case 'day':
+        return current.add(const Duration(days: 1));
+      case 'week':
+        return current.add(const Duration(days: 7));
+      case 'month':
+        return DateTime(current.year, current.month + 1);
+      default:
+        return current.add(const Duration(days: 1));
+    }
+  }
+
+  /// Aggregates values from multiple data points
+  double _aggregateValues(List<Map<String, dynamic>> dataPoints) {
+    if (dataPoints.isEmpty) return 0;
+
+    final String dataType = dataPoints.first['type'];
+    double total = 0;
+
+    for (final point in dataPoints) {
+      final dynamic value = point['value'];
+      if (value is num) {
+        total += value.toDouble();
+      }
+    }
+
+    // For instantaneous data types (heart rate, blood pressure), return average
+    if (!_isCumulativeDataType(dataType) && dataPoints.isNotEmpty) {
+      return total / dataPoints.length;
+    }
+
+    // For cumulative data types (steps, calories, distance), return sum
+    return total;
+  }
+
+  /// Determines if a data type should be summed or averaged
+  bool _isCumulativeDataType(String dataType) {
+    const cumulativeTypes = {
+      'STEPS',
+      'DISTANCE_DELTA',
+      'ACTIVE_ENERGY_BURNED',
+      'BASAL_ENERGY_BURNED',
+      'WORKOUT',
+      'WATER',
+      'SLEEP_SESSION',
+      'SLEEP_ASLEEP',
+      'SLEEP_AWAKE',
+      'SLEEP_DEEP',
+      'SLEEP_LIGHT',
+      'SLEEP_REM',
+    };
+
+    return cumulativeTypes.contains(dataType.toUpperCase());
   }
 
   String _formatDataForDisplay(List<Map<String, dynamic>> data) {
@@ -414,15 +706,31 @@ class HealthMcpServerService {
   Map<String, dynamic> createSuccessResponse(
     List<Map<String, dynamic>> healthData,
     Map<String, dynamic> args,
-  ) =>
-      {
-        'success': true,
-        'count': healthData.length,
-        'healthData': healthData,
-        'value_type': args['value_type'],
-        'startTime': args['startTime'],
-        'endTime': args['endTime'],
-      };
+  ) {
+    final response = {
+      'success': true,
+      'count': healthData.length,
+      'healthData': healthData,
+      'value_type': args['value_type'],
+      'startTime': args['startTime'],
+      'endTime': args['endTime'],
+    };
+
+    // Include groupBy info if present
+    if (args['groupBy'] != null) {
+      response['groupBy'] = args['groupBy'];
+      response['isAggregated'] = true;
+    } else {
+      response['isAggregated'] = false;
+    }
+
+    // Include statistics type if present
+    if (args['statics'] != null) {
+      response['statisticsType'] = args['statics'];
+    }
+
+    return response;
+  }
 
   Map<String, dynamic> createErrorResponse(Object error) => {
         'success': false,
