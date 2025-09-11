@@ -38,6 +38,12 @@ mason-lock.json
 
 # Web related
 lib/generated_plugin_registrant.dart
+# Firebase & Secrets
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+ios/Runner/Dev/GoogleService-Info.plist
+env_secrets/
+firebase.json
 
 # Symbolication related
 app.*.symbols

@@ -98,6 +98,21 @@ Android (Health Connect):
 General:
 - Network permission and Health scopes are declared in the manifest, but you still must accept runtime prompts. If results are empty, check that the type is supported and the time range has data.
 
+## Firebase Configuration
+
+To use Firebase services in this project, follow these steps:
+
+1. Place the Firebase configuration files in the `env_secrets` folder:
+   - `google-services.json` for Android
+   - `GoogleService-Info.plist` for iOS
+
+2. Run the `build_binaries.sh` script located in the `scripts` folder to generate the binaries:
+   ```bash
+   ./scripts/build_binaries.sh
+   ```
+
+This ensures that the Firebase configuration is correctly applied during the build process.
+
 ## Where things live
 
 - `lib/core/source/mcp_server.dart` — HealthMcpServerService + tool definition
