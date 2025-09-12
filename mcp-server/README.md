@@ -72,7 +72,7 @@ Once connected, you'll have access to tools for:
 
 The MCP server connects to our backend to handle requests and business logic. All authentication is exclusively managed through our mobile applications.
 
-For more information, visit our [website](https://www.vytallink.xmartlabs.com).
+For more information, visit [vytallink.xmartlabs.com](https://vytallink.xmartlabs.com/).
 
 ## Support
 
