@@ -781,6 +781,65 @@ h1, h2, h3, h4 {
     font-size: 1.1rem;
 }
 
+/* New styles for platform info items */
+.platform-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.platform-item-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    color: var(--text-dark);
+    font-weight: 500;
+    border-left: 3px solid var(--primary-color);
+    padding-left: 1rem;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%);
+    border-radius: 0 6px 6px 0;
+}
+
+.platform-item-info i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* Simple platform tags */
+.platforms-intro {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 0.0rem;
+    font-weight: 500;
+}
+
+.platforms-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.platform-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 20px;
+    color: var(--text-dark);
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.platform-tag i {
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
 /* Combined Features for Step 1 */
 .combined-features {
     display: flex;
@@ -845,19 +904,49 @@ h1, h2, h3, h4 {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    padding: 1rem;
+    padding: 1.25rem;
     background: var(--white);
     border: 2px solid var(--secondary-color);
     border-radius: 12px;
     transition: var(--transition);
-    min-width: 140px;
+    width: 160px;
+    height: 140px;
     text-align: center;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
 }
 
 .connection-item:hover {
     border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+    text-decoration: none;
+    color: inherit;
+}
+
+.connection-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--gradient);
+    color: var(--white);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.connection-badge.most-popular {
+    background: var(--gradient);
+}
+
+.connection-badge.advanced {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
 }
 
 .connection-item i {
