@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_template/core/di/di_provider.dart';
 import 'package:flutter_template/l10n/app_localizations.dart';
 import 'package:flutter_template/ui/resources.dart';
+import 'package:flutter_template/ui/router/analytics_observer.dart';
 import 'package:flutter_template/ui/router/app_router.dart';
 
 class MainScreen extends StatelessWidget {
@@ -14,7 +15,8 @@ class MainScreen extends StatelessWidget {
     final router = DiProvider.get<AppRouter>();
     return MaterialApp.router(
       theme: AppTheme.provideAppTheme(context),
-      routerConfig: router.config(),
+      routerConfig:
+          router.config(navigatorObservers: () => [AnalyticsObserver()]),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

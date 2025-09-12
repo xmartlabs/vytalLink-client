@@ -18,6 +18,7 @@ interface class Config {
   static const String environmentFolder = 'environments';
 
   static const debugMode = kDebugMode;
+  static const firebaseCollectEventsEnabled = !kDebugMode;
   static bool testingMode = Platform.environment.containsKey('FLUTTER_TEST');
   static late String wsUrl;
   static late String gptIntegrationUrl;
