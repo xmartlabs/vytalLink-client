@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 class AnalyticsObserver extends AutoRouterObserver {
   @override
   void didInitTabRoute(TabPageRoute route, TabPageRoute? previousRoute) {
-    FirebaseAnalytics.instance
-        .logScreenView(screenName: route.name);
+    FirebaseAnalytics.instance.logScreenView(screenName: route.name);
   }
 
   @override

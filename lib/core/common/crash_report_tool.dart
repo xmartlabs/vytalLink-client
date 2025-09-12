@@ -35,17 +35,3 @@ class CrashlyticsCrashReportTool extends CrashReportTool {
     );
   }
 }
-
-final class NoOpsCrashReportTool extends CrashReportTool {
-  @override
-  // ignore: no-empty-block, avoid-redundant-async
-  Future init() async {}
-
-  @override
-  // ignore: no-empty-block, avoid-redundant-async
-  Future logFatal(error, StackTrace? stackTrace) async {}
-
-  @override
-  // ignore: no-empty-block, avoid-redundant-async
-  Future logNonFatal(LogEvent event) async {}
-}
