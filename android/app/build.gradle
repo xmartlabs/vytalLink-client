@@ -1,11 +1,29 @@
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
-    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+}
+
+def findGoogleServicesJson() {
+    return [
+            file("google-services.json"),
+            file("src/google-services.json"),
+            file("src/debug/google-services.json"),
+            file("src/release/google-services.json"),
+            file("src/dev/google-services.json"),
+            file("src/prod/google-services.json"),
+            file("src/dev/debug/google-services.json"),
+            file("src/dev/release/google-services.json"),
+            file("src/prod/debug/google-services.json"),
+            file("src/prod/release/google-services.json")
+    ].find { it.exists() }
+}
+
+if (findGoogleServicesJson()) {
+    apply plugin: "com.google.gms.google-services"
+    apply plugin: "com.google.firebase.crashlytics"
+} else {
+    println "⚠️ google-services.json not found. Skipping Google Services & Crashlytics plugins."
 }
 
 def localProperties = new Properties()
