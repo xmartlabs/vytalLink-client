@@ -36,7 +36,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         if (target) {
             const navbar = document.querySelector('.navbar');
             const navbarHeight = navbar ? navbar.offsetHeight : 80;
-            const targetPosition = target.offsetTop - navbarHeight - 20; // 20px extra padding
+            const targetPosition = target.offsetTop - navbarHeight; // remove extra 20px to scroll less
             
             window.scrollTo({
                 top: targetPosition,

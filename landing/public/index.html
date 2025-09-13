@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Connect your health data with AI using vytalLink. Download the mobile app and instantly connect to ChatGPT, Claude, and other AI tools. Secure, private, and easy to use.">
-    <meta name="keywords" content="health data, AI, ChatGPT, Claude, MCP, OAuth, fitness tracke    </footer>
-
-    <script src="script.js"></script>
-    <script src="common-modal.js"></script>
-</body>ealth app, vytalLink">
+    <meta name="keywords" content="health data, AI, ChatGPT, Claude, MCP, OAuth, fitness tracker, health app, vytalLink">
     <meta name="author" content="Xmartlabs">
     
     <!-- Open Graph / Facebook -->
@@ -224,9 +220,9 @@
                     <div class="step-info">
                         <p>Use natural language to query your health data. Ask about trends, patterns, correlations, and get personalized insights.</p>
                         <div class="example-questions">
-                            <div class="question-bubble">"How has my sleep quality changed this month?"</div>
-                            <div class="question-bubble">"Show me my heart rate during workouts"</div>
-                            <div class="question-bubble">"What's the correlation between my steps and sleep?"</div>
+                            <div class="question-bubble">How has my sleep quality changed this month?</div>
+                            <div class="question-bubble">Show me my heart rate during workouts</div>
+                            <div class="question-bubble">What's the correlation between my steps and sleep?</div>
                         </div>
                     </div>
                 </div>
@@ -302,7 +298,7 @@
                             <span>AI conversation examples</span>
                         </div>
                         <div class="demo-feature">
-                            <i class="fas fa-shield-check"></i>
+                            <i class="fas fa-shield-alt"></i>
                             <span>Security and privacy</span>
                         </div>
                     </div>
@@ -348,11 +344,11 @@
                         <span class="integration-badge">Most Popular</span>
                     </div>
                     <p>Ask ChatGPT about your health data, get personalized insights, and track your wellness goals.</p>
-                    <div class="integration-steps">
-                        <span>1. Download vytalLink</span>
-                        <span>2. Get connection codes</span>
-                        <span>3. Configure ChatGPT GPT</span>
-                    </div>
+                        <div class="integration-steps">
+                            <span>1. Download the vytalLink mobile app</span>
+                            <span>2. Get connection codes</span>
+                            <span>3. Configure ChatGPT GPT</span>
+                        </div>
                     <a href="/chatgpt-setup.html" class="btn btn-primary">
                         <i class="fas fa-cog"></i>
                         Setup Guide
@@ -366,11 +362,11 @@
                         <span class="integration-badge">Advanced</span>
                     </div>
                     <p>Connect to any MCP-compatible client like Claude Desktop, Cursor, VS Code, and more through Model Context Protocol.</p>
-                    <div class="integration-steps">
-                        <span>1. Download vytalLink</span>
-                        <span>2. Configure MCP client</span>
-                        <span>3. Connect & Chat</span>
-                    </div>
+                        <div class="integration-steps">
+                            <span>1. Download the vytalLink mobile app</span>
+                            <span>2. Configure MCP client</span>
+                            <span>3. Connect & Chat</span>
+                        </div>
                     <a href="/mcp-setup.html" class="btn btn-secondary">
                         <i class="fas fa-cog"></i>
                         Setup Guide
@@ -423,16 +419,14 @@
                         <li><a href="#features">How it Works</a></li>
                         <li><a href="#integrations">AI Integrations</a></li>
                         <li><a href="#demo">Demo Video</a></li>
-                        <li><a href="/api">Developer API</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Connect AI</h4>
+                    <h4>Setup Guides</h4>
                     <ul>
-                        <li><a href="https://chatgpt.com/gpts" target="_blank">ChatGPT GPTs</a></li>
-                        <li><a href="/mcp-setup.html">MCP Setup Guide</a></li>
-                        <li><a href="/api">Custom Integration</a></li>
-                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="/chatgpt-setup.html">ChatGPT Setup</a></li>
+                        <li><a href="/mcp-setup.html">MCP Setup</a></li>
+                        <li><a href="#" onclick="openDownloadModal(); return false;">Download App</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -457,5 +451,6 @@
     </footer>
 
     <script src="/script.js"></script>
+    <script src="/common-modal.js"></script>
 </body>
 </html>
